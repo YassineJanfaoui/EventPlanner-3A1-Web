@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bill index{% endblock %}
+
+{% block body %}
+    <h1>Bill index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Billid</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Archived</th>
+                <th>EventId</th>
+                <th>DueDate</th>
+                <th>PaymentStatus</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bill in bills %}
+            <tr>
+                <td>{{ bill.billid }}</td>
+                <td>{{ bill.Amount }}</td>
+                <td>{{ bill.Description }}</td>
+                <td>{{ bill.Archived }}</td>
+                <td>{{ bill.EventId }}</td>
+                <td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
+                <td>{{ bill.PaymentStatus }}</td>
+                <td>
+                    <a href="{{ path('app_bill_show', {'billid': bill.billid}) }}">show</a>
+                    <a href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bill_new') }}">Create new</a>
+{% endblock %}
