@@ -13,7 +13,7 @@ class test extends AbstractController
     {
         return $this->render('base.html.twig');
     }
-    #[Route('/admin', name: 'app_home2')]
+    #[Route('/admin', name: 'app_back')]
     public function index2(): Response
     {
         return $this->render('back.html.twig');
