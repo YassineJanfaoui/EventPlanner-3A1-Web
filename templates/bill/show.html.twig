@@ -1,10 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'back.html.twig' %}
 
 {% block title %}Bill{% endblock %}
 
 {% block body %}
-    <h1>Bill</h1>
-
+    <div class="card mb-4">
+        <div class="card-header">Bill</div>
+<div class="card-body">
     <table class="table">
         <tbody>
             <tr>
@@ -38,9 +39,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_bill_index') }}">back to list</a>
-
-    <a href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
-
-    {{ include('bill/_delete_form.html.twig') }}
+    <button class="btn btn-primary"  style="width:25%; margin-left:37.5%;">
+    <a style="text-decoration:none; color:white;" href="{{ path('app_bill_index') }}">Back to list</a></button>
+    </div></div>
 {% endblock %}

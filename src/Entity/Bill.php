@@ -33,10 +33,6 @@ class Bill
     #[ORM\Column(type: 'string', length: 255, name: 'paymentStatus')]
     private ?string $PaymentStatus = null;
 
-    public function getId(): ?int
-    {
-        return $this->billid;
-    }
 
     public function getBillid(): ?int
     {

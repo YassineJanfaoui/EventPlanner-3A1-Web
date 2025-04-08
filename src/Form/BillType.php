@@ -12,14 +12,12 @@ class BillType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('billid')
-            ->add('PaymentStatus', null, [
-                'widget' => 'single_text'
-            ])
+            ->add('PaymentStatus')
             ->add('Amount')
             ->add('Description')
             ->add('Archived')
             ->add('EventId')
+            ->add('DueDate')
         ;
     }
 

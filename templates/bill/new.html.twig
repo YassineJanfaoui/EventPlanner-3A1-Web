@@ -1,11 +1,58 @@
-{% extends 'base.html.twig' %}
+{% extends 'back.html.twig' %}
 
 {% block title %}New Bill{% endblock %}
 
 {% block body %}
-    <h1>Create new Bill</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4">Create New Bill</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
 
-    {{ include('bill/_form.html.twig') }}
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.PaymentStatus, {'attr': {'class': 'form-control', 'placeholder': 'Payment Status'}}) }}
+                        <label for="{{ form.PaymentStatus.vars.id }}">Payment Status</label>
+                    </div>
 
-    <a href="{{ path('app_bill_index') }}">back to list</a>
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.Amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
+                        <label for="{{ form.Amount.vars.id }}">Amount</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.Description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+                        <label for="{{ form.Description.vars.id }}">Description</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.Archived, {'attr': {'class': 'form-control', 'placeholder': 'Archived'}}) }}
+                        <label for="{{ form.Archived.vars.id }}">Archived</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.EventId, {'attr': {'class': 'form-control', 'placeholder': 'Event ID'}}) }}
+                        <label for="{{ form.EventId.vars.id }}">Event ID</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.DueDate, {'attr': {'class': 'form-control'}}) }}
+                        <label for="{{ form.DueDate.vars.id }}">Due Date</label>
+                    </div>
+
+                    <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-block">{{ button_label|default('Save') }}</button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

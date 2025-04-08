@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Bill;
-use App\Form\Bill1Type;
+use App\Form\BillType;
 use App\Repository\BillRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/bill')]
-final class BillController extends AbstractController{
+final class BillController extends AbstractController
+{
     #[Route(name: 'app_bill_index', methods: ['GET'])]
     public function index(BillRepository $billRepository): Response
     {
@@ -25,7 +26,7 @@ final class BillController extends AbstractController{
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $bill = new Bill();
-        $form = $this->createForm(Bill1Type::class, $bill);
+        $form = $this->createForm(BillType::class, $bill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,7 +53,7 @@ final class BillController extends AbstractController{
     #[Route('/{billid}/edit', name: 'app_bill_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bill $bill, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Bill1Type::class, $bill);
+        $form = $this->createForm(BillType::class, $bill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +71,7 @@ final class BillController extends AbstractController{
     #[Route('/{billid}', name: 'app_bill_delete', methods: ['POST'])]
     public function delete(Request $request, Bill $bill, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$bill->getBillid(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $bill->getBillid(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($bill);
             $entityManager->flush();
         }
