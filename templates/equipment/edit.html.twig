@@ -1,15 +1,58 @@
 {% extends 'back.html.twig' %}
 
-{% block title %}Edit Equipment{% endblock %}
+{% block title %}Edit Equipment
+{% endblock %}
 
 {% block body %}
-<div class="card mb-4">
-        <div class="card-header">Edit Equipment</div>
-<div class="card-body">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header">
+						<h3 class="text-center font-weight-light my-4">Edit Equipment</h3>
+					</div>
+					<div class="card-body">
+						{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    {{ include('equipment/_form.html.twig', {'button_label': 'Update'}) }}
+						<div class="form-floating mb-3">
+							{{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Equipment name'}}) }}
+							<label for="{{ form.name.vars.id }}">Name</label>
+							{{ form_errors(form.name) }}
+						</div>
 
-    <button class="btn btn-primary"  style="width:25%; margin-left:37.5%;">
-    <a style="text-decoration:none; color:white;" href="{{ path('app_equipment_index') }}">Back to list</a></button>
-    </div></div>
+						<div class="form-floating mb-3">
+							{{ form_widget(form.state, {'attr': {'class': 'form-control', 'placeholder': 'State'}}) }}
+							<label for="{{ form.state.vars.id }}">State</label>
+							{{ form_errors(form.state) }}
+						</div>
+
+						<div class="form-floating mb-3">
+							{{ form_widget(form.category, {'attr': {'class': 'form-control', 'placeholder': 'Category'}}) }}
+							<label for="{{ form.category.vars.id }}">Category</label>
+							{{ form_errors(form.category) }}
+						</div>
+
+						<div class="form-floating mb-3">
+							{{ form_widget(form.quantity, {'attr': {'class': 'form-control', 'placeholder': 'Quantity'}}) }}
+							<label for="{{ form.quantity.vars.id }}">Quantity</label>
+							{{ form_errors(form.quantity) }}
+						</div>
+
+						<div class="mt-4 mb-0">
+							<div class="d-grid">
+								<button class="btn btn-primary btn-block">{{ button_label|default('Update') }}</button>
+							</div>
+						</div>
+
+						{{ form_end(form) }}
+					</div>
+					<a href="{{ path('app_equipment_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+						Back to list
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
 {% endblock %}

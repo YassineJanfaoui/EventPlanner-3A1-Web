@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EquipmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: EquipmentRepository::class)]
 class Equipment
@@ -14,15 +16,28 @@ class Equipment
     private ?int $EquipmentId = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Name is required.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Name cannot be longer than {{ limit }} characters."
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "State is required.")]
     private ?string $state = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Category is required.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Category cannot be longer than {{ limit }} characters."
+    )]
     private ?string $category = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "Quantity must be provided.")]
+    #[Assert\PositiveOrZero(message: "Quantity must be a positive number or zero.")]
     private ?int $quantity = null;
 
     public function getEquipmentId(): ?int

@@ -9,7 +9,8 @@
 
     {{ include('bill/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <button class="btn btn-primary"  style="width:25%; margin-left:37.5%;">
-    <a style="text-decoration:none; color:white;" href="{{ path('app_bill_index') }}">Back to list</a></button>
+    <a href="{{ path('app_bill_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+    Back to list
+</a>
     </div></div>
 {% endblock %}

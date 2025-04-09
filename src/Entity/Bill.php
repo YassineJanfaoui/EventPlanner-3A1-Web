@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\BillRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: BillRepository::class)]
 class Bill
@@ -16,21 +18,38 @@ class Bill
 
 
     #[ORM\Column]
-    private ?int $Amount = null;
+    #[Assert\NotNull(message: "Amount must be provided.")]
+    #[Assert\Positive(message: "Amount must be a positive number.")]
+    private ?float $Amount = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Description is required.")]
+    #[Assert\Length(
+        min: 4,
+        max: 255,
+        minMessage: "Description must be at least {{ limit }} characters long.",
+        maxMessage: "Description cannot exceed {{ limit }} characters."
+    )]
     private ?string $Description = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "Archived status must be set.")]
+    #[Assert\Choice(
+        choices: [0, 1],
+        message: "Archived must be either 0 (false) or 1 (true)."
+    )]
     private ?int $Archived = null;
 
     #[ORM\Column(name: 'eventId')]
     private ?int $EventId = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, name: 'dueDate')]
+    #[Assert\NotBlank(message: "Due date is required.")]
+    #[Assert\Type(type: \DateTimeInterface::class, message: "Due date must be a valid date.")]
     private ?\DateTimeInterface $DueDate = null;
 
     #[ORM\Column(type: 'string', length: 255, name: 'paymentStatus')]
+    #[Assert\NotBlank(message: "Payment status is required.")]
     private ?string $PaymentStatus = null;
 
 
