@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participant index{% endblock %}
+
+{% block body %}
+    <style>
+        .btn {
+            padding: 10px 18px;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            margin: 4px;
+            display: inline-block;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+    </style>
+
+    <h1>Participant index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ParticipantId</th>
+                <th>Name</th>
+                <th>Affiliation</th>
+                <th>Age</th>
+                <th>Show</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participant in participants %}
+            <tr>
+                <td>{{ participant.participantId }}</td>
+                <td>{{ participant.name }}</td>
+                <td>{{ participant.age }}</td>
+                <td>{{ participant.team.getTeamName() }}</td>
+                <td>
+                    <a href="{{ path('app_participant_show', {'participantId': participant.participantId}) }}" class="btn btn-info">Show</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_participant_edit', {'participantId': participant.participantId}) }}" class="btn btn-warning">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_participant_new') }}" class="btn btn-success">Create new</a>
+{% endblock %}
