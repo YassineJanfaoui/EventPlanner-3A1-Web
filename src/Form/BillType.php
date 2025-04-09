@@ -3,25 +3,40 @@
 namespace App\Form;
 
 use App\Entity\Bill;
+use App\Entity\Event;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
-
 
 class BillType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('PaymentStatus', TextType::class, [
-                'empty_data' => '',
-                'attr' => ['class' => 'form-control']
+            ->add('DueDate', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'required' => false, // Allow empty submissions
+                'empty_data' => null, // Set to null when empty
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'YYYY-MM-DD' // Optional placeholder
+                ],
+                'invalid_message' => 'Please enter a valid date (YYYY-MM-DD)'
+            ])
+            ->add('PaymentStatus', ChoiceType::class, [
+                'choices' => [
+                    'Pending' => 'pending',
+                    'Paid' => 'paid',
+                ],
+                'attr' => ['class' => 'form-control'],
+                'placeholder' => 'Select a status', // Optional
+                'required' => true,
             ])
             ->add('Amount', IntegerType::class, [
                 'empty_data' => 0,
@@ -41,22 +56,10 @@ class BillType extends AbstractType
                 'multiple' => false,
                 'label' => 'Archived',
             ])
-            ->add('EventId', IntegerType::class, [
-                'empty_data' => null,
-                'attr' => ['class' => 'form-control']
+            ->add('event', EntityType::class, [
+                'class' => Event::class,
+                'choice_label' => 'eventId',
             ])
-            ->add('DueDate', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => false, // Allow empty submissions
-                'empty_data' => null, // Set to null when empty
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'YYYY-MM-DD' // Optional placeholder
-                ],
-                'invalid_message' => 'Please enter a valid date (YYYY-MM-DD)'
-            ])
-
         ;
     }
 

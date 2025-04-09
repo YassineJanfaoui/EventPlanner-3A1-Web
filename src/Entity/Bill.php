@@ -2,78 +2,105 @@
 
 namespace App\Entity;
 
-use App\Repository\BillRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use App\Repository\BillRepository;
 
 #[ORM\Entity(repositoryClass: BillRepository::class)]
+#[ORM\Table(name: 'bill')]
 class Bill
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'billid')]
+    #[ORM\Column(type: 'integer', name: 'billid')]
     private ?int $billid = null;
 
+    #[ORM\Column(type: 'date', nullable: false, name: 'DueDate')]
+    #[Assert\NotBlank(message: "Due date is required.")]
+    #[Assert\Type("\DateTimeInterface", message: "Due date must be a valid date.")]
+    #[Assert\GreaterThanOrEqual(
+        value: "today",
+        message: "Due date must be today or in the future."
+    )]
+    private ?\DateTimeInterface $DueDate = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull(message: "Amount must be provided.")]
-    #[Assert\Positive(message: "Amount must be a positive number.")]
-    private ?float $Amount = null;
-
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Description is required.")]
+    #[ORM\Column(type: 'string', nullable: false, name: 'PaymentStatus')]
+    #[Assert\NotBlank(message: "Payment status is required.")]
+    #[Assert\Choice(
+        choices: ['pending', 'paid'],
+        message: "Invalid payment status."
+    )]
     #[Assert\Length(
-        min: 4,
-        max: 255,
+        max: 50,
+        maxMessage: "Payment status cannot be longer than {{ limit }} characters."
+    )]
+    private ?string $PaymentStatus = null;
+
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: "Amount is required.")]
+    #[Assert\Positive(message: "Amount must be a positive number.")]
+    #[Assert\LessThanOrEqual(
+        value: 1000000,
+        message: "Amount cannot exceed {{ value }}."
+    )]
+    private ?int $Amount = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 500,
         minMessage: "Description must be at least {{ limit }} characters long.",
-        maxMessage: "Description cannot exceed {{ limit }} characters."
+        maxMessage: "Description cannot be longer than {{ limit }} characters."
     )]
     private ?string $Description = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull(message: "Archived status must be set.")]
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotNull(message: "Archived status is required.")]
     #[Assert\Choice(
         choices: [0, 1],
-        message: "Archived must be either 0 (false) or 1 (true)."
+        message: "Archived status must be either 0 (false) or 1 (true)."
     )]
     private ?int $Archived = null;
 
-    #[ORM\Column(name: 'eventId')]
-    private ?int $EventId = null;
+    #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'bills')]
+    #[ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')]
+    private ?Event $event = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, name: 'dueDate')]
-    #[Assert\NotBlank(message: "Due date is required.")]
-    #[Assert\Type(type: \DateTimeInterface::class, message: "Due date must be a valid date.")]
-    private ?\DateTimeInterface $DueDate = null;
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
 
-    #[ORM\Column(type: 'string', length: 255, name: 'paymentStatus')]
-    #[Assert\NotBlank(message: "Payment status is required.")]
-    private ?string $PaymentStatus = null;
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
+        return $this;
+    }
 
-
-    public function getBillid(): ?int
+    public function getbillid(): ?int
     {
         return $this->billid;
     }
 
-    public function setBillid(int $billid): static
+    public function setbillid(int $billid): self
     {
         $this->billid = $billid;
-
         return $this;
     }
 
-    public function getAmount(): ?int
+
+    public function getArchived(): ?int
     {
-        return $this->Amount;
+        return $this->Archived;
     }
 
-    public function setAmount(int $Amount): static
+    public function setArchived(int $Archived): self
     {
-        $this->Amount = $Amount;
-
+        $this->Archived = $Archived;
         return $this;
     }
 
@@ -82,34 +109,33 @@ class Bill
         return $this->Description;
     }
 
-    public function setDescription(string $Description): static
+    public function setDescription(?string $Description): self
     {
         $this->Description = $Description;
-
         return $this;
     }
 
-    public function getArchived(): ?int
+
+    public function getAmount(): ?int
     {
-        return $this->Archived;
+        return $this->Amount;
     }
 
-    public function setArchived(int $Archived): static
+    public function setAmount(int $Amount): self
     {
-        $this->Archived = $Archived;
-
+        $this->Amount = $Amount;
         return $this;
     }
 
-    public function getEventId(): ?int
+
+    public function getPaymentStatus(): ?string
     {
-        return $this->EventId;
+        return $this->PaymentStatus;
     }
 
-    public function setEventId(int $EventId): static
+    public function setPaymentStatus(string $PaymentStatus): self
     {
-        $this->EventId = $EventId;
-
+        $this->PaymentStatus = $PaymentStatus;
         return $this;
     }
 
@@ -118,22 +144,9 @@ class Bill
         return $this->DueDate;
     }
 
-    public function setDueDate(\DateTimeInterface $DueDate): static
+    public function setDueDate(\DateTimeInterface $DueDate): self
     {
         $this->DueDate = $DueDate;
-
-        return $this;
-    }
-
-    public function getPaymentStatus(): ?string
-    {
-        return $this->PaymentStatus;
-    }
-
-    public function setPaymentStatus(string $PaymentStatus): static
-    {
-        $this->PaymentStatus = $PaymentStatus;
-
         return $this;
     }
 }

@@ -1,51 +1,55 @@
 {% extends 'back.html.twig' %}
 
-{% block title %}Bill index{% endblock %}
+{% block title %}Bill index
+{% endblock %}
 
 {% block body %}
-    <div class="card mb-4">
-        <div class="card-header">Bills</div>
-<div class="card-body">
-    <table id="datatablesSimple">
-        <thead>
-            <tr>
-                <th>Billid</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Archived</th>
-                <th>EventId</th>
-                <th>DueDate</th>
-                <th>PaymentStatus</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for bill in bills %}
-            <tr>
-                <td><a href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a></td>
-                <td>{{ bill.Amount }}</td>
-                <td>{{ bill.Description }}</td>
-                <td>{{ bill.Archived }}</td>
-                <td>{{ bill.EventId }}</td>
-                <td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
-                <td>{{ bill.PaymentStatus }}</td>
-                <td style="display:flex;">
-                    <button class="btn btn-primary">
-                    <a style="text-decoration:none; color:white;" href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a></button>
-                    {{ include('bill/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
-    <a href="{{ path('app_bill_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
-    Create new
-</a>
+	<div class="card mb-4">
+		<div class="card-header">Bills</div>
+		<div class="card-body">
+			<table id="datatablesSimple">
+				<thead>
+					<tr>
+						<th>Billid</th>
+						<th>Amount</th>
+						<th>Description</th>
+						<th>Archived</th>
+						<th>EventId</th>
+						<th>DueDate</th>
+						<th>PaymentStatus</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for bill in bills %}
+						<tr>
+							<td>
+								<a href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a>
+							</td>
+							<td>{{ bill.Amount }}</td>
+							<td>{{ bill.Description }}</td>
+							<td>{{ bill.Archived }}</td>
+							<td>{{  bill.event ? bill.event.name : ''  }}</td>
+							<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
+							<td>{{ bill.PaymentStatus }}</td>
+							<td style="display:flex;">
+								<button class="btn btn-primary">
+									<a style="text-decoration:none; color:white;" href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
+								</button>
+								{{ include('bill/_delete_form.html.twig') }}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="8">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<a href="{{ path('app_bill_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+			Create new
+		</a>
 
-    </div>
+	</div>
 {% endblock %}

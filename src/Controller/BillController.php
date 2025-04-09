@@ -71,7 +71,7 @@ final class BillController extends AbstractController
     #[Route('/{billid}', name: 'app_bill_delete', methods: ['POST'])]
     public function delete(Request $request, Bill $bill, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $bill->getBillid(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $bill->getbillid(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($bill);
             $entityManager->flush();
         }
