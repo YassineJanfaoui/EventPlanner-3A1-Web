@@ -1,90 +1,23 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Login{% endblock %}
-
-{% block body %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3 class="mb-0">Event Planner Login</h3>
-                </div>
-                <div class="card-body">
-                    {% if error %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ error.messageKey|trans(error.messageData, 'security') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endif %}
-
-                    <form method="post" class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label for="inputUsername" class="form-label">Username</label>
-                            <input 
-                                type="text" 
-                                value="{{ last_username }}" 
-                                name="username" 
-                                id="inputUsername"
-                                class="form-control {{ error ? 'is-invalid' : '' }}" 
-                                autocomplete="username" 
-                                required 
-                                autofocus
-                            >
-                            <div class="invalid-feedback">
-                                Please enter your username.
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="inputPassword" class="form-label">Password</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                id="inputPassword" 
-                                class="form-control {{ error ? 'is-invalid' : '' }}" 
-                                autocomplete="current-password" 
-                                required
-                            >
-                            <div class="invalid-feedback">
-                                Please enter your password.
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <div class="d-grid gap-2 mb-3">
-                            <button class="btn btn-primary btn-lg" type="submit">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Login
-                            </button>
-                        </div>
-
-                        <div class="text-center">
-                            <a href="#" class="text-decoration-none">Forgot password?</a>
-                            <span class="mx-2">|</span>
-                            <a href="{{ path('app_user_new') }}" class="text-decoration-none">Create account</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<form method="post" action="{{ path('app_login') }}">
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
-    </div>
-</div>
-
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
-    .card {
-        border-radius: 10px;
-        border: none;
-    }
-    .card-header {
-        border-radius: 10px 10px 0 0 !important;
-    }
-    .btn-primary {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-</style>
-{% endblock %}
+    {% endif %}
+    
+    <input type="text" 
+           name="_username" 
+           value="{{ last_username }}" 
+           placeholder="Username"
+           required 
+           autofocus>
+    
+    <input type="password" 
+           name="_password" 
+           placeholder="Password"
+           required>
+    
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    
+    <button type="submit">Login</button>
+</form>

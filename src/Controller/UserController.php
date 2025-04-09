@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Psr\Log\LoggerInterface; // Add this for LoggerInterface
+use Symfony\Component\Security\Core\Exception\AuthenticationException; // Add this for AuthenticationException
 
 #[Route('/user')]
 final class UserController extends AbstractController
@@ -24,27 +26,59 @@ final class UserController extends AbstractController
     }
 
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        // Redirect if already logged in
-        if ($this->getUser()) {
-            $user = $this->getUser();
-            if (in_array('ADMIN', $user->getRoles())) {
-                return $this->redirectToRoute('app_user_index');
-            }
-            // Add other role-based redirects as needed
-            return $this->redirectToRoute('app_user_index');
-        }
-    
-        // Get login error and last username
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-    
-        return $this->render('user/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error
-        ]);
+public function login(AuthenticationUtils $authenticationUtils, LoggerInterface $logger): Response
+{
+    // If user is already logged in
+    if ($this->getUser()) {
+        return $this->redirectBasedOnRole($this->getUser());
     }
+
+    // Get login error if there is one
+    $error = $authenticationUtils->getLastAuthenticationError();
+    $lastUsername = $authenticationUtils->getLastUsername();
+
+    if ($error) {
+        $logger->error('Authentication failed', [
+            'username' => $lastUsername,
+            'error' => $error->getMessageKey(),
+            'exception' => $error->getMessage()
+        ]);
+        
+        $this->addFlash('error', $this->getLoginErrorMessage($error));
+    }
+
+    return $this->render('user/login.html.twig', [
+        'last_username' => $lastUsername,
+        'error' => $error
+    ]);
+}
+
+private function getLoginErrorMessage(AuthenticationException $error): string
+{
+    $errorKey = $error->getMessageKey();
+    $data = $error->getMessageData();
+
+    switch ($errorKey) {
+        case 'Invalid credentials.':
+            return 'Invalid username or password.';
+        case 'User account is disabled.':
+            return 'Your account is disabled.';
+        case 'User account is locked.':
+            return 'Your account is locked.';
+        default:
+            return 'Login failed. Please try again.';
+    }
+}
+
+private function redirectBasedOnRole(User $user): Response
+{
+    if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        return $this->redirectToRoute('app_user_show', ['userid' => $user->getUserid()]);
+    }
+    return $this->redirectToRoute('app_participant_index');
+}
+
+
     
         #[Route('/logout', name: 'app_logout', methods: ['GET'])]
         public function logout(): void

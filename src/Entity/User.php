@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -51,10 +54,11 @@ class User
     }
 
     public function setPassword(string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
+{
+    // Don't hash here - let the controller handle hashing
+    $this->password = $password;
+    return $this;
+}
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $email = null;
@@ -157,6 +161,20 @@ class User
     {
         $this->getEvents()->removeElement($event);
         return $this;
+    }
+    public function getRoles(): array
+    {
+        return [$this->role ? 'ROLE_'.strtoupper($this->role) : 'ROLE_USER'];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Clear any temporary sensitive data
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
     }
 
 }
