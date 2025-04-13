@@ -1,4 +1,4 @@
-{% extends 'back.html.twig' %}
+{% extends 'basePlanner.html.twig' %}
 
 {% block title %}Bill
 {% endblock %}
@@ -26,7 +26,7 @@
 						<td>{{ bill.Archived }}</td>
 					</tr>
 					<tr>
-						<th>EventId</th>
+						<th>Event</th>
 						<td>{{ bill.event.name }}</td>
 					</tr>
 					<tr>

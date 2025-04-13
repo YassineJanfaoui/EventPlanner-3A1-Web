@@ -5677,3 +5677,9 @@ del {
 .switch-wrap {
   margin-bottom: 10px;
 }
+
+.footer-bottom-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

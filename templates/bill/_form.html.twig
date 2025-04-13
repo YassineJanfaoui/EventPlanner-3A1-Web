@@ -3,44 +3,56 @@
 		<div class="col-lg-7">
 			<div class="card shadow-lg border-0 rounded-lg mt-5">
 				<div class="card-header">
-					<h3 class="text-center font-weight-light my-4">Edit Bill</h3>
+					<h3 class="text-center font-weight-light my-4">{{ text_label|default('Update') }}</h3>
 				</div>
 				<div class="card-body">
 					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-					<div class="form-floating mb-3">
-						{{ form_widget(form.PaymentStatus, {'attr': {'class': 'form-control', 'placeholder': 'Payment Status'}}) }}
+					<div class="mb-3">
 						<label for="{{ form.PaymentStatus.vars.id }}">Payment Status</label>
-						{{ form_errors(form.PaymentStatus) }}
+						{{ form_widget(form.PaymentStatus, {'attr': {'class': 'form-select', 'placeholder': 'Payment Status'}}) }}
+						{{ form_errors(form.PaymentStatus, {'attr': {'class': 'form-error-message'}}) }}
 					</div>
 
 					<div class="form-floating mb-3">
-						{{ form_widget(form.Amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
 						<label for="{{ form.Amount.vars.id }}">Amount</label>
-						{{ form_errors(form.Amount) }}
+						{{ form_widget(form.Amount, {'attr': {'class': 'form-control', 'placeholder': 'Amount'}}) }}
+
+						<div class="form-error-message">
+							{{ form_errors(form.Amount) }}
+						</div>
 					</div>
 
 					<div class="form-floating mb-3">
-						{{ form_widget(form.Description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
 						<label for="{{ form.Description.vars.id }}">Description</label>
-						{{ form_errors(form.Description) }}
+						{{ form_widget(form.Description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+
+						<div class="form-error-message">
+							{{ form_errors(form.Description) }}
+						</div>
 					</div>
 
 					<div class="form-floating mb-3">
-						{{ form_widget(form.Archived, {'attr': {'class': 'form-control', 'placeholder': 'Archived'}}) }}
 						<label for="{{ form.Archived.vars.id }}">Archived</label>
-						{{ form_errors(form.Archived) }}
+						{{ form_widget(form.Archived, {'attr': {'class': 'form-control', 'placeholder': 'Archived'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.Archived) }}
+						</div>
+					</div>
+
+					<div class=" mb-3">
+						<label for="{{ form.event.vars.id }}">Event</label>
+						{{ form_widget(form.event, {'attr': {'class': 'form-select', 'placeholder': 'Event ID'}}) }}
+
 					</div>
 
 					<div class="form-floating mb-3">
-						{{ form_widget(form.event, {'attr': {'class': 'form-control', 'placeholder': 'Event ID'}}) }}
-						<label for="{{ form.event.vars.id }}">Event ID</label>
-					</div>
-
-					<div class="form-floating mb-3">
-						{{ form_widget(form.DueDate, {'attr': {'class': 'form-control'}}) }}
 						<label for="{{ form.DueDate.vars.id }}">Due Date</label>
-						{{ form_errors(form.DueDate) }}
+						{{ form_widget(form.DueDate, {'attr': {'class': 'form-control'}}) }}
+
+						<div class="form-error-message">
+							{{ form_errors(form.DueDate) }}
+						</div>
 					</div>
 
 					<div class="mt-4 mb-0">
@@ -52,6 +64,9 @@
 
 					{{ form_end(form) }}
 				</div>
+				<a href="{{ path('app_bill_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+					Back to list
+				</a>
 			</div>
 		</div>
 	</div>

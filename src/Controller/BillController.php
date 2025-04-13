@@ -10,14 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[Route('/bill')]
 final class BillController extends AbstractController
 {
-    #[Route(name: 'app_bill_index', methods: ['GET'])]
+    #[Route('/', name: 'app_bill_index', methods: ['GET'])]
     public function index(BillRepository $billRepository): Response
     {
-        return $this->render('bill/index.html.twig', [
+        return $this->render('bill/indexFront.html.twig', [
             'bills' => $billRepository->findAll(),
         ]);
     }
@@ -45,7 +47,7 @@ final class BillController extends AbstractController
     #[Route('/{billid}', name: 'app_bill_show', methods: ['GET'])]
     public function show(Bill $bill): Response
     {
-        return $this->render('bill/show.html.twig', [
+        return $this->render('bill/showFront.html.twig', [
             'bill' => $bill,
         ]);
     }
@@ -71,7 +73,7 @@ final class BillController extends AbstractController
     #[Route('/{billid}', name: 'app_bill_delete', methods: ['POST'])]
     public function delete(Request $request, Bill $bill, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $bill->getbillid(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $bill->getBillid(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($bill);
             $entityManager->flush();
         }

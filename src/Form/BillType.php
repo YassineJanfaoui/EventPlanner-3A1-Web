@@ -27,7 +27,7 @@ class BillType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'YYYY-MM-DD' // Optional placeholder
                 ],
-                'invalid_message' => 'Please enter a valid date (YYYY-MM-DD)'
+                'invalid_message' => 'Please enter a valid date '
             ])
             ->add('PaymentStatus', ChoiceType::class, [
                 'choices' => [
@@ -35,7 +35,6 @@ class BillType extends AbstractType
                     'Paid' => 'paid',
                 ],
                 'attr' => ['class' => 'form-control'],
-                'placeholder' => 'Select a status', // Optional
                 'required' => true,
             ])
             ->add('Amount', IntegerType::class, [
@@ -58,7 +57,7 @@ class BillType extends AbstractType
             ])
             ->add('event', EntityType::class, [
                 'class' => Event::class,
-                'choice_label' => 'eventId',
+                'choice_label' => 'name',
             ])
         ;
     }

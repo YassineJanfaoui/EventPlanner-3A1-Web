@@ -1,16 +1,9 @@
-{% extends 'back.html.twig' %}
+{% extends 'basePlanner.html.twig' %}
 
-{% block title %}Edit Bill{% endblock %}
+{% block title %}Edit Bill
+{% endblock %}
+
 
 {% block body %}
-<div class="card mb-4">
-        <div class="card-header">Edit Bill</div>
-<div class="card-body">
-
-    {{ include('bill/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_bill_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
-    Back to list
-</a>
-    </div></div>
+	{{ include('bill/_form.html.twig', {'button_label': 'Update', "text_label": "Edit Bill"}) }}
 {% endblock %}

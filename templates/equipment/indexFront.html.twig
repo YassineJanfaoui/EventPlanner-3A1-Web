@@ -1,0 +1,47 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Equipment index
+{% endblock %}
+
+{% block body %}
+	<h1>Equipment index</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>EquipmentId</th>
+				<th>Name</th>
+				<th>State</th>
+				<th>Category</th>
+				<th>Quantity</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for equipment in equipment %}
+				<tr>
+					<td style="width: 80px;">
+						<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_show', {'EquipmentId': equipment.EquipmentId}) }}">{{ equipment.EquipmentId }}</a>
+					</td>
+					<td>{{ equipment.name }}</td>
+					<td>{{ equipment.state }}</td>
+					<td>{{ equipment.category }}</td>
+					<td>{{ equipment.quantity }}</td>
+					<td style="display:flex; gap:10px">
+						<button class="btn btn-primary">
+							<a style="text-decoration:none; color:white;" href="{{ path('app_equipment_edit', {'EquipmentId': equipment.EquipmentId}) }}">edit</a>
+						</button>
+						{{ include('equipment/_delete_form.html.twig') }}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="6">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<a href="{{ path('app_equipment_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+	Create new
+</a></div>{% endblock %}

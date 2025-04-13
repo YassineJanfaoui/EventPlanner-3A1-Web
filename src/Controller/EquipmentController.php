@@ -17,7 +17,7 @@ final class EquipmentController extends AbstractController
     #[Route(name: 'app_equipment_index', methods: ['GET'])]
     public function index(EquipmentRepository $equipmentRepository): Response
     {
-        return $this->render('equipment/index.html.twig', [
+        return $this->render('equipment/indexFront.html.twig', [
             'equipment' => $equipmentRepository->findAll(),
         ]);
     }
@@ -45,7 +45,7 @@ final class EquipmentController extends AbstractController
     #[Route('/{EquipmentId}', name: 'app_equipment_show', methods: ['GET'])]
     public function show(Equipment $equipment): Response
     {
-        return $this->render('equipment/show.html.twig', [
+        return $this->render('equipment/showFront.html.twig', [
             'equipment' => $equipment,
         ]);
     }
