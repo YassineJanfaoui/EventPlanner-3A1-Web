@@ -211,43 +211,6 @@ class Event
         return $this;
     }
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'eventequipment',
-        joinColumns: [
-            new ORM\JoinColumn(name: 'EventId', referencedColumnName: 'eventId')
-        ],
-        inverseJoinColumns: [
-            new ORM\JoinColumn(name: 'EquipmentId', referencedColumnName: 'EquipmentId')
-        ]
-    )]
-    private Collection $equipments;
-
-    /**
-     * @return Collection<int, Equipment>
-     */
-    public function getEquipments(): Collection
-    {
-        if (!$this->equipments instanceof Collection) {
-            $this->equipments = new ArrayCollection();
-        }
-        return $this->equipments;
-    }
-
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->getEquipments()->contains($equipment)) {
-            $this->getEquipments()->add($equipment);
-        }
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        $this->getEquipments()->removeElement($equipment);
-        return $this;
-    }
-
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'events')]
     #[ORM\JoinTable(
         name: 'eventteam',
@@ -297,11 +260,15 @@ class Event
     )]
     private Collection $partners;
 
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventEquipment::class)]
+    private Collection $eventEquipment;
+
     public function __construct()
     {
         $this->bills = new ArrayCollection();
         $this->feedbacks = new ArrayCollection();
-        $this->equipments = new ArrayCollection();
+        $this->eventEquipment = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->partners = new ArrayCollection();
     }
@@ -328,6 +295,36 @@ class Event
     public function removePartner(Partner $partner): self
     {
         $this->getPartners()->removeElement($partner);
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EventEquipment>
+     */
+    public function getEventEquipment(): Collection
+    {
+        return $this->eventEquipment;
+    }
+
+    public function addEventEquipment(EventEquipment $eventEquipment): static
+    {
+        if (!$this->eventEquipment->contains($eventEquipment)) {
+            $this->eventEquipment->add($eventEquipment);
+            $eventEquipment->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventEquipment(EventEquipment $eventEquipment): static
+    {
+        if ($this->eventEquipment->removeElement($eventEquipment)) {
+            // set the owning side to null (unless already changed)
+            if ($eventEquipment->getEvent() === $this) {
+                $eventEquipment->setEvent(null);
+            }
+        }
+
         return $this;
     }
 }

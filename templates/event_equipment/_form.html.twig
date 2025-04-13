@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-7">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header">
+					<h3 class="text-center font-weight-light my-4">{{ text_label|default('Assign Equipment to Event') }}</h3>
+				</div>
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div class="mb-3">
+						<label for="{{ form.equipment.vars.id }}">Equipment Chosen</label>
+						{{ form_widget(form.equipment, {'attr': {'class': 'form-select'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.equipment) }}
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.event.vars.id }}">Event</label>
+						{{ form_widget(form.event, {'attr': {'class': 'form-select'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.event) }}
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.startDate.vars.id }}">Start Date</label>
+						{{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.startDate) }}
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.endDate.vars.id }}">End Date</label>
+						{{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.endDate) }}
+						</div>
+					</div>
+
+					<div class="mt-4 mb-0">
+						<div class="d-grid">
+							<button class="btn btn-primary btn-block">{{ button_label|default('Save') }}</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+				<a href="{{ path('app_event_equipment_index') }}" class="btn btn-primary" style="width:25%; margin-left:37.5%; display:block;">
+					Back to list
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

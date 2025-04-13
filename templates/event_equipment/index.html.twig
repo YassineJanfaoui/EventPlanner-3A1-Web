@@ -1,0 +1,43 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}EventEquipment index
+{% endblock %}
+
+{% block body %}
+	<h1>EventEquipment index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Event</th>
+				<th>Equipment</th>
+				<th>StartDate</th>
+				<th>EndDate</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for event_equipment in event_equipments %}
+				<tr>
+					<td>{{ event_equipment.id }}</td>
+					<td>{{ event_equipment.event.name }}</td>
+					<td>{{ event_equipment.equipment.name }}</td>
+					<td>{{ event_equipment.startDate ? event_equipment.startDate|date('Y-m-d') : '' }}</td>
+					<td>{{ event_equipment.endDate ? event_equipment.endDate|date('Y-m-d') : '' }}</td>
+					<td>
+						{{ include('event_equipment/_delete_form.html.twig') }}
+
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+	<a style="width:25%; margin-left:37.5%; display:block;" class="btn btn-primary " href="{{ path('app_equipment_index') }}">Back to equipment</a>
+{% endblock %}

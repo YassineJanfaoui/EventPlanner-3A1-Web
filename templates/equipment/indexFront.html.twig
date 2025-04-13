@@ -19,7 +19,7 @@
 		<tbody>
 			{% for equipment in equipment %}
 				<tr>
-					<td style="width: 80px;">
+					<td>
 						<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_show', {'EquipmentId': equipment.EquipmentId}) }}">{{ equipment.EquipmentId }}</a>
 					</td>
 					<td>{{ equipment.name }}</td>
@@ -30,18 +30,18 @@
 						<button class="btn btn-primary">
 							<a style="text-decoration:none; color:white;" href="{{ path('app_equipment_edit', {'EquipmentId': equipment.EquipmentId}) }}">edit</a>
 						</button>
-						{{ include('equipment/_delete_form.html.twig') }}
-					</td>
+						{% if equipment.state == 'functional' %}
+							<button class="btn btn-success">
+								<a style="text-decoration:none; color:white;" href="{{ path('app_event_equipment_new', {'equipment_id': equipment.EquipmentId}) }}">Assign to Event</a>
+							</button>
+						{% endif %}
+						{{ include('equipment/_delete_form.html.twig') }}</td>
 				</tr>
-			{% else %}
-				<tr>
-					<td colspan="6">no records found</td>
-				</tr>
-			{% endfor %}
+			</td>
 		</tbody>
-	</table>
-</div>
-
-<a href="{{ path('app_equipment_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
-	Create new
-</a></div>{% endblock %}
+	</tr>
+{% else %}
+	<tr>
+		<td colspan="6">no records found</td>
+	</tr>
+{% endfor %}</tbody></table></div><div style="display:flex; gap:10px; margin-left:25%"><a href="{{ path('app_equipment_new') }}" class="btn btn-primary " style="width:25%; display:block;">Create new</a><a href="{{ path('app_event_equipment_index') }}" class="btn btn-primary " style="width:25%; display:block;">See reservations</a></div></div>{% endblock %}
