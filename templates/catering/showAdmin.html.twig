@@ -1,0 +1,44 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Catering{% endblock %}
+
+{% block body %}
+    <h1>Catering</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>CateringId</th>
+                <td>{{ catering.CateringId }}</td>
+            </tr>
+            <tr>
+                <th>MenuType</th>
+                <td>{{ catering.MenuType }}</td>
+            </tr>
+            <tr>
+                <th>NbrPlates</th>
+                <td>{{ catering.NbrPlates }}</td>
+            </tr>
+            <tr>
+                <th>Pricing</th>
+                <td>{{ catering.Pricing }}</td>
+            </tr>
+            <tr>
+                <th>MealSchedule</th>
+                <td>{{ catering.MealSchedule }}</td>
+            </tr>
+            <tr>
+                <th>Beverages</th>
+                <td>{{ catering.Beverages }}</td>
+            </tr>
+            <tr>
+                <th>Venue</th>
+                <td>{{ catering.venue.VenueName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_catering_index') }}" class="btn btn-outline-primary btn-sm">back to list</a>
+
+    {{ include('catering/_delete_form.html.twig') }}
+{% endblock %}

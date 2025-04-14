@@ -1,0 +1,46 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Venue{% endblock %}
+
+{% block body %}
+    <h1>Venue</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>VenueId</th>
+                <td>{{ venue.VenueId }}</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ venue.Location }}</td>
+            </tr>
+            <tr>
+                <th>NbrPlaces</th>
+                <td>{{ venue.NbrPlaces }}</td>
+            </tr>
+            <tr>
+                <th>VenueName</th>
+                <td>{{ venue.VenueName }}</td>
+            </tr>
+            <tr>
+                <th>Availability</th>
+                <td>{{ venue.Availability }}</td>
+            </tr>
+            <tr>
+                <th>Cost</th>
+                <td>{{ venue.Cost }}</td>
+            </tr>
+            <tr>
+                <th>Parking</th>
+                <td>{{ venue.Parking }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_venue_index') }}" class="btn btn-secondary">back to list</a>
+
+    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }} " class="btn btn-warning">edit</a>
+
+    {{ include('venue/_delete_form.html.twig') }}
+{% endblock %}

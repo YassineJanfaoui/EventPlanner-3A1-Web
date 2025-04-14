@@ -1,0 +1,10 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Edit Catering{% endblock %}
+
+{% block body %}
+    <h1>Edit Catering</h1>
+    
+    {{ include('catering/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('catering/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,62 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header">
+					<h3 class="text-center font-weight-light my-4">{{ text_label|default('Catering Form') }}</h3>
+				</div>
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div class="mb-3">
+						<label for="{{ form.MenuType.vars.id }}">Menu Type</label>
+						{{ form_widget(form.MenuType, {'attr': {'class': 'form-select'}}) }}
+						{{ form_errors(form.MenuType) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.NbrPlates.vars.id }}">Number of Plates</label>
+						{{ form_widget(form.NbrPlates, {'attr': {'class': 'form-control', 'placeholder': 'e.g. 150'}}) }}
+						{{ form_errors(form.NbrPlates) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.Pricing.vars.id }}">Pricing</label>
+						{{ form_widget(form.Pricing, {'attr': {'class': 'form-control', 'placeholder': 'e.g. 3000'}}) }}
+						{{ form_errors(form.Pricing) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.MealSchedule.vars.id }}">Meal Schedule</label>
+						{{ form_widget(form.MealSchedule, {'attr': {'class': 'form-select'}}) }}
+						{{ form_errors(form.MealSchedule) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.Beverages.vars.id }}">Beverages</label>
+						{{ form_widget(form.Beverages, {'attr': {'class': 'form-select'}}) }}
+						{{ form_errors(form.Beverages) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.venue.vars.id }}">Venue</label>
+						{{ form_widget(form.venue, {'attr': {'class': 'form-select'}}) }}
+						{{ form_errors(form.venue) }}
+					</div>
+
+					<div class="mt-4 mb-0">
+						<div class="d-grid">
+							<button class="btn btn-primary btn-block">{{ button_label|default('Save') }}</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+
+				<div class="card-footer text-center">
+					<a href="{{ path('app_catering_index') }}" class="btn btn-outline-secondary mt-2">Back to list</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

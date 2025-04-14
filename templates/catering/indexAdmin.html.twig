@@ -1,0 +1,47 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Catering index{% endblock %}
+
+{% block body %}
+    <h1>Catering index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CateringId</th>
+                <th>MenuType</th>
+                <th>NbrPlates</th>
+                <th>Pricing</th>
+                <th>MealSchedule</th>
+                <th>Beverages</th>
+                <th>Venue</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for catering in caterings %}
+            <tr>
+                <td>{{ catering.CateringId }}</td>
+                <td>{{ catering.MenuType }}</td>
+                <td>{{ catering.NbrPlates }}</td>
+                <td>{{ catering.Pricing }}</td>
+                <td>{{ catering.MealSchedule }}</td>
+                <td>{{ catering.Beverages }}</td>
+                <td>
+                    <a href="{{ path('app_admin_venue_show', {'VenueId': catering.venue.VenueId}) }}" class="text-decoration-none text-primary">
+                        {{ catering.venue.VenueName }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('app_admin_catering_show', {'CateringId': catering.CateringId}) }}" class="btn btn-outline-primary btn-sm">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Edit Venue{% endblock %}
+
+{% block body %}
+    <h1>Edit Venue</h1>
+    
+    {{ include('venue/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('venue/_delete_form.html.twig') }}
+{% endblock %}

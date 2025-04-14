@@ -1,0 +1,45 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Venue index{% endblock %}
+
+{% block body %}
+    <h1>Venue index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>VenueId</th>
+                <th>Location</th>
+                <th>NbrPlaces</th>
+                <th>VenueName</th>
+                <th>Availability</th>
+                <th>Cost</th>
+                <th>Parking</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for venue in venues %}
+            <tr>
+                <td>{{ venue.VenueId }}</td>
+                <td>{{ venue.Location }}</td>
+                <td>{{ venue.NbrPlaces }}</td>
+                <td>{{ venue.VenueName }}</td>
+                <td>{{ venue.Availability }}</td>
+                <td>{{ venue.Cost }}</td>
+                <td>{{ venue.Parking }}</td>
+                <td>
+                    <a href="{{ path('app_venue_show', {'VenueId': venue.VenueId}) }}" class="btn btn-outline-primary btn-sm">show</a>
+                    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }}" class="btn btn-outline-success btn-sm">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_venue_new') }}" class="btn btn-primary mt-3">Create new</a>
+{% endblock %}

@@ -1,0 +1,62 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header">
+					<h3 class="text-center font-weight-light my-4">{{ text_label|default('Venue Form') }}</h3>
+				</div>
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div class="mb-3">
+						<label for="{{ form.Location.vars.id }}">Location</label>
+						{{ form_widget(form.Location, {'attr': {'class': 'form-control', 'placeholder': 'e.g. Brussels'}}) }}
+						{{ form_errors(form.Location) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.NbrPlaces.vars.id }}">Number of Places</label>
+						{{ form_widget(form.NbrPlaces, {'attr': {'class': 'form-control'}}) }}
+						{{ form_errors(form.NbrPlaces) }}
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.VenueName.vars.id }}">Venue Name</label>
+						{{ form_widget(form.VenueName, {'attr': {'class': 'form-control'}}) }}
+						{{ form_errors(form.VenueName) }}
+					</div>
+
+					<div class="mb-3">
+                        <label for="{{ form.Availability.vars.id }}">Availability</label>
+                        {{ form_widget(form.Availability, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.Availability) }}
+                    </div>
+
+					<div class="mb-3">
+						<label for="{{ form.Cost.vars.id }}">Cost</label>
+						{{ form_widget(form.Cost, {'attr': {'class': 'form-control'}}) }}
+						{{ form_errors(form.Cost) }}
+					</div>
+
+					<div class="mb-3">
+                        <label for="{{ form.Parking.vars.id }}">Parking</label>
+                        {{ form_widget(form.Parking, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.Parking) }}
+                    </div>
+
+					<div class="mt-4 mb-0">
+						<div class="d-grid">
+							<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+
+				<div class="card-footer text-center">
+					<a href="{{ path('app_venue_index') }}" class="btn btn-outline-secondary mt-2">Back to list</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
