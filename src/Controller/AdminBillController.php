@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin/bill')]
 final class AdminBillController extends AbstractController
 {
-    #[Route(name: 'app_admin_bill_index', methods: ['GET'])]
+    #[Route(name: 'app_admin_bill', methods: ['GET'])]
     public function index(BillRepository $billRepository): Response
     {
         return $this->render('bill/indexBack.html.twig', [
