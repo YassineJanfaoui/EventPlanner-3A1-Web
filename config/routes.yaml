@@ -3,3 +3,16 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+# Explicitly define team rating routes
+app_team_rating_index:
+    path: /team/rating
+    controller: App\Controller\TeamRatingController::index
+    methods: GET
+
+app_team_rating_edit:
+    path: /team/rating/rate/{id}
+    controller: App\Controller\TeamRatingController::rateTeam
+    methods: [GET, POST]
+    requirements:
+        id: \d+

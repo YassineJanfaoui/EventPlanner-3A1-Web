@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Submission Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <!-- Page title with breadcrumbs -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_event_team_index') }}">Submissions</a></li>
+                        <li class="breadcrumb-item active">View Submission</li>
+                    </ol>
+                </nav>
+                
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0 fs-4">Submission Details</h2>
+                        {% if event_team is defined and event_team is not null %}
+                            <span class="badge bg-light text-primary">ID: {{ event_team.submissionId }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    {% if event_team is defined and event_team is not null %}
+                        <div class="card-body p-4">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th class="bg-light" width="30%">Submission ID</th>
+                                        <td>{{ event_team.submissionId }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Title</th>
+                                        <td>{{ event_team.title }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">File Link</th>
+                                        <td>
+                                            {% if event_team.fileLink %}
+                                                <div class="d-flex align-items-center">
+                                                    <a href="{{ event_team.fileLink }}" target="_blank" class="text-primary text-break me-2">
+                                                        {{ event_team.fileLink }}
+                                                    </a>
+                                                    
+                                                </div>
+                                            {% else %}
+                                                <span class="text-muted">No file link provided</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Submission Date</th>
+                                        <td>
+                                            {% if event_team.submissionDate %}
+                                                <span class="badge bg-info text-white">
+                                                    <i class="far fa-calendar-alt me-1"></i>
+                                                    {{ event_team.submissionDate|date('Y-m-d') }}
+                                                </span>
+                                            {% else %}
+                                                <span class="text-muted">No date provided</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Event</th>
+                                        <td>
+                                            {% if event_team.event %}
+                                                <span class="fw-bold">{{ event_team.event.name }}</span>
+                                            {% else %}
+                                                <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light">Team</th>
+                                        <td>
+                                            {% if event_team.team %}
+                                                <span class="fw-bold">{{ event_team.team.teamName }}</span>
+                                            {% else %}
+                                                <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <hr class="my-4">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ path('app_event_team_index') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Back to List
+                                </a>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ path('app_event_team_edit', {'submission_id': event_team.submissionId}) }}" class="btn btn-warning">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </a>
+                                    <form method="post" action="{{ path('app_event_team_delete', {'submission_id': event_team.submissionId}) }}" onsubmit="return confirm('Are you sure you want to delete this event team?');" style="display: inline-block;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event_team.submissionId) }}">
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-trash-alt me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                The requested submission could not be found or is invalid.
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{{ path('app_event_team_index') }}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left me-1"></i> Return to List
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {% if event_team is defined and event_team is not null %}
+                    <div class="card mt-4 border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h3 class="mb-0 fs-5">Danger Zone</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-3">Once you delete this submission, there is no going back. Please be certain.</p>
+                            <div class="text-end">
+                                <a href="{{ path('app_event_team_delete', {'submission_id': event_team.submissionId}) }}" 
+                                   class="btn btn-danger"
+                                   onclick="return confirm('Are you sure you want to delete this submission? This action cannot be undone.');">
+                                    <i class="fas fa-trash-alt me-1"></i> Delete Submission
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

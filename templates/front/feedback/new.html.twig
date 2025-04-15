@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Feedback{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <!-- Page title with breadcrumbs -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_feedback_index') }}" class="text-primary">Feedback</a></li>
+                        <li class="breadcrumb-item active text-success">Create New</li>
+                    </ol>
+                </nav>
+                
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0 fs-4">Create New Feedback</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                            {{ form_errors(form) }}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_label(form.event, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                    {{ form_widget(form.event) }}
+                                    <div class="text-danger small">
+                                        {{ form_errors(form.event) }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    {{ form_label(form.team, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                    {{ form_widget(form.team) }}
+                                    <div class="text-danger small">
+                                        {{ form_errors(form.team) }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form_label(form.rate, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                {{ form_widget(form.rate) }}
+                                <div class="text-danger small">
+                                    {{ form_errors(form.rate) }}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                {{ form_label(form.comment, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                {{ form_widget(form.comment) }}
+                                <div class="text-danger small">
+                                    {{ form_errors(form.comment) }}
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ path('app_feedback_index') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Back to List
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-1"></i> Create Feedback
+                                </button>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .star-rating-input .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        
+        .star-rating-input .star-radio {
+            display: none;
+        }
+        
+        .star-rating-input .star-label {
+            font-size: 1.5rem;
+            color: #ccc;
+            cursor: pointer;
+            padding: 0 0.2rem;
+        }
+        
+        .star-rating-input .star-radio:checked ~ .star-label i,
+        .star-rating-input .star-label:hover ~ .star-label i,
+        .star-rating-input .star-label:hover i {
+            color: #FFD700;
+            font-weight: 900;
+            content: "\f005";
+            font-family: "Font Awesome 5 Free";
+        }
+        
+        .star-rating-input .star-radio:checked ~ .star-label i:before,
+        .star-rating-input .star-label:hover ~ .star-label i:before,
+        .star-rating-input .star-label:hover i:before {
+            content: "\f005";
+            font-weight: 900;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const starLabels = document.querySelectorAll('.star-label');
+            const rateInput = document.querySelector('{{ form.rate.vars.id }}');
+            
+            starLabels.forEach(label => {
+                label.addEventListener('click', function() {
+                    const value = this.getAttribute('for').replace('rate', '');
+                    rateInput.value = value;
+                    
+                    // Update star appearance
+                    starLabels.forEach(l => {
+                        const i = l.querySelector('i');
+                        i.className = 'far fa-star';
+                    });
+                    
+                    for (let i = 0; i < value; i++) {
+                        const star = starLabels[4-i].querySelector('i');
+                        star.className = 'fas fa-star';
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
