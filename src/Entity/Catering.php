@@ -139,5 +139,4 @@ class Catering
         $this->venue = $venue;
         return $this;
     }
-
 }

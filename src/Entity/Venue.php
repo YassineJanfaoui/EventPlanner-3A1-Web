@@ -173,5 +173,4 @@ class Venue
         $this->reservation = $reservation;
         return $this;
     }
-
 }

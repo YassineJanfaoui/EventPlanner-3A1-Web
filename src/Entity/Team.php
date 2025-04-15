@@ -14,7 +14,7 @@ class Team
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'teamid')]
     private ?int $teamid = null;
 
     public function getTeamid(): ?int
@@ -28,7 +28,7 @@ class Team
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false, name: 'TeamName')]
     private ?string $TeamName = null;
 
     public function getTeamName(): ?string
@@ -213,5 +213,4 @@ class Team
         $this->getEvents()->removeElement($event);
         return $this;
     }
-
 }

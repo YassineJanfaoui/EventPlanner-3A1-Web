@@ -15,7 +15,7 @@ class Projectsubmission
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'submissionId')]
     private ?int $submissionId = null;
 
     public function getSubmissionId(): ?int
@@ -43,7 +43,7 @@ class Projectsubmission
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false, name: 'FileLink')]
     private ?string $FileLink = null;
 
     public function getFileLink(): ?string
@@ -57,7 +57,7 @@ class Projectsubmission
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false, name: 'SubmissionDate')]
     private ?\DateTimeInterface $SubmissionDate = null;
 
     public function getSubmissionDate(): ?\DateTimeInterface
@@ -85,5 +85,4 @@ class Projectsubmission
         $this->team = $team;
         return $this;
     }
-
 }

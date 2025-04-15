@@ -11,11 +11,12 @@ class test extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('base.html.twig');
+        return $this->render('basePlanner.html.twig');
     }
-    #[Route('/admin', name: 'app_home2')]
+    #[Route('/admin', name: 'app_back')]
     public function index2(): Response
     {
         return $this->render('back.html.twig');
     }
 }
+

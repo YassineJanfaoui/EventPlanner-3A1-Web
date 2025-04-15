@@ -1,0 +1,11 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}New EventEquipment
+{% endblock %}
+
+{% block body %}
+
+	{{ include('event_equipment/_form.html.twig', {'text_label': 'New Event Equipment','button_label': 'Save' }) }}
+
+	<a href="{{ path('app_event_equipment_index') }}">back to list</a>
+{% endblock %}

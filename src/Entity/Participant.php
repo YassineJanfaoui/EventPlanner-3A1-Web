@@ -14,7 +14,7 @@ class Participant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'particiapntId')]
     private ?int $participantId = null;
 
     public function getParticipantId(): ?int
@@ -84,5 +84,4 @@ class Participant
         $this->team = $team;
         return $this;
     }
-
 }

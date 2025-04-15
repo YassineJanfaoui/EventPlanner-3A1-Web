@@ -12,86 +12,23 @@ use App\Repository\EventRepository;
 class Event
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(name: 'eventId', type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer', name: 'eventId')]
     private ?int $eventId = null;
-
-    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
-    private ?string $name = null;
-
-    #[ORM\Column(name: 'startDate', type: 'string', length: 255, nullable: true)]
-    private ?string $startDate = null;
-
-    #[ORM\Column(name: 'endDate', type: 'string', length: 255, nullable: true)]
-    private ?string $endDate = null;
-
-    #[ORM\Column(name: 'maxParticipants', type: 'integer', nullable: false)]
-    private ?int $maxParticipants = null;
-
-    #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-    private ?string $description = null;
-
-    #[ORM\Column(name: 'fee', type: 'integer', nullable: false)]
-    private ?int $fee = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
-    #[ORM\JoinColumn(name: 'userid', referencedColumnName: 'userid')]
-    private ?User $user = null;
-
-    #[ORM\Column(name: 'image', type: 'string', length: 255, nullable: true)]
-    private ?string $image = null;
-
-/*    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'event')]
-    private Collection $bills;
-
-    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'event')]
-    private Collection $feedbacks;
-*/
-    #[ORM\ManyToMany(targetEntity: Venue::class, inversedBy: 'events')]
-    #[ORM\JoinTable(name: 'reservation')]
-    private Collection $venues;
-
-    #[ORM\OneToOne(targetEntity: Reservation::class, mappedBy: 'event')]
-    private ?Reservation $reservation = null;
-/*
-    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'event_team',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'TeamId', referencedColumnName: 'TeamId')]
-    )]
-    private Collection $teams;
-
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'event_equipment',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'equipment_id', referencedColumnName: 'equipment_id')]
-    )]
-    private Collection $equipments;
-
-    #[ORM\ManyToMany(targetEntity: Partner::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'partnership',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'partner_id', referencedColumnName: 'partner_id')]
-    )]
-    private Collection $partners;
-*/
-    public function __construct()
-    {
-        $this->bills = new ArrayCollection();
-        $this->feedbacks = new ArrayCollection();
-        $this->venues = new ArrayCollection();
-        $this->teams = new ArrayCollection();
-        $this->equipments = new ArrayCollection();
-        $this->partners = new ArrayCollection();
-    }
 
     public function getEventId(): ?int
     {
         return $this->eventId;
     }
+
+    public function setEventId(int $eventId): self
+    {
+        $this->eventId = $eventId;
+        return $this;
+    }
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $name = null;
 
     public function getName(): ?string
     {
@@ -104,6 +41,9 @@ class Event
         return $this;
     }
 
+    #[ORM\Column(type: 'string', nullable: true, name: 'startDate')]
+    private ?string $startDate = null;
+
     public function getStartDate(): ?string
     {
         return $this->startDate;
@@ -114,6 +54,9 @@ class Event
         $this->startDate = $startDate;
         return $this;
     }
+
+    #[ORM\Column(type: 'string', nullable: true, name: 'endDate')]
+    private ?string $endDate = null;
 
     public function getEndDate(): ?string
     {
@@ -126,6 +69,9 @@ class Event
         return $this;
     }
 
+    #[ORM\Column(type: 'integer', nullable: false, name: 'maxParticipants')]
+    private ?int $maxParticipants = null;
+
     public function getMaxParticipants(): ?int
     {
         return $this->maxParticipants;
@@ -136,6 +82,9 @@ class Event
         $this->maxParticipants = $maxParticipants;
         return $this;
     }
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $description = null;
 
     public function getDescription(): ?string
     {
@@ -148,6 +97,9 @@ class Event
         return $this;
     }
 
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private ?int $fee = null;
+
     public function getFee(): ?int
     {
         return $this->fee;
@@ -158,6 +110,10 @@ class Event
         $this->fee = $fee;
         return $this;
     }
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'userid', referencedColumnName: 'userid')]
+    private ?User $user = null;
 
     public function getUser(): ?User
     {
@@ -170,6 +126,9 @@ class Event
         return $this;
     }
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $image = null;
+
     public function getImage(): ?string
     {
         return $this->image;
@@ -180,74 +139,66 @@ class Event
         $this->image = $image;
         return $this;
     }
-/*
+
+    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'event')]
+    private Collection $bills;
+
+    /**
+     * @return Collection<int, Bill>
+     */
     public function getBills(): Collection
     {
+        if (!$this->bills instanceof Collection) {
+            $this->bills = new ArrayCollection();
+        }
         return $this->bills;
     }
 
     public function addBill(Bill $bill): self
     {
-        if (!$this->bills->contains($bill)) {
-            $this->bills->add($bill);
-            $bill->setEvent($this);
+        if (!$this->getBills()->contains($bill)) {
+            $this->getBills()->add($bill);
         }
         return $this;
     }
 
     public function removeBill(Bill $bill): self
     {
-        if ($this->bills->removeElement($bill)) {
-            if ($bill->getEvent() === $this) {
-                $bill->setEvent(null);
-            }
-        }
+        $this->getBills()->removeElement($bill);
         return $this;
     }
 
+    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'event')]
+    private Collection $feedbacks;
+
+    /**
+     * @return Collection<int, Feedback>
+     */
     public function getFeedbacks(): Collection
     {
+        if (!$this->feedbacks instanceof Collection) {
+            $this->feedbacks = new ArrayCollection();
+        }
         return $this->feedbacks;
     }
 
     public function addFeedback(Feedback $feedback): self
     {
-        if (!$this->feedbacks->contains($feedback)) {
-            $this->feedbacks->add($feedback);
-            $feedback->setEvent($this);
+        if (!$this->getFeedbacks()->contains($feedback)) {
+            $this->getFeedbacks()->add($feedback);
         }
         return $this;
     }
 
     public function removeFeedback(Feedback $feedback): self
     {
-        if ($this->feedbacks->removeElement($feedback)) {
-            if ($feedback->getEvent() === $this) {
-                $feedback->setEvent(null);
-            }
-        }
+        $this->getFeedbacks()->removeElement($feedback);
         return $this;
     }
 
-    public function getVenues(): Collection
-    {
-        return $this->venues;
-    }
+    #[ORM\OneToOne(targetEntity: Reservation::class, mappedBy: 'event')]
+    private ?Reservation $reservation = null;
 
-    public function addVenue(Venue $venue): self
-    {
-        if (!$this->venues->contains($venue)) {
-            $this->venues->add($venue);
-        }
-        return $this;
-    }
-
-    public function removeVenue(Venue $venue): self
-    {
-        $this->venues->removeElement($venue);
-        return $this;
-    }
-*/
     public function getReservation(): ?Reservation
     {
         return $this->reservation;
@@ -255,96 +206,124 @@ class Event
 
     public function setReservation(?Reservation $reservation): self
     {
-        if ($reservation === null && $this->reservation !== null) {
-            $this->reservation->setEvent(null);
-        }
-
-        if ($reservation !== null && $reservation->getEvent() !== $this) {
-            $reservation->setEvent($this);
-        }
-
         $this->reservation = $reservation;
         return $this;
     }
-/*
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'events')]
+    #[ORM\JoinTable(
+        name: 'eventteam',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'teamId', referencedColumnName: 'teamid')
+        ]
+    )]
+    private Collection $teams;
+
+    /**
+     * @return Collection<int, Team>
+     */
     public function getTeams(): Collection
     {
+        if (!$this->teams instanceof Collection) {
+            $this->teams = new ArrayCollection();
+        }
         return $this->teams;
     }
 
     public function addTeam(Team $team): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
+        if (!$this->getTeams()->contains($team)) {
+            $this->getTeams()->add($team);
         }
         return $this;
     }
 
     public function removeTeam(Team $team): self
     {
-        $this->teams->removeElement($team);
+        $this->getTeams()->removeElement($team);
         return $this;
     }
 
-    public function getEquipments(): Collection
+    #[ORM\ManyToMany(targetEntity: Partner::class, inversedBy: 'events')]
+    #[ORM\JoinTable(
+        name: 'partnership',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'partnerId', referencedColumnName: 'partnerId')
+        ]
+    )]
+    private Collection $partners;
+
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventEquipment::class)]
+    private Collection $eventEquipment;
+
+    public function __construct()
     {
-        return $this->equipments;
+        $this->bills = new ArrayCollection();
+        $this->feedbacks = new ArrayCollection();
+        $this->eventEquipment = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+        $this->partners = new ArrayCollection();
     }
 
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->equipments->contains($equipment)) {
-            $this->equipments->add($equipment);
-        }
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        $this->equipments->removeElement($equipment);
-        return $this;
-    }
-
+    /**
+     * @return Collection<int, Partner>
+     */
     public function getPartners(): Collection
     {
+        if (!$this->partners instanceof Collection) {
+            $this->partners = new ArrayCollection();
+        }
         return $this->partners;
     }
 
     public function addPartner(Partner $partner): self
     {
-        if (!$this->partners->contains($partner)) {
-            $this->partners->add($partner);
+        if (!$this->getPartners()->contains($partner)) {
+            $this->getPartners()->add($partner);
         }
         return $this;
     }
 
     public function removePartner(Partner $partner): self
     {
-        $this->partners->removeElement($partner);
+        $this->getPartners()->removeElement($partner);
         return $this;
-    }*/
-
-/**
- * @return Collection<int, Venue>
- */
-public function getVenues(): Collection
-{
-    return $this->venues;
-}
-
-public function addVenue(Venue $venue): static
-{
-    if (!$this->venues->contains($venue)) {
-        $this->venues->add($venue);
     }
 
-    return $this;
-}
+    /**
+     * @return Collection<int, EventEquipment>
+     */
+    public function getEventEquipment(): Collection
+    {
+        return $this->eventEquipment;
+    }
 
-public function removeVenue(Venue $venue): static
-{
-    $this->venues->removeElement($venue);
+    public function addEventEquipment(EventEquipment $eventEquipment): static
+    {
+        if (!$this->eventEquipment->contains($eventEquipment)) {
+            $this->eventEquipment->add($eventEquipment);
+            $eventEquipment->setEvent($this);
+        }
 
-    return $this;
-}
+        return $this;
+    }
+
+    public function removeEventEquipment(EventEquipment $eventEquipment): static
+    {
+        if ($this->eventEquipment->removeElement($eventEquipment)) {
+            // set the owning side to null (unless already changed)
+            if ($eventEquipment->getEvent() === $this) {
+                $eventEquipment->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
 }

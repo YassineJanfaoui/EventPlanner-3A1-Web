@@ -15,7 +15,7 @@ class Workshop
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'workshopId')]
     private ?int $workshopId = null;
 
     public function getWorkshopId(): ?int
@@ -57,7 +57,7 @@ class Workshop
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false)]
+    #[ORM\Column(type: 'date', nullable: false, name: 'startDate')]
     private ?\DateTimeInterface $startDate = null;
 
     public function getStartDate(): ?\DateTimeInterface
@@ -113,5 +113,4 @@ class Workshop
         $this->partner = $partner;
         return $this;
     }
-
 }
