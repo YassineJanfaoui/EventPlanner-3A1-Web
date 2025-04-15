@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class UserTypeFront extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -52,22 +52,9 @@ class UserType extends AbstractType
                 ],
                 'row_attr' => ['class' => 'mb-3'],
             ])
-            ->add('status', ChoiceType::class, [
-                'choices' => [
-                    'Active' => 'active',
-                    'Inactive' => 'inactive',
-                    'Banned' => 'banned',
-                ],
-                'attr' => [
-                    'class' => 'form-select'
-                ],
-                'row_attr' => ['class' => 'mb-3'],
-            ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Simple User' => 'SIMPLE_USER',
-                    'Administrator' => 'ADMIN',
-                    'Event Planner' => 'EVENT_PLANNER',
                     'Team Leader' => 'TEAM_LEADER',
                 ],
                 'attr' => [

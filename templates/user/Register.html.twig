@@ -1,12 +1,15 @@
+{# templates/user/register.html.twig #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Event Planner</title>
+    <title>Register | Event Planner</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Copy all the CSS styles from your login.html.twig */
         :root {
             --primary: #4361ee;
             --primary-dark: #3a56d4;
@@ -32,12 +35,12 @@
             padding: 20px;
         }
         
-        .login-container {
+        .register-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 420px;
+            max-width: 500px;
             padding: 40px;
             animation: fadeIn 0.6s ease-out;
         }
@@ -73,7 +76,7 @@
             margin-bottom: 20px;
         }
         
-        input {
+        input, select {
             width: 100%;
             padding: 14px 16px;
             border: 1px solid #dee2e6;
@@ -82,7 +85,7 @@
             transition: all 0.3s;
         }
         
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
@@ -133,46 +136,83 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="register-container">
         <div class="logo">
             <img src="{{ asset('img/logo/logo.png') }}" alt="Event Planner">
         </div>
         
-        <h1>Welcome Back</h1>
+        <h1>Create Your Account</h1>
         
-        {% if error %}
+        {% for flashError in app.flashes('error') %}
             <div class="alert-danger">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
+                {{ flashError }}
             </div>
-        {% endif %}
+        {% endfor %}
         
-        <form method="post" action="{{ path('app_login') }}">
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
             <div class="form-group">
-                <input 
-                    type="text" 
-                    name="_username" 
-                    value="{{ last_username }}" 
-                    placeholder="Username"
-                    required 
-                    autofocus>
+                {{ form_row(form.username, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Username'
+                    }
+                }) }}
             </div>
             
             <div class="form-group">
-                <input 
-                    type="password" 
-                    name="_password" 
-                    placeholder="Password"
-                    required>
+                {{ form_row(form.email, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Email'
+                    }
+                }) }}
             </div>
             
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="form-group">
+                {{ form_row(form.name, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Full Name'
+                    }
+                }) }}
+            </div>
             
-            <button type="submit">Sign In</button>
-        </form>
+            <div class="form-group">
+                {{ form_row(form.phonenumber, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Phone Number'
+                    }
+                }) }}
+            </div>
+            
+            <div class="form-group">
+                {{ form_row(form.plainPassword, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Password'
+                    }
+                }) }}
+            </div>
+            
+            
+            
+            <div class="form-group">
+                {{ form_row(form.role, {
+                    'attr': {
+                        'class': 'form-select'
+                    }
+                }) }}
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-user-plus me-2"></i> Register
+            </button>
+        {{ form_end(form) }}
         
-<p class="footer-text">
-    Don't have an account? <a href="{{ path('app_user_register') }}">Register here</a>
-</p>
+        <p class="footer-text">
+            Already have an account? <a href="{{ path('app_login') }}">Sign in here</a>
+        </p>
     </div>
 </body>
 </html>
