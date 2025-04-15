@@ -1,0 +1,58 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Add New Participant - Admin{% endblock %}
+
+{% block body %}
+<div id="layoutSidenav_content">
+    <main class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg rounded-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+                        <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Add New Participant</h4>
+                        <a href="{{ path('app_participant_index_back') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+
+                    <div class="card-body px-5 py-4">
+                        {{ form_start(form) }}
+
+                        <div class="mb-4">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control rounded-pill px-4 py-2'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.age, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.age, {'attr': {'class': 'form-control rounded-pill px-4 py-2'}}) }}
+                            {{ form_errors(form.age) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.affiliation, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.affiliation, {'attr': {'class': 'form-control rounded-pill px-4 py-2'}}) }}
+                            {{ form_errors(form.affiliation) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.team, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.team, {'attr': {'class': 'form-select rounded-pill px-4 py-2'}}) }}
+                            {{ form_errors(form.team) }}
+                        </div>
+
+                        <div class="text-end">
+                            <button class="btn btn-success rounded-pill px-4 py-2">
+                                <i class="fas fa-save me-2"></i>Save Participant
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
