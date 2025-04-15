@@ -3,9 +3,10 @@
 {% block title %}Catering index{% endblock %}
 
 {% block body %}
-    <h1>Catering index</h1>
-
-    <table class="table">
+    <div class="card mb-4">
+		<div class="card-header">Catering</div>
+		<div class="card-body">
+		<table id="datatablesSimple">
         <thead>
             <tr>
                 <th>CateringId</th>
@@ -43,5 +44,5 @@
         {% endfor %}
         </tbody>
     </table>
-
+</table></div></div>
 {% endblock %}
