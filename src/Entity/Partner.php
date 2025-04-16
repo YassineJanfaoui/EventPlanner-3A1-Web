@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Repository\PartnerRepository;
 
@@ -14,7 +15,7 @@ class Partner
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', name: 'partnerId')]
+    #[ORM\Column(name: 'partnerId', type: 'integer')]
     private ?int $partnerId = null;
 
     public function getPartnerId(): ?int
@@ -29,20 +30,32 @@ class Partner
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Partner name cannot be blank")]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "Partner name must be at least {{ limit }} characters long",
+        maxMessage: "Partner name cannot be longer than {{ limit }} characters"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z]+$/",
+        message: "Partner name can only contain letters"
+    )]
     private ?string $name = null;
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
-
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Category cannot be blank")]
+    #[Assert\Length(
+        min: 2,
+        max: 30,
+        minMessage: "Category must be at least {{ limit }} characters long",
+        maxMessage: "Category cannot be longer than {{ limit }} characters"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z\s\-\.]+$/",
+        message: "Category can only contain letters"
+    )]
+
     private ?string $category = null;
 
     public function getCategory(): ?string
@@ -50,7 +63,7 @@ class Partner
         return $this->category;
     }
 
-    public function setCategory(string $category): self
+    public function setCategory(?string $category): self
     {
         $this->category = $category;
         return $this;
@@ -124,6 +137,17 @@ class Partner
     public function removeEvent(Event $event): self
     {
         $this->getEvents()->removeElement($event);
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
         return $this;
     }
 }

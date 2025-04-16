@@ -1,0 +1,10 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}New Partner
+{% endblock %}
+
+{% block body %}
+
+	{{ include('partner/_form.html.twig', {'button_label': 'Create', 'text_label': 'Create New Partner'}) }}
+
+{% endblock %}

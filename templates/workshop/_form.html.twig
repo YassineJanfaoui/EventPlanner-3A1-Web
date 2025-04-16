@@ -1,0 +1,78 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-7">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header">
+					<h3 class="text-center font-weight-light my-4">{{ text_label|default('Create Workshop') }}</h3>
+				</div>
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.title.vars.id }}">Title</label>
+						{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Workshop Title'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.title) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.coach.vars.id }}">Coach</label>
+						{{ form_widget(form.coach, {'attr': {'class': 'form-control', 'placeholder': 'Coach Name'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.coach) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.startDate.vars.id }}">Start Date</label>
+						{{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.startDate) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.duration.vars.id }}">Duration</label>
+						{{ form_widget(form.duration, {'attr': {'class': 'form-control', 'placeholder': 'Duration'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.duration) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.description.vars.id }}">Description</label>
+						{{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description', 'style': 'height: 100px'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.description) }}
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.partner.vars.id }}">Partner</label>
+						{{ form_widget(form.partner, {'attr': {'class': 'form-select'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.description) }}
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="{{ form.event.vars.id }}">Event</label>
+						{{ form_widget(form.event, {'attr': {'class': 'form-select'}}) }}
+					</div>
+
+					<div class="mt-4 mb-0">
+						<div class="d-grid">
+							<button class="btn btn-primary btn-block">{{ button_label|default('Save') }}</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+				<div class="card-footer text-center py-3">
+					<a href="{{ path('app_workshop_index') }}" class="btn btn-secondary">Back to list</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

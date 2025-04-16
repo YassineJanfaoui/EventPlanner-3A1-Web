@@ -1,0 +1,50 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Workshop
+{% endblock %}
+
+{% block body %}
+	<div class="card mb-4">
+		<div class="card-header">Workshop</div>
+		<div class="card-body">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>WorkshopId</th>
+						<td>{{ workshop.workshopId }}</td>
+					</tr>
+					<tr>
+						<th>Title</th>
+						<td>{{ workshop.title }}</td>
+					</tr>
+					<tr>
+						<th>Coach</th>
+						<td>{{ workshop.coach }}</td>
+					</tr>
+					<tr>
+						<th>StartDate</th>
+						<td>{{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}</td>
+					</tr>
+					<tr>
+						<th>Duration</th>
+						<td>{{ workshop.duration }}</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{{ workshop.description }}</td>
+					</tr>
+					<tr>
+						<th>Event</th>
+						<td>{{ workshop.event.name }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<a href="{{ path('app_workshop_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">back to list</a>
+
+			<a href="{{ path('app_workshop_edit', {'workshopId': workshop.workshopId}) }}">edit</a>
+
+			{{ include('workshop/_delete_form.html.twig') }}
+			<div/>
+			<div/>
+		{% endblock %}

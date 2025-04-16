@@ -1,0 +1,47 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-7">
+			<div class="card shadow-lg border-0 rounded-lg mt-5">
+				<div class="card-header">
+					<h3 class="text-center font-weight-light my-4">
+						{{ text_label|default('Create Partner') }}
+					</h3>
+				</div>
+				<div class="card-body">
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div class="form-floating mb-3">
+						{{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.name) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						{{ form_label(form.category, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.category) }}
+						</div>
+					</div>
+
+					<div class="mt-4 mb-0">
+						<div class="d-grid">
+							<button class="btn btn-primary btn-block">
+								{{ button_label|default('Save') }}
+							</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+				</div>
+				<div class="card-footer text-center py-3">
+					<a href="{{ path('app_partner_index') }}" class="btn btn-secondary">
+						Back to list
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

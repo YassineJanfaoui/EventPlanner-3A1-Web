@@ -54,6 +54,7 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
+<<<<<<< HEAD
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -64,6 +65,11 @@
     rgba(255, 255, 255, 0.15),
     rgba(255, 255, 255, 0)
   );
+=======
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+>>>>>>> mahmoud-workshop
   --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
@@ -119,6 +125,7 @@ hr {
   opacity: 0.25;
 }
 
+<<<<<<< HEAD
 h6,
 .h6,
 h5,
@@ -131,12 +138,16 @@ h2,
 .h2,
 h1,
 .h1 {
+=======
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+>>>>>>> mahmoud-workshop
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
 }
 
+<<<<<<< HEAD
 h1,
 .h1 {
   font-size: calc(1.375rem + 1.5vw);
@@ -144,10 +155,18 @@ h1,
 @media (min-width: 1200px) {
   h1,
   .h1 {
+=======
+h1, .h1 {
+  font-size: calc(1.375rem + 1.5vw);
+}
+@media (min-width: 1200px) {
+  h1, .h1 {
+>>>>>>> mahmoud-workshop
     font-size: 2.5rem;
   }
 }
 
+<<<<<<< HEAD
 h2,
 .h2 {
   font-size: calc(1.325rem + 0.9vw);
@@ -155,10 +174,18 @@ h2,
 @media (min-width: 1200px) {
   h2,
   .h2 {
+=======
+h2, .h2 {
+  font-size: calc(1.325rem + 0.9vw);
+}
+@media (min-width: 1200px) {
+  h2, .h2 {
+>>>>>>> mahmoud-workshop
     font-size: 2rem;
   }
 }
 
+<<<<<<< HEAD
 h3,
 .h3 {
   font-size: calc(1.3rem + 0.6vw);
@@ -166,10 +193,18 @@ h3,
 @media (min-width: 1200px) {
   h3,
   .h3 {
+=======
+h3, .h3 {
+  font-size: calc(1.3rem + 0.6vw);
+}
+@media (min-width: 1200px) {
+  h3, .h3 {
+>>>>>>> mahmoud-workshop
     font-size: 1.75rem;
   }
 }
 
+<<<<<<< HEAD
 h4,
 .h4 {
   font-size: calc(1.275rem + 0.3vw);
@@ -177,10 +212,18 @@ h4,
 @media (min-width: 1200px) {
   h4,
   .h4 {
+=======
+h4, .h4 {
+  font-size: calc(1.275rem + 0.3vw);
+}
+@media (min-width: 1200px) {
+  h4, .h4 {
+>>>>>>> mahmoud-workshop
     font-size: 1.5rem;
   }
 }
 
+<<<<<<< HEAD
 h5,
 .h5 {
   font-size: 1.25rem;
@@ -188,6 +231,13 @@ h5,
 
 h6,
 .h6 {
+=======
+h5, .h5 {
+  font-size: 1.25rem;
+}
+
+h6, .h6 {
+>>>>>>> mahmoud-workshop
   font-size: 1rem;
 }
 
@@ -198,10 +248,17 @@ p {
 
 abbr[title] {
   -webkit-text-decoration: underline dotted;
+<<<<<<< HEAD
   text-decoration: underline dotted;
   cursor: help;
   -webkit-text-decoration-skip-ink: none;
   text-decoration-skip-ink: none;
+=======
+          text-decoration: underline dotted;
+  cursor: help;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
+>>>>>>> mahmoud-workshop
 }
 
 address {
@@ -247,6 +304,7 @@ strong {
   font-weight: bolder;
 }
 
+<<<<<<< HEAD
 small,
 .small {
   font-size: 0.875em;
@@ -254,6 +312,13 @@ small,
 
 mark,
 .mark {
+=======
+small, .small {
+  font-size: 0.875em;
+}
+
+mark, .mark {
+>>>>>>> mahmoud-workshop
   padding: 0.1875em;
   background-color: var(--bs-highlight-bg);
 }
@@ -282,8 +347,12 @@ a:hover {
   color: var(--bs-link-hover-color);
 }
 
+<<<<<<< HEAD
 a:not([href]):not([class]),
 a:not([href]):not([class]):hover {
+=======
+a:not([href]):not([class]), a:not([href]):not([class]):hover {
+>>>>>>> mahmoud-workshop
   color: inherit;
   text-decoration: none;
 }
@@ -395,7 +464,11 @@ select {
   text-transform: none;
 }
 
+<<<<<<< HEAD
 [role="button"] {
+=======
+[role=button] {
+>>>>>>> mahmoud-workshop
   cursor: pointer;
 }
 
@@ -406,13 +479,18 @@ select:disabled {
   opacity: 1;
 }
 
+<<<<<<< HEAD
 [list]:not([type="date"]):not([type="datetime-local"]):not([type="month"]):not(
     [type="week"]
   ):not([type="time"])::-webkit-calendar-picker-indicator {
+=======
+[list]:not([type=date]):not([type=datetime-local]):not([type=month]):not([type=week]):not([type=time])::-webkit-calendar-picker-indicator {
+>>>>>>> mahmoud-workshop
   display: none !important;
 }
 
 button,
+<<<<<<< HEAD
 [type="button"],
 [type="reset"],
 [type="submit"] {
@@ -422,6 +500,17 @@ button:not(:disabled),
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled) {
+=======
+[type=button],
+[type=reset],
+[type=submit] {
+  -webkit-appearance: button;
+}
+button:not(:disabled),
+[type=button]:not(:disabled),
+[type=reset]:not(:disabled),
+[type=submit]:not(:disabled) {
+>>>>>>> mahmoud-workshop
   cursor: pointer;
 }
 
@@ -472,7 +561,11 @@ legend + * {
   height: auto;
 }
 
+<<<<<<< HEAD
 [type="search"] {
+=======
+[type=search] {
+>>>>>>> mahmoud-workshop
   outline-offset: -2px;
   -webkit-appearance: textfield;
 }
@@ -675,42 +768,62 @@ progress {
 }
 
 @media (min-width: 576px) {
+<<<<<<< HEAD
   .container-sm,
   .container {
+=======
+  .container-sm, .container {
+>>>>>>> mahmoud-workshop
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
+<<<<<<< HEAD
   .container-md,
   .container-sm,
   .container {
+=======
+  .container-md, .container-sm, .container {
+>>>>>>> mahmoud-workshop
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
+<<<<<<< HEAD
   .container-lg,
   .container-md,
   .container-sm,
   .container {
+=======
+  .container-lg, .container-md, .container-sm, .container {
+>>>>>>> mahmoud-workshop
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
+<<<<<<< HEAD
   .container-xl,
   .container-lg,
   .container-md,
   .container-sm,
   .container {
+=======
+  .container-xl, .container-lg, .container-md, .container-sm, .container {
+>>>>>>> mahmoud-workshop
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
+<<<<<<< HEAD
   .container-xxl,
   .container-xl,
   .container-lg,
   .container-md,
   .container-sm,
   .container {
+=======
+  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+>>>>>>> mahmoud-workshop
     max-width: 1320px;
   }
 }
@@ -1785,8 +1898,12 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
+<<<<<<< HEAD
 .table,
 .datatable-table {
+=======
+.table, .datatable-table {
+>>>>>>> mahmoud-workshop
   --bs-table-color: var(--bs-body-color);
   --bs-table-bg: transparent;
   --bs-table-border-color: var(--bs-border-color);
@@ -1803,19 +1920,30 @@ progress {
   vertical-align: top;
   border-color: var(--bs-table-border-color);
 }
+<<<<<<< HEAD
 .table > :not(caption) > * > *,
 .datatable-table > :not(caption) > * > * {
+=======
+.table > :not(caption) > * > *, .datatable-table > :not(caption) > * > * {
+>>>>>>> mahmoud-workshop
   padding: 0.5rem 0.5rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
+<<<<<<< HEAD
 .table > tbody,
 .datatable-table > tbody {
   vertical-align: inherit;
 }
 .table > thead,
 .datatable-table > thead {
+=======
+.table > tbody, .datatable-table > tbody {
+  vertical-align: inherit;
+}
+.table > thead, .datatable-table > thead {
+>>>>>>> mahmoud-workshop
   vertical-align: bottom;
 }
 
@@ -1831,12 +1959,19 @@ progress {
   padding: 0.25rem 0.25rem;
 }
 
+<<<<<<< HEAD
 .table-bordered > :not(caption) > *,
 .datatable-table > :not(caption) > * {
   border-width: 1px 0;
 }
 .table-bordered > :not(caption) > * > *,
 .datatable-table > :not(caption) > * > * {
+=======
+.table-bordered > :not(caption) > *, .datatable-table > :not(caption) > * {
+  border-width: 1px 0;
+}
+.table-bordered > :not(caption) > * > *, .datatable-table > :not(caption) > * > * {
+>>>>>>> mahmoud-workshop
   border-width: 0 1px;
 }
 
@@ -1862,8 +1997,12 @@ progress {
   color: var(--bs-table-active-color);
 }
 
+<<<<<<< HEAD
 .table-hover > tbody > tr:hover > *,
 .datatable-table > tbody > tr:hover > * {
+=======
+.table-hover > tbody > tr:hover > *, .datatable-table > tbody > tr:hover > * {
+>>>>>>> mahmoud-workshop
   --bs-table-accent-bg: var(--bs-table-hover-bg);
   color: var(--bs-table-hover-color);
 }
@@ -1980,8 +2119,12 @@ progress {
   border-color: var(--bs-table-border-color);
 }
 
+<<<<<<< HEAD
 .table-responsive,
 .datatable-wrapper .datatable-container {
+=======
+.table-responsive, .datatable-wrapper .datatable-container {
+>>>>>>> mahmoud-workshop
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -2046,8 +2189,12 @@ progress {
   color: #6c757d;
 }
 
+<<<<<<< HEAD
 .form-control,
 .datatable-input {
+=======
+.form-control, .datatable-input {
+>>>>>>> mahmoud-workshop
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -2059,12 +2206,18 @@ progress {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   -webkit-appearance: none;
+<<<<<<< HEAD
   -moz-appearance: none;
   appearance: none;
+=======
+     -moz-appearance: none;
+          appearance: none;
+>>>>>>> mahmoud-workshop
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
+<<<<<<< HEAD
   .form-control,
   .datatable-input {
     transition: none;
@@ -2080,12 +2233,26 @@ progress {
 }
 .form-control:focus,
 .datatable-input:focus {
+=======
+  .form-control, .datatable-input {
+    transition: none;
+  }
+}
+.form-control[type=file], [type=file].datatable-input {
+  overflow: hidden;
+}
+.form-control[type=file]:not(:disabled):not([readonly]), [type=file].datatable-input:not(:disabled):not([readonly]) {
+  cursor: pointer;
+}
+.form-control:focus, .datatable-input:focus {
+>>>>>>> mahmoud-workshop
   color: #212529;
   background-color: #fff;
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
+<<<<<<< HEAD
 .form-control::-webkit-date-and-time-value,
 .datatable-input::-webkit-date-and-time-value {
   height: 1.5em;
@@ -2111,6 +2278,28 @@ progress {
   margin: -0.375rem -0.75rem;
   -webkit-margin-end: 0.75rem;
   margin-inline-end: 0.75rem;
+=======
+.form-control::-webkit-date-and-time-value, .datatable-input::-webkit-date-and-time-value {
+  height: 1.5em;
+}
+.form-control::-moz-placeholder, .datatable-input::-moz-placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+.form-control::placeholder, .datatable-input::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+.form-control:disabled, .datatable-input:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+.form-control::file-selector-button, .datatable-input::file-selector-button {
+  padding: 0.375rem 0.75rem;
+  margin: -0.375rem -0.75rem;
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
+>>>>>>> mahmoud-workshop
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2119,6 +2308,7 @@ progress {
   border-width: 0;
   border-inline-end-width: 1px;
   border-radius: 0;
+<<<<<<< HEAD
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -2130,6 +2320,16 @@ progress {
 }
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button,
 .datatable-input:hover:not(:disabled):not([readonly])::file-selector-button {
+=======
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .form-control::file-selector-button, .datatable-input::file-selector-button {
+    transition: none;
+  }
+}
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button, .datatable-input:hover:not(:disabled):not([readonly])::file-selector-button {
+>>>>>>> mahmoud-workshop
   background-color: #dde0e3;
 }
 
@@ -2147,8 +2347,12 @@ progress {
 .form-control-plaintext:focus {
   outline: 0;
 }
+<<<<<<< HEAD
 .form-control-plaintext.form-control-sm,
 .form-control-plaintext.form-control-lg {
+=======
+.form-control-plaintext.form-control-sm, .form-control-plaintext.form-control-lg {
+>>>>>>> mahmoud-workshop
   padding-right: 0;
   padding-left: 0;
 }
@@ -2163,7 +2367,11 @@ progress {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
   -webkit-margin-end: 0.5rem;
+<<<<<<< HEAD
   margin-inline-end: 0.5rem;
+=======
+          margin-inline-end: 0.5rem;
+>>>>>>> mahmoud-workshop
 }
 
 .form-control-lg {
@@ -2176,11 +2384,18 @@ progress {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
   -webkit-margin-end: 1rem;
+<<<<<<< HEAD
   margin-inline-end: 1rem;
 }
 
 textarea.form-control,
 textarea.datatable-input {
+=======
+          margin-inline-end: 1rem;
+}
+
+textarea.form-control, textarea.datatable-input {
+>>>>>>> mahmoud-workshop
   min-height: calc(1.5em + 0.75rem + 2px);
 }
 textarea.form-control-sm {
@@ -2212,8 +2427,12 @@ textarea.form-control-lg {
   height: calc(1.5em + 1rem + 2px);
 }
 
+<<<<<<< HEAD
 .form-select,
 .datatable-selector {
+=======
+.form-select, .datatable-selector {
+>>>>>>> mahmoud-workshop
   display: block;
   width: 100%;
   padding: 0.375rem 2.25rem 0.375rem 0.75rem;
@@ -2231,6 +2450,7 @@ textarea.form-control-lg {
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   -webkit-appearance: none;
+<<<<<<< HEAD
   -moz-appearance: none;
   appearance: none;
 }
@@ -2242,10 +2462,22 @@ textarea.form-control-lg {
 }
 .form-select:focus,
 .datatable-selector:focus {
+=======
+     -moz-appearance: none;
+          appearance: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .form-select, .datatable-selector {
+    transition: none;
+  }
+}
+.form-select:focus, .datatable-selector:focus {
+>>>>>>> mahmoud-workshop
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
+<<<<<<< HEAD
 .form-select[multiple],
 [multiple].datatable-selector,
 .form-select[size]:not([size="1"]),
@@ -2259,6 +2491,16 @@ textarea.form-control-lg {
 }
 .form-select:-moz-focusring,
 .datatable-selector:-moz-focusring {
+=======
+.form-select[multiple], [multiple].datatable-selector, .form-select[size]:not([size="1"]), [size].datatable-selector:not([size="1"]) {
+  padding-right: 0.75rem;
+  background-image: none;
+}
+.form-select:disabled, .datatable-selector:disabled {
+  background-color: #e9ecef;
+}
+.form-select:-moz-focusring, .datatable-selector:-moz-focusring {
+>>>>>>> mahmoud-workshop
   color: transparent;
   text-shadow: 0 0 0 #212529;
 }
@@ -2312,6 +2554,7 @@ textarea.form-control-lg {
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, 0.25);
   -webkit-appearance: none;
+<<<<<<< HEAD
   -moz-appearance: none;
   appearance: none;
   -webkit-print-color-adjust: exact;
@@ -2321,6 +2564,17 @@ textarea.form-control-lg {
   border-radius: 0.25em;
 }
 .form-check-input[type="radio"] {
+=======
+     -moz-appearance: none;
+          appearance: none;
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+.form-check-input[type=checkbox] {
+  border-radius: 0.25em;
+}
+.form-check-input[type=radio] {
+>>>>>>> mahmoud-workshop
   border-radius: 50%;
 }
 .form-check-input:active {
@@ -2335,6 +2589,7 @@ textarea.form-control-lg {
   background-color: #0d6efd;
   border-color: #0d6efd;
 }
+<<<<<<< HEAD
 .form-check-input:checked[type="checkbox"] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
 }
@@ -2342,6 +2597,15 @@ textarea.form-control-lg {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
 }
 .form-check-input[type="checkbox"]:indeterminate {
+=======
+.form-check-input:checked[type=checkbox] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+.form-check-input:checked[type=radio] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+}
+.form-check-input[type=checkbox]:indeterminate {
+>>>>>>> mahmoud-workshop
   background-color: #0d6efd;
   border-color: #0d6efd;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
@@ -2351,8 +2615,12 @@ textarea.form-control-lg {
   filter: none;
   opacity: 0.5;
 }
+<<<<<<< HEAD
 .form-check-input[disabled] ~ .form-check-label,
 .form-check-input:disabled ~ .form-check-label {
+=======
+.form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
+>>>>>>> mahmoud-workshop
   cursor: default;
   opacity: 0.5;
 }
@@ -2399,8 +2667,12 @@ textarea.form-control-lg {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
+<<<<<<< HEAD
 .btn-check[disabled] + .btn,
 .btn-check:disabled + .btn {
+=======
+.btn-check[disabled] + .btn, .btn-check:disabled + .btn {
+>>>>>>> mahmoud-workshop
   pointer-events: none;
   filter: none;
   opacity: 0.65;
@@ -2412,8 +2684,13 @@ textarea.form-control-lg {
   padding: 0;
   background-color: transparent;
   -webkit-appearance: none;
+<<<<<<< HEAD
   -moz-appearance: none;
   appearance: none;
+=======
+     -moz-appearance: none;
+          appearance: none;
+>>>>>>> mahmoud-workshop
 }
 .form-range:focus {
   outline: 0;
@@ -2434,12 +2711,19 @@ textarea.form-control-lg {
   background-color: #0d6efd;
   border: 0;
   border-radius: 1rem;
+<<<<<<< HEAD
   -webkit-transition: background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
   -webkit-appearance: none;
   appearance: none;
+=======
+  -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-appearance: none;
+          appearance: none;
+>>>>>>> mahmoud-workshop
 }
 @media (prefers-reduced-motion: reduce) {
   .form-range::-webkit-slider-thumb {
@@ -2465,12 +2749,19 @@ textarea.form-control-lg {
   background-color: #0d6efd;
   border: 0;
   border-radius: 1rem;
+<<<<<<< HEAD
   -moz-transition: background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
   -moz-appearance: none;
   appearance: none;
+=======
+  -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -moz-appearance: none;
+       appearance: none;
+>>>>>>> mahmoud-workshop
 }
 @media (prefers-reduced-motion: reduce) {
   .form-range::-moz-range-thumb {
@@ -2503,8 +2794,12 @@ textarea.form-control-lg {
 .form-floating {
   position: relative;
 }
+<<<<<<< HEAD
 .form-floating > .form-control,
 .form-floating > .datatable-input,
+=======
+.form-floating > .form-control, .form-floating > .datatable-input,
+>>>>>>> mahmoud-workshop
 .form-floating > .form-control-plaintext,
 .form-floating > .form-select,
 .form-floating > .datatable-selector {
@@ -2532,6 +2827,7 @@ textarea.form-control-lg {
     transition: none;
   }
 }
+<<<<<<< HEAD
 .form-floating > .form-control,
 .form-floating > .datatable-input,
 .form-floating > .form-control-plaintext {
@@ -2557,17 +2853,40 @@ textarea.form-control-lg {
 .form-floating > .datatable-input:focus,
 .form-floating > .form-control:not(:placeholder-shown),
 .form-floating > .datatable-input:not(:placeholder-shown),
+=======
+.form-floating > .form-control, .form-floating > .datatable-input,
+.form-floating > .form-control-plaintext {
+  padding: 1rem 0.75rem;
+}
+.form-floating > .form-control::-moz-placeholder, .form-floating > .datatable-input::-moz-placeholder, .form-floating > .form-control-plaintext::-moz-placeholder {
+  color: transparent;
+}
+.form-floating > .form-control::placeholder, .form-floating > .datatable-input::placeholder,
+.form-floating > .form-control-plaintext::placeholder {
+  color: transparent;
+}
+.form-floating > .form-control:not(:-moz-placeholder-shown), .form-floating > .datatable-input:not(:-moz-placeholder-shown), .form-floating > .form-control-plaintext:not(:-moz-placeholder-shown) {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+.form-floating > .form-control:focus, .form-floating > .datatable-input:focus, .form-floating > .form-control:not(:placeholder-shown), .form-floating > .datatable-input:not(:placeholder-shown),
+>>>>>>> mahmoud-workshop
 .form-floating > .form-control-plaintext:focus,
 .form-floating > .form-control-plaintext:not(:placeholder-shown) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
+<<<<<<< HEAD
 .form-floating > .form-control:-webkit-autofill,
 .form-floating > .datatable-input:-webkit-autofill,
+=======
+.form-floating > .form-control:-webkit-autofill, .form-floating > .datatable-input:-webkit-autofill,
+>>>>>>> mahmoud-workshop
 .form-floating > .form-control-plaintext:-webkit-autofill {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
+<<<<<<< HEAD
 .form-floating > .form-select,
 .form-floating > .datatable-selector {
   padding-top: 1.625rem;
@@ -2580,6 +2899,17 @@ textarea.form-control-lg {
 }
 .form-floating > .form-control:focus ~ label,
 .form-floating > .datatable-input:focus ~ label,
+=======
+.form-floating > .form-select, .form-floating > .datatable-selector {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label, .form-floating > .datatable-input:not(:-moz-placeholder-shown) ~ label {
+  opacity: 0.65;
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+.form-floating > .form-control:focus ~ label, .form-floating > .datatable-input:focus ~ label,
+>>>>>>> mahmoud-workshop
 .form-floating > .form-control:not(:placeholder-shown) ~ label,
 .form-floating > .datatable-input:not(:placeholder-shown) ~ label,
 .form-floating > .form-control-plaintext ~ label,
@@ -2588,8 +2918,12 @@ textarea.form-control-lg {
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
+<<<<<<< HEAD
 .form-floating > .form-control:-webkit-autofill ~ label,
 .form-floating > .datatable-input:-webkit-autofill ~ label {
+=======
+.form-floating > .form-control:-webkit-autofill ~ label, .form-floating > .datatable-input:-webkit-autofill ~ label {
+>>>>>>> mahmoud-workshop
   opacity: 0.65;
   transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
@@ -2604,8 +2938,12 @@ textarea.form-control-lg {
   align-items: stretch;
   width: 100%;
 }
+<<<<<<< HEAD
 .input-group > .form-control,
 .input-group > .datatable-input,
+=======
+.input-group > .form-control, .input-group > .datatable-input,
+>>>>>>> mahmoud-workshop
 .input-group > .form-select,
 .input-group > .datatable-selector,
 .input-group > .form-floating {
@@ -2614,8 +2952,12 @@ textarea.form-control-lg {
   width: 1%;
   min-width: 0;
 }
+<<<<<<< HEAD
 .input-group > .form-control:focus,
 .input-group > .datatable-input:focus,
+=======
+.input-group > .form-control:focus, .input-group > .datatable-input:focus,
+>>>>>>> mahmoud-workshop
 .input-group > .form-select:focus,
 .input-group > .datatable-selector:focus,
 .input-group > .form-floating:focus-within {
@@ -2644,8 +2986,12 @@ textarea.form-control-lg {
   border-radius: 0.375rem;
 }
 
+<<<<<<< HEAD
 .input-group-lg > .form-control,
 .input-group-lg > .datatable-input,
+=======
+.input-group-lg > .form-control, .input-group-lg > .datatable-input,
+>>>>>>> mahmoud-workshop
 .input-group-lg > .form-select,
 .input-group-lg > .datatable-selector,
 .input-group-lg > .input-group-text,
@@ -2655,8 +3001,12 @@ textarea.form-control-lg {
   border-radius: 0.5rem;
 }
 
+<<<<<<< HEAD
 .input-group-sm > .form-control,
 .input-group-sm > .datatable-input,
+=======
+.input-group-sm > .form-control, .input-group-sm > .datatable-input,
+>>>>>>> mahmoud-workshop
 .input-group-sm > .form-select,
 .input-group-sm > .datatable-selector,
 .input-group-sm > .input-group-text,
@@ -2666,13 +3016,18 @@ textarea.form-control-lg {
   border-radius: 0.25rem;
 }
 
+<<<<<<< HEAD
 .input-group-lg > .form-select,
 .input-group-lg > .datatable-selector,
+=======
+.input-group-lg > .form-select, .input-group-lg > .datatable-selector,
+>>>>>>> mahmoud-workshop
 .input-group-sm > .form-select,
 .input-group-sm > .datatable-selector {
   padding-right: 3rem;
 }
 
+<<<<<<< HEAD
 .input-group:not(.has-validation)
   > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(
     .form-floating
@@ -2717,12 +3072,37 @@ textarea.form-control-lg {
   > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
     .valid-feedback
   ):not(.invalid-tooltip):not(.invalid-feedback) {
+=======
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+.input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3),
+.input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-control,
+.input-group:not(.has-validation) > .form-floating:not(:last-child) > .datatable-input,
+.input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-select,
+.input-group:not(.has-validation) > .form-floating:not(:last-child) > .datatable-selector {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-group.has-validation > :nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+.input-group.has-validation > .dropdown-toggle:nth-last-child(n+4),
+.input-group.has-validation > .form-floating:nth-last-child(n+3) > .form-control,
+.input-group.has-validation > .form-floating:nth-last-child(n+3) > .datatable-input,
+.input-group.has-validation > .form-floating:nth-last-child(n+3) > .form-select,
+.input-group.has-validation > .form-floating:nth-last-child(n+3) > .datatable-selector {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+>>>>>>> mahmoud-workshop
   margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+<<<<<<< HEAD
 .input-group > .form-floating:not(:first-child) > .form-control,
 .input-group > .form-floating:not(:first-child) > .datatable-input,
+=======
+.input-group > .form-floating:not(:first-child) > .form-control, .input-group > .form-floating:not(:first-child) > .datatable-input,
+>>>>>>> mahmoud-workshop
 .input-group > .form-floating:not(:first-child) > .form-select,
 .input-group > .form-floating:not(:first-child) > .datatable-selector {
   border-top-left-radius: 0;
@@ -2758,10 +3138,14 @@ textarea.form-control-lg {
   display: block;
 }
 
+<<<<<<< HEAD
 .was-validated .form-control:valid,
 .was-validated .datatable-input:valid,
 .form-control.is-valid,
 .is-valid.datatable-input {
+=======
+.was-validated .form-control:valid, .was-validated .datatable-input:valid, .form-control.is-valid, .is-valid.datatable-input {
+>>>>>>> mahmoud-workshop
   border-color: #198754;
   padding-right: calc(1.5em + 0.75rem);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
@@ -2769,14 +3153,19 @@ textarea.form-control-lg {
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
+<<<<<<< HEAD
 .was-validated .form-control:valid:focus,
 .was-validated .datatable-input:valid:focus,
 .form-control.is-valid:focus,
 .is-valid.datatable-input:focus {
+=======
+.was-validated .form-control:valid:focus, .was-validated .datatable-input:valid:focus, .form-control.is-valid:focus, .is-valid.datatable-input:focus {
+>>>>>>> mahmoud-workshop
   border-color: #198754;
   box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
 }
 
+<<<<<<< HEAD
 .was-validated textarea.form-control:valid,
 .was-validated textarea.datatable-input:valid,
 textarea.form-control.is-valid,
@@ -2810,10 +3199,28 @@ textarea.is-valid.datatable-input {
 .was-validated .datatable-selector:valid:focus,
 .form-select.is-valid:focus,
 .is-valid.datatable-selector:focus {
+=======
+.was-validated textarea.form-control:valid, .was-validated textarea.datatable-input:valid, textarea.form-control.is-valid, textarea.is-valid.datatable-input {
+  padding-right: calc(1.5em + 0.75rem);
+  background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+.was-validated .form-select:valid, .was-validated .datatable-selector:valid, .form-select.is-valid, .is-valid.datatable-selector {
+  border-color: #198754;
+}
+.was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .datatable-selector:valid:not([multiple]):not([size]), .was-validated .form-select:valid:not([multiple])[size="1"], .was-validated .datatable-selector:valid:not([multiple])[size="1"], .form-select.is-valid:not([multiple]):not([size]), .is-valid.datatable-selector:not([multiple]):not([size]), .form-select.is-valid:not([multiple])[size="1"], .is-valid.datatable-selector:not([multiple])[size="1"] {
+  padding-right: 4.125rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center, center right 2.25rem;
+  background-size: 16px 12px, calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-select:valid:focus, .was-validated .datatable-selector:valid:focus, .form-select.is-valid:focus, .is-valid.datatable-selector:focus {
+>>>>>>> mahmoud-workshop
   border-color: #198754;
   box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
 }
 
+<<<<<<< HEAD
 .was-validated .form-control-color:valid,
 .form-control-color.is-valid {
   width: calc(3rem + calc(1.5em + 0.75rem));
@@ -2833,6 +3240,22 @@ textarea.is-valid.datatable-input {
 }
 .was-validated .form-check-input:valid ~ .form-check-label,
 .form-check-input.is-valid ~ .form-check-label {
+=======
+.was-validated .form-control-color:valid, .form-control-color.is-valid {
+  width: calc(3rem + calc(1.5em + 0.75rem));
+}
+
+.was-validated .form-check-input:valid, .form-check-input.is-valid {
+  border-color: #198754;
+}
+.was-validated .form-check-input:valid:checked, .form-check-input.is-valid:checked {
+  background-color: #198754;
+}
+.was-validated .form-check-input:valid:focus, .form-check-input.is-valid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+>>>>>>> mahmoud-workshop
   color: #198754;
 }
 
@@ -2840,10 +3263,14 @@ textarea.is-valid.datatable-input {
   margin-left: 0.5em;
 }
 
+<<<<<<< HEAD
 .was-validated .input-group > .form-control:not(:focus):valid,
 .was-validated .input-group > .datatable-input:not(:focus):valid,
 .input-group > .form-control:not(:focus).is-valid,
 .input-group > .datatable-input:not(:focus).is-valid,
+=======
+.was-validated .input-group > .form-control:not(:focus):valid, .was-validated .input-group > .datatable-input:not(:focus):valid, .input-group > .form-control:not(:focus).is-valid, .input-group > .datatable-input:not(:focus).is-valid,
+>>>>>>> mahmoud-workshop
 .was-validated .input-group > .form-select:not(:focus):valid,
 .was-validated .input-group > .datatable-selector:not(:focus):valid,
 .input-group > .form-select:not(:focus).is-valid,
@@ -2882,10 +3309,14 @@ textarea.is-valid.datatable-input {
   display: block;
 }
 
+<<<<<<< HEAD
 .was-validated .form-control:invalid,
 .was-validated .datatable-input:invalid,
 .form-control.is-invalid,
 .is-invalid.datatable-input {
+=======
+.was-validated .form-control:invalid, .was-validated .datatable-input:invalid, .form-control.is-invalid, .is-invalid.datatable-input {
+>>>>>>> mahmoud-workshop
   border-color: #dc3545;
   padding-right: calc(1.5em + 0.75rem);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
@@ -2893,14 +3324,19 @@ textarea.is-valid.datatable-input {
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
+<<<<<<< HEAD
 .was-validated .form-control:invalid:focus,
 .was-validated .datatable-input:invalid:focus,
 .form-control.is-invalid:focus,
 .is-invalid.datatable-input:focus {
+=======
+.was-validated .form-control:invalid:focus, .was-validated .datatable-input:invalid:focus, .form-control.is-invalid:focus, .is-invalid.datatable-input:focus {
+>>>>>>> mahmoud-workshop
   border-color: #dc3545;
   box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
 
+<<<<<<< HEAD
 .was-validated textarea.form-control:invalid,
 .was-validated textarea.datatable-input:invalid,
 textarea.form-control.is-invalid,
@@ -2934,10 +3370,28 @@ textarea.is-invalid.datatable-input {
 .was-validated .datatable-selector:invalid:focus,
 .form-select.is-invalid:focus,
 .is-invalid.datatable-selector:focus {
+=======
+.was-validated textarea.form-control:invalid, .was-validated textarea.datatable-input:invalid, textarea.form-control.is-invalid, textarea.is-invalid.datatable-input {
+  padding-right: calc(1.5em + 0.75rem);
+  background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+.was-validated .form-select:invalid, .was-validated .datatable-selector:invalid, .form-select.is-invalid, .is-invalid.datatable-selector {
+  border-color: #dc3545;
+}
+.was-validated .form-select:invalid:not([multiple]):not([size]), .was-validated .datatable-selector:invalid:not([multiple]):not([size]), .was-validated .form-select:invalid:not([multiple])[size="1"], .was-validated .datatable-selector:invalid:not([multiple])[size="1"], .form-select.is-invalid:not([multiple]):not([size]), .is-invalid.datatable-selector:not([multiple]):not([size]), .form-select.is-invalid:not([multiple])[size="1"], .is-invalid.datatable-selector:not([multiple])[size="1"] {
+  padding-right: 4.125rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center, center right 2.25rem;
+  background-size: 16px 12px, calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+.was-validated .form-select:invalid:focus, .was-validated .datatable-selector:invalid:focus, .form-select.is-invalid:focus, .is-invalid.datatable-selector:focus {
+>>>>>>> mahmoud-workshop
   border-color: #dc3545;
   box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
 
+<<<<<<< HEAD
 .was-validated .form-control-color:invalid,
 .form-control-color.is-invalid {
   width: calc(3rem + calc(1.5em + 0.75rem));
@@ -2957,6 +3411,22 @@ textarea.is-invalid.datatable-input {
 }
 .was-validated .form-check-input:invalid ~ .form-check-label,
 .form-check-input.is-invalid ~ .form-check-label {
+=======
+.was-validated .form-control-color:invalid, .form-control-color.is-invalid {
+  width: calc(3rem + calc(1.5em + 0.75rem));
+}
+
+.was-validated .form-check-input:invalid, .form-check-input.is-invalid {
+  border-color: #dc3545;
+}
+.was-validated .form-check-input:invalid:checked, .form-check-input.is-invalid:checked {
+  background-color: #dc3545;
+}
+.was-validated .form-check-input:invalid:focus, .form-check-input.is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+.was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
+>>>>>>> mahmoud-workshop
   color: #dc3545;
 }
 
@@ -2964,10 +3434,14 @@ textarea.is-invalid.datatable-input {
   margin-left: 0.5em;
 }
 
+<<<<<<< HEAD
 .was-validated .input-group > .form-control:not(:focus):invalid,
 .was-validated .input-group > .datatable-input:not(:focus):invalid,
 .input-group > .form-control:not(:focus).is-invalid,
 .input-group > .datatable-input:not(:focus).is-invalid,
+=======
+.was-validated .input-group > .form-control:not(:focus):invalid, .was-validated .input-group > .datatable-input:not(:focus):invalid, .input-group > .form-control:not(:focus).is-invalid, .input-group > .datatable-input:not(:focus).is-invalid,
+>>>>>>> mahmoud-workshop
 .was-validated .input-group > .form-select:not(:focus):invalid,
 .was-validated .input-group > .datatable-selector:not(:focus):invalid,
 .input-group > .form-select:not(:focus).is-invalid,
@@ -2990,11 +3464,17 @@ textarea.is-invalid.datatable-input {
   --bs-btn-border-color: transparent;
   --bs-btn-border-radius: 0.375rem;
   --bs-btn-hover-border-color: transparent;
+<<<<<<< HEAD
   --bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15),
     0 1px 1px rgba(0, 0, 0, 0.075);
   --bs-btn-disabled-opacity: 0.65;
   --bs-btn-focus-box-shadow: 0 0 0 0.25rem
     rgba(var(--bs-btn-focus-shadow-rgb), 0.5);
+=======
+  --bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+  --bs-btn-disabled-opacity: 0.65;
+  --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
+>>>>>>> mahmoud-workshop
   display: inline-block;
   padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
   font-family: var(--bs-btn-font-family);
@@ -3007,6 +3487,7 @@ textarea.is-invalid.datatable-input {
   vertical-align: middle;
   cursor: pointer;
   -webkit-user-select: none;
+<<<<<<< HEAD
   -moz-user-select: none;
   user-select: none;
   border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
@@ -3014,6 +3495,14 @@ textarea.is-invalid.datatable-input {
   background-color: var(--bs-btn-bg);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+=======
+     -moz-user-select: none;
+          user-select: none;
+  border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+  border-radius: var(--bs-btn-border-radius);
+  background-color: var(--bs-btn-bg);
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+>>>>>>> mahmoud-workshop
 }
 @media (prefers-reduced-motion: reduce) {
   .btn {
@@ -3042,15 +3531,20 @@ textarea.is-invalid.datatable-input {
   outline: 0;
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
+<<<<<<< HEAD
 .btn-check:checked + .btn,
 :not(.btn-check) + .btn:active,
 .btn:first-child:active,
 .btn.active,
 .btn.show {
+=======
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+>>>>>>> mahmoud-workshop
   color: var(--bs-btn-active-color);
   background-color: var(--bs-btn-active-bg);
   border-color: var(--bs-btn-active-border-color);
 }
+<<<<<<< HEAD
 .btn-check:checked + .btn:focus-visible,
 :not(.btn-check) + .btn:active:focus-visible,
 .btn:first-child:active:focus-visible,
@@ -3061,6 +3555,12 @@ textarea.is-invalid.datatable-input {
 .btn:disabled,
 .btn.disabled,
 fieldset:disabled .btn {
+=======
+.btn-check:checked + .btn:focus-visible, :not(.btn-check) + .btn:active:focus-visible, .btn:first-child:active:focus-visible, .btn.active:focus-visible, .btn.show:focus-visible {
+  box-shadow: var(--bs-btn-focus-box-shadow);
+}
+.btn:disabled, .btn.disabled, fieldset:disabled .btn {
+>>>>>>> mahmoud-workshop
   color: var(--bs-btn-disabled-color);
   pointer-events: none;
   background-color: var(--bs-btn-disabled-bg);
@@ -3362,16 +3862,24 @@ fieldset:disabled .btn {
   color: var(--bs-btn-hover-color);
 }
 
+<<<<<<< HEAD
 .btn-lg,
 .btn-group-lg > .btn {
+=======
+.btn-lg, .btn-group-lg > .btn {
+>>>>>>> mahmoud-workshop
   --bs-btn-padding-y: 0.5rem;
   --bs-btn-padding-x: 1rem;
   --bs-btn-font-size: 1.25rem;
   --bs-btn-border-radius: 0.5rem;
 }
 
+<<<<<<< HEAD
 .btn-sm,
 .btn-group-sm > .btn {
+=======
+.btn-sm, .btn-group-sm > .btn {
+>>>>>>> mahmoud-workshop
   --bs-btn-padding-y: 0.25rem;
   --bs-btn-padding-x: 0.5rem;
   --bs-btn-font-size: 0.875rem;
@@ -3682,6 +4190,7 @@ fieldset:disabled .btn {
   background-color: transparent;
   border: 0;
 }
+<<<<<<< HEAD
 .dropdown-item:hover,
 .dropdown-item:focus {
   color: var(--bs-dropdown-link-hover-color);
@@ -3689,12 +4198,23 @@ fieldset:disabled .btn {
 }
 .dropdown-item.active,
 .dropdown-item:active {
+=======
+.dropdown-item:hover, .dropdown-item:focus {
+  color: var(--bs-dropdown-link-hover-color);
+  background-color: var(--bs-dropdown-link-hover-bg);
+}
+.dropdown-item.active, .dropdown-item:active {
+>>>>>>> mahmoud-workshop
   color: var(--bs-dropdown-link-active-color);
   text-decoration: none;
   background-color: var(--bs-dropdown-link-active-bg);
 }
+<<<<<<< HEAD
 .dropdown-item.disabled,
 .dropdown-item:disabled {
+=======
+.dropdown-item.disabled, .dropdown-item:disabled {
+>>>>>>> mahmoud-workshop
   color: var(--bs-dropdown-link-disabled-color);
   pointer-events: none;
   background-color: transparent;
@@ -3706,8 +4226,12 @@ fieldset:disabled .btn {
 
 .dropdown-header {
   display: block;
+<<<<<<< HEAD
   padding: var(--bs-dropdown-header-padding-y)
     var(--bs-dropdown-header-padding-x);
+=======
+  padding: var(--bs-dropdown-header-padding-y) var(--bs-dropdown-header-padding-x);
+>>>>>>> mahmoud-workshop
   margin-bottom: 0;
   font-size: 0.875rem;
   color: var(--bs-dropdown-header-color);
@@ -3783,7 +4307,11 @@ fieldset:disabled .btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+<<<<<<< HEAD
 .btn-group > .btn:nth-child(n + 3),
+=======
+.btn-group > .btn:nth-child(n+3),
+>>>>>>> mahmoud-workshop
 .btn-group > :not(.btn-check) + .btn,
 .btn-group > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
@@ -3794,23 +4322,35 @@ fieldset:disabled .btn {
   padding-right: 0.5625rem;
   padding-left: 0.5625rem;
 }
+<<<<<<< HEAD
 .dropdown-toggle-split::after,
 .dropup .dropdown-toggle-split::after,
 .dropend .dropdown-toggle-split::after {
+=======
+.dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropend .dropdown-toggle-split::after {
+>>>>>>> mahmoud-workshop
   margin-left: 0;
 }
 .dropstart .dropdown-toggle-split::before {
   margin-right: 0;
 }
 
+<<<<<<< HEAD
 .btn-sm + .dropdown-toggle-split,
 .btn-group-sm > .btn + .dropdown-toggle-split {
+=======
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
+>>>>>>> mahmoud-workshop
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
+<<<<<<< HEAD
 .btn-lg + .dropdown-toggle-split,
 .btn-group-lg > .btn + .dropdown-toggle-split {
+=======
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
+>>>>>>> mahmoud-workshop
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3860,16 +4400,24 @@ fieldset:disabled .btn {
   font-weight: var(--bs-nav-link-font-weight);
   color: var(--bs-nav-link-color);
   text-decoration: none;
+<<<<<<< HEAD
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out;
+=======
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+>>>>>>> mahmoud-workshop
 }
 @media (prefers-reduced-motion: reduce) {
   .nav-link {
     transition: none;
   }
 }
+<<<<<<< HEAD
 .nav-link:hover,
 .nav-link:focus {
+=======
+.nav-link:hover, .nav-link:focus {
+>>>>>>> mahmoud-workshop
   color: var(--bs-nav-link-hover-color);
 }
 .nav-link.disabled {
@@ -3886,8 +4434,12 @@ fieldset:disabled .btn {
   --bs-nav-tabs-link-active-color: #495057;
   --bs-nav-tabs-link-active-bg: #fff;
   --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #fff;
+<<<<<<< HEAD
   border-bottom: var(--bs-nav-tabs-border-width) solid
     var(--bs-nav-tabs-border-color);
+=======
+  border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+>>>>>>> mahmoud-workshop
 }
 .nav-tabs .nav-link {
   margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
@@ -3896,6 +4448,7 @@ fieldset:disabled .btn {
   border-top-left-radius: var(--bs-nav-tabs-border-radius);
   border-top-right-radius: var(--bs-nav-tabs-border-radius);
 }
+<<<<<<< HEAD
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
   isolation: isolate;
@@ -3903,6 +4456,13 @@ fieldset:disabled .btn {
 }
 .nav-tabs .nav-link.disabled,
 .nav-tabs .nav-link:disabled {
+=======
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+  isolation: isolate;
+  border-color: var(--bs-nav-tabs-link-hover-border-color);
+}
+.nav-tabs .nav-link.disabled, .nav-tabs .nav-link:disabled {
+>>>>>>> mahmoud-workshop
   color: var(--bs-nav-link-disabled-color);
   background-color: transparent;
   border-color: transparent;
@@ -4014,8 +4574,12 @@ fieldset:disabled .btn {
   text-decoration: none;
   white-space: nowrap;
 }
+<<<<<<< HEAD
 .navbar-brand:hover,
 .navbar-brand:focus {
+=======
+.navbar-brand:hover, .navbar-brand:focus {
+>>>>>>> mahmoud-workshop
   color: var(--bs-navbar-brand-hover-color);
 }
 
@@ -4472,8 +5036,12 @@ fieldset:disabled .btn {
   border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 .card-header:first-child {
+<<<<<<< HEAD
   border-radius: var(--bs-card-inner-border-radius)
     var(--bs-card-inner-border-radius) 0 0;
+=======
+  border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius) 0 0;
+>>>>>>> mahmoud-workshop
 }
 
 .card-footer {
@@ -4483,8 +5051,12 @@ fieldset:disabled .btn {
   border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 .card-footer:last-child {
+<<<<<<< HEAD
   border-radius: 0 0 var(--bs-card-inner-border-radius)
     var(--bs-card-inner-border-radius);
+=======
+  border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+>>>>>>> mahmoud-workshop
 }
 
 .card-header-tabs {
@@ -4576,9 +5148,13 @@ fieldset:disabled .btn {
 .accordion {
   --bs-accordion-color: #212529;
   --bs-accordion-bg: #fff;
+<<<<<<< HEAD
   --bs-accordion-transition: color 0.15s ease-in-out,
     background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+=======
+  --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+>>>>>>> mahmoud-workshop
   --bs-accordion-border-color: var(--bs-border-color);
   --bs-accordion-border-width: 1px;
   --bs-accordion-border-radius: 0.375rem;
@@ -4623,8 +5199,12 @@ fieldset:disabled .btn {
 .accordion-button:not(.collapsed) {
   color: var(--bs-accordion-active-color);
   background-color: var(--bs-accordion-active-bg);
+<<<<<<< HEAD
   box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0
     var(--bs-accordion-border-color);
+=======
+  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+>>>>>>> mahmoud-workshop
 }
 .accordion-button:not(.collapsed)::after {
   background-image: var(--bs-accordion-btn-active-icon);
@@ -4663,8 +5243,12 @@ fieldset:disabled .btn {
 .accordion-item {
   color: var(--bs-accordion-color);
   background-color: var(--bs-accordion-bg);
+<<<<<<< HEAD
   border: var(--bs-accordion-border-width) solid
     var(--bs-accordion-border-color);
+=======
+  border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
+>>>>>>> mahmoud-workshop
 }
 .accordion-item:first-of-type {
   border-top-left-radius: var(--bs-accordion-border-radius);
@@ -4708,8 +5292,12 @@ fieldset:disabled .btn {
 .accordion-flush .accordion-item:last-child {
   border-bottom: 0;
 }
+<<<<<<< HEAD
 .accordion-flush .accordion-item .accordion-button,
 .accordion-flush .accordion-item .accordion-button.collapsed {
+=======
+.accordion-flush .accordion-item .accordion-button, .accordion-flush .accordion-item .accordion-button.collapsed {
+>>>>>>> mahmoud-workshop
   border-radius: 0;
 }
 
@@ -4739,15 +5327,23 @@ fieldset:disabled .btn {
   float: left;
   padding-right: var(--bs-breadcrumb-item-padding-x);
   color: var(--bs-breadcrumb-divider-color);
+<<<<<<< HEAD
   content: var(--bs-breadcrumb-divider, "/")
     /* rtl: var(--bs-breadcrumb-divider, "/") */;
+=======
+  content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
+>>>>>>> mahmoud-workshop
 }
 .breadcrumb-item.active {
   color: var(--bs-breadcrumb-item-active-color);
 }
 
+<<<<<<< HEAD
 .pagination,
 .datatable-pagination ul {
+=======
+.pagination, .datatable-pagination ul {
+>>>>>>> mahmoud-workshop
   --bs-pagination-padding-x: 0.75rem;
   --bs-pagination-padding-y: 0.375rem;
   --bs-pagination-font-size: 1rem;
@@ -4773,8 +5369,12 @@ fieldset:disabled .btn {
   list-style: none;
 }
 
+<<<<<<< HEAD
 .page-link,
 .datatable-pagination a {
+=======
+.page-link, .datatable-pagination a {
+>>>>>>> mahmoud-workshop
   position: relative;
   display: block;
   padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
@@ -4782,6 +5382,7 @@ fieldset:disabled .btn {
   color: var(--bs-pagination-color);
   text-decoration: none;
   background-color: var(--bs-pagination-bg);
+<<<<<<< HEAD
   border: var(--bs-pagination-border-width) solid
     var(--bs-pagination-border-color);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -4795,38 +5396,62 @@ fieldset:disabled .btn {
 }
 .page-link:hover,
 .datatable-pagination a:hover {
+=======
+  border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-link, .datatable-pagination a {
+    transition: none;
+  }
+}
+.page-link:hover, .datatable-pagination a:hover {
+>>>>>>> mahmoud-workshop
   z-index: 2;
   color: var(--bs-pagination-hover-color);
   background-color: var(--bs-pagination-hover-bg);
   border-color: var(--bs-pagination-hover-border-color);
 }
+<<<<<<< HEAD
 .page-link:focus,
 .datatable-pagination a:focus {
+=======
+.page-link:focus, .datatable-pagination a:focus {
+>>>>>>> mahmoud-workshop
   z-index: 3;
   color: var(--bs-pagination-focus-color);
   background-color: var(--bs-pagination-focus-bg);
   outline: 0;
   box-shadow: var(--bs-pagination-focus-box-shadow);
 }
+<<<<<<< HEAD
 .page-link.active,
 .datatable-pagination a.active,
 .active > .page-link,
 .datatable-pagination .active > a {
+=======
+.page-link.active, .datatable-pagination a.active, .active > .page-link, .datatable-pagination .active > a {
+>>>>>>> mahmoud-workshop
   z-index: 3;
   color: var(--bs-pagination-active-color);
   background-color: var(--bs-pagination-active-bg);
   border-color: var(--bs-pagination-active-border-color);
 }
+<<<<<<< HEAD
 .page-link.disabled,
 .datatable-pagination a.disabled,
 .disabled > .page-link,
 .datatable-pagination .disabled > a {
+=======
+.page-link.disabled, .datatable-pagination a.disabled, .disabled > .page-link, .datatable-pagination .disabled > a {
+>>>>>>> mahmoud-workshop
   color: var(--bs-pagination-disabled-color);
   pointer-events: none;
   background-color: var(--bs-pagination-disabled-bg);
   border-color: var(--bs-pagination-disabled-border-color);
 }
 
+<<<<<<< HEAD
 .page-item:not(:first-child) .page-link,
 .page-item:not(:first-child) .datatable-pagination a,
 .datatable-pagination .page-item:not(:first-child) a,
@@ -4847,6 +5472,16 @@ fieldset:disabled .btn {
 .datatable-pagination .page-item:last-child a,
 .datatable-pagination li:last-child .page-link,
 .datatable-pagination li:last-child a {
+=======
+.page-item:not(:first-child) .page-link, .page-item:not(:first-child) .datatable-pagination a, .datatable-pagination .page-item:not(:first-child) a, .datatable-pagination li:not(:first-child) .page-link, .datatable-pagination li:not(:first-child) a {
+  margin-left: -1px;
+}
+.page-item:first-child .page-link, .page-item:first-child .datatable-pagination a, .datatable-pagination .page-item:first-child a, .datatable-pagination li:first-child .page-link, .datatable-pagination li:first-child a {
+  border-top-left-radius: var(--bs-pagination-border-radius);
+  border-bottom-left-radius: var(--bs-pagination-border-radius);
+}
+.page-item:last-child .page-link, .page-item:last-child .datatable-pagination a, .datatable-pagination .page-item:last-child a, .datatable-pagination li:last-child .page-link, .datatable-pagination li:last-child a {
+>>>>>>> mahmoud-workshop
   border-top-right-radius: var(--bs-pagination-border-radius);
   border-bottom-right-radius: var(--bs-pagination-border-radius);
 }
@@ -5041,6 +5676,7 @@ fieldset:disabled .btn {
 }
 
 .progress-bar-striped {
+<<<<<<< HEAD
   background-image: linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.15) 25%,
@@ -5051,6 +5687,9 @@ fieldset:disabled .btn {
     transparent 75%,
     transparent
   );
+=======
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+>>>>>>> mahmoud-workshop
   background-size: var(--bs-progress-height) var(--bs-progress-height);
 }
 
@@ -5102,8 +5741,12 @@ fieldset:disabled .btn {
   color: var(--bs-list-group-action-color);
   text-align: inherit;
 }
+<<<<<<< HEAD
 .list-group-item-action:hover,
 .list-group-item-action:focus {
+=======
+.list-group-item-action:hover, .list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   z-index: 1;
   color: var(--bs-list-group-action-hover-color);
   text-decoration: none;
@@ -5117,6 +5760,7 @@ fieldset:disabled .btn {
 .list-group-item {
   position: relative;
   display: block;
+<<<<<<< HEAD
   padding: var(--bs-list-group-item-padding-y)
     var(--bs-list-group-item-padding-x);
   color: var(--bs-list-group-color);
@@ -5124,6 +5768,13 @@ fieldset:disabled .btn {
   background-color: var(--bs-list-group-bg);
   border: var(--bs-list-group-border-width) solid
     var(--bs-list-group-border-color);
+=======
+  padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+  color: var(--bs-list-group-color);
+  text-decoration: none;
+  background-color: var(--bs-list-group-bg);
+  border: var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+>>>>>>> mahmoud-workshop
 }
 .list-group-item:first-child {
   border-top-left-radius: inherit;
@@ -5133,8 +5784,12 @@ fieldset:disabled .btn {
   border-bottom-right-radius: inherit;
   border-bottom-left-radius: inherit;
 }
+<<<<<<< HEAD
 .list-group-item.disabled,
 .list-group-item:disabled {
+=======
+.list-group-item.disabled, .list-group-item:disabled {
+>>>>>>> mahmoud-workshop
   color: var(--bs-list-group-disabled-color);
   pointer-events: none;
   background-color: var(--bs-list-group-disabled-bg);
@@ -5310,8 +5965,12 @@ fieldset:disabled .btn {
   color: #084298;
   background-color: #cfe2ff;
 }
+<<<<<<< HEAD
 .list-group-item-primary.list-group-item-action:hover,
 .list-group-item-primary.list-group-item-action:focus {
+=======
+.list-group-item-primary.list-group-item-action:hover, .list-group-item-primary.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #084298;
   background-color: #bacbe6;
 }
@@ -5325,8 +5984,12 @@ fieldset:disabled .btn {
   color: #41464b;
   background-color: #e2e3e5;
 }
+<<<<<<< HEAD
 .list-group-item-secondary.list-group-item-action:hover,
 .list-group-item-secondary.list-group-item-action:focus {
+=======
+.list-group-item-secondary.list-group-item-action:hover, .list-group-item-secondary.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #41464b;
   background-color: #cbccce;
 }
@@ -5340,8 +6003,12 @@ fieldset:disabled .btn {
   color: #0f5132;
   background-color: #d1e7dd;
 }
+<<<<<<< HEAD
 .list-group-item-success.list-group-item-action:hover,
 .list-group-item-success.list-group-item-action:focus {
+=======
+.list-group-item-success.list-group-item-action:hover, .list-group-item-success.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #0f5132;
   background-color: #bcd0c7;
 }
@@ -5355,8 +6022,12 @@ fieldset:disabled .btn {
   color: #055160;
   background-color: #cff4fc;
 }
+<<<<<<< HEAD
 .list-group-item-info.list-group-item-action:hover,
 .list-group-item-info.list-group-item-action:focus {
+=======
+.list-group-item-info.list-group-item-action:hover, .list-group-item-info.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #055160;
   background-color: #badce3;
 }
@@ -5370,8 +6041,12 @@ fieldset:disabled .btn {
   color: #664d03;
   background-color: #fff3cd;
 }
+<<<<<<< HEAD
 .list-group-item-warning.list-group-item-action:hover,
 .list-group-item-warning.list-group-item-action:focus {
+=======
+.list-group-item-warning.list-group-item-action:hover, .list-group-item-warning.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #664d03;
   background-color: #e6dbb9;
 }
@@ -5385,8 +6060,12 @@ fieldset:disabled .btn {
   color: #842029;
   background-color: #f8d7da;
 }
+<<<<<<< HEAD
 .list-group-item-danger.list-group-item-action:hover,
 .list-group-item-danger.list-group-item-action:focus {
+=======
+.list-group-item-danger.list-group-item-action:hover, .list-group-item-danger.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #842029;
   background-color: #dfc2c4;
 }
@@ -5400,8 +6079,12 @@ fieldset:disabled .btn {
   color: #636464;
   background-color: #fefefe;
 }
+<<<<<<< HEAD
 .list-group-item-light.list-group-item-action:hover,
 .list-group-item-light.list-group-item-action:focus {
+=======
+.list-group-item-light.list-group-item-action:hover, .list-group-item-light.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #636464;
   background-color: #e5e5e5;
 }
@@ -5415,8 +6098,12 @@ fieldset:disabled .btn {
   color: #141619;
   background-color: #d3d3d4;
 }
+<<<<<<< HEAD
 .list-group-item-dark.list-group-item-action:hover,
 .list-group-item-dark.list-group-item-action:focus {
+=======
+.list-group-item-dark.list-group-item-action:hover, .list-group-item-dark.list-group-item-action:focus {
+>>>>>>> mahmoud-workshop
   color: #141619;
   background-color: #bebebf;
 }
@@ -5432,9 +6119,13 @@ fieldset:disabled .btn {
   height: 1em;
   padding: 0.25em 0.25em;
   color: #000;
+<<<<<<< HEAD
   background: transparent
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e")
     center/1em auto no-repeat;
+=======
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+>>>>>>> mahmoud-workshop
   border: 0;
   border-radius: 0.375rem;
   opacity: 0.5;
@@ -5449,12 +6140,20 @@ fieldset:disabled .btn {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   opacity: 1;
 }
+<<<<<<< HEAD
 .btn-close:disabled,
 .btn-close.disabled {
   pointer-events: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+=======
+.btn-close:disabled, .btn-close.disabled {
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+>>>>>>> mahmoud-workshop
   opacity: 0.25;
 }
 
@@ -5516,6 +6215,7 @@ fieldset:disabled .btn {
   color: var(--bs-toast-header-color);
   background-color: var(--bs-toast-header-bg);
   background-clip: padding-box;
+<<<<<<< HEAD
   border-bottom: var(--bs-toast-border-width) solid
     var(--bs-toast-header-border-color);
   border-top-left-radius: calc(
@@ -5524,6 +6224,11 @@ fieldset:disabled .btn {
   border-top-right-radius: calc(
     var(--bs-toast-border-radius) - var(--bs-toast-border-width)
   );
+=======
+  border-bottom: var(--bs-toast-border-width) solid var(--bs-toast-header-border-color);
+  border-top-left-radius: calc(var(--bs-toast-border-radius) - var(--bs-toast-border-width));
+  border-top-right-radius: calc(var(--bs-toast-border-radius) - var(--bs-toast-border-width));
+>>>>>>> mahmoud-workshop
 }
 .toast-header .btn-close {
   margin-right: calc(-0.5 * var(--bs-toast-padding-x));
@@ -5647,17 +6352,26 @@ fieldset:disabled .btn {
   align-items: center;
   justify-content: space-between;
   padding: var(--bs-modal-header-padding);
+<<<<<<< HEAD
   border-bottom: var(--bs-modal-header-border-width) solid
     var(--bs-modal-header-border-color);
+=======
+  border-bottom: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color);
+>>>>>>> mahmoud-workshop
   border-top-left-radius: var(--bs-modal-inner-border-radius);
   border-top-right-radius: var(--bs-modal-inner-border-radius);
 }
 .modal-header .btn-close {
+<<<<<<< HEAD
   padding: calc(var(--bs-modal-header-padding-y) * 0.5)
     calc(var(--bs-modal-header-padding-x) * 0.5);
   margin: calc(-0.5 * var(--bs-modal-header-padding-y))
     calc(-0.5 * var(--bs-modal-header-padding-x))
     calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+=======
+  padding: calc(var(--bs-modal-header-padding-y) * 0.5) calc(var(--bs-modal-header-padding-x) * 0.5);
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x)) calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+>>>>>>> mahmoud-workshop
 }
 
 .modal-title {
@@ -5679,8 +6393,12 @@ fieldset:disabled .btn {
   justify-content: flex-end;
   padding: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap) * 0.5);
   background-color: var(--bs-modal-footer-bg);
+<<<<<<< HEAD
   border-top: var(--bs-modal-footer-border-width) solid
     var(--bs-modal-footer-border-color);
+=======
+  border-top: var(--bs-modal-footer-border-width) solid var(--bs-modal-footer-border-color);
+>>>>>>> mahmoud-workshop
   border-bottom-right-radius: var(--bs-modal-inner-border-radius);
   border-bottom-left-radius: var(--bs-modal-inner-border-radius);
 }
@@ -5882,6 +6600,7 @@ fieldset:disabled .btn {
   border-style: solid;
 }
 
+<<<<<<< HEAD
 .bs-tooltip-top .tooltip-arrow,
 .bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow {
   bottom: 0;
@@ -5891,25 +6610,44 @@ fieldset:disabled .btn {
   top: -1px;
   border-width: var(--bs-tooltip-arrow-height)
     calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+=======
+.bs-tooltip-top .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow {
+  bottom: 0;
+}
+.bs-tooltip-top .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
+  top: -1px;
+  border-width: var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+>>>>>>> mahmoud-workshop
   border-top-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:begin:ignore */
+<<<<<<< HEAD
 .bs-tooltip-end .tooltip-arrow,
 .bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow {
+=======
+.bs-tooltip-end .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow {
+>>>>>>> mahmoud-workshop
   left: 0;
   width: var(--bs-tooltip-arrow-height);
   height: var(--bs-tooltip-arrow-width);
 }
+<<<<<<< HEAD
 .bs-tooltip-end .tooltip-arrow::before,
 .bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before {
   right: -1px;
   border-width: calc(var(--bs-tooltip-arrow-width) * 0.5)
     var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+=======
+.bs-tooltip-end .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before {
+  right: -1px;
+  border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+>>>>>>> mahmoud-workshop
   border-right-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:end:ignore */
+<<<<<<< HEAD
 .bs-tooltip-bottom .tooltip-arrow,
 .bs-tooltip-auto[data-popper-placement^="bottom"] .tooltip-arrow {
   top: 0;
@@ -5919,21 +6657,39 @@ fieldset:disabled .btn {
   bottom: -1px;
   border-width: 0 calc(var(--bs-tooltip-arrow-width) * 0.5)
     var(--bs-tooltip-arrow-height);
+=======
+.bs-tooltip-bottom .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow {
+  top: 0;
+}
+.bs-tooltip-bottom .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before {
+  bottom: -1px;
+  border-width: 0 calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height);
+>>>>>>> mahmoud-workshop
   border-bottom-color: var(--bs-tooltip-bg);
 }
 
 /* rtl:begin:ignore */
+<<<<<<< HEAD
 .bs-tooltip-start .tooltip-arrow,
 .bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow {
+=======
+.bs-tooltip-start .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow {
+>>>>>>> mahmoud-workshop
   right: 0;
   width: var(--bs-tooltip-arrow-height);
   height: var(--bs-tooltip-arrow-width);
 }
+<<<<<<< HEAD
 .bs-tooltip-start .tooltip-arrow::before,
 .bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before {
   left: -1px;
   border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) 0
     calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height);
+=======
+.bs-tooltip-start .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before {
+  left: -1px;
+  border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) 0 calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height);
+>>>>>>> mahmoud-workshop
   border-left-color: var(--bs-tooltip-bg);
 }
 
@@ -5997,8 +6753,12 @@ fieldset:disabled .btn {
   width: var(--bs-popover-arrow-width);
   height: var(--bs-popover-arrow-height);
 }
+<<<<<<< HEAD
 .popover .popover-arrow::before,
 .popover .popover-arrow::after {
+=======
+.popover .popover-arrow::before, .popover .popover-arrow::after {
+>>>>>>> mahmoud-workshop
   position: absolute;
   display: block;
   content: "";
@@ -6007,6 +6767,7 @@ fieldset:disabled .btn {
   border-width: 0;
 }
 
+<<<<<<< HEAD
 .bs-popover-top > .popover-arrow,
 .bs-popover-auto[data-popper-placement^="top"] > .popover-arrow {
   bottom: calc(
@@ -6027,11 +6788,25 @@ fieldset:disabled .btn {
 }
 .bs-popover-top > .popover-arrow::after,
 .bs-popover-auto[data-popper-placement^="top"] > .popover-arrow::after {
+=======
+.bs-popover-top > .popover-arrow, .bs-popover-auto[data-popper-placement^=top] > .popover-arrow {
+  bottom: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
+}
+.bs-popover-top > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::before, .bs-popover-top > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::after {
+  border-width: var(--bs-popover-arrow-height) calc(var(--bs-popover-arrow-width) * 0.5) 0;
+}
+.bs-popover-top > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::before {
+  bottom: 0;
+  border-top-color: var(--bs-popover-arrow-border);
+}
+.bs-popover-top > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::after {
+>>>>>>> mahmoud-workshop
   bottom: var(--bs-popover-border-width);
   border-top-color: var(--bs-popover-bg);
 }
 
 /* rtl:begin:ignore */
+<<<<<<< HEAD
 .bs-popover-end > .popover-arrow,
 .bs-popover-auto[data-popper-placement^="right"] > .popover-arrow {
   left: calc(
@@ -6054,11 +6829,27 @@ fieldset:disabled .btn {
 }
 .bs-popover-end > .popover-arrow::after,
 .bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::after {
+=======
+.bs-popover-end > .popover-arrow, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow {
+  left: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
+  width: var(--bs-popover-arrow-height);
+  height: var(--bs-popover-arrow-width);
+}
+.bs-popover-end > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::before, .bs-popover-end > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::after {
+  border-width: calc(var(--bs-popover-arrow-width) * 0.5) var(--bs-popover-arrow-height) calc(var(--bs-popover-arrow-width) * 0.5) 0;
+}
+.bs-popover-end > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::before {
+  left: 0;
+  border-right-color: var(--bs-popover-arrow-border);
+}
+.bs-popover-end > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=right] > .popover-arrow::after {
+>>>>>>> mahmoud-workshop
   left: var(--bs-popover-border-width);
   border-right-color: var(--bs-popover-bg);
 }
 
 /* rtl:end:ignore */
+<<<<<<< HEAD
 .bs-popover-bottom > .popover-arrow,
 .bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow {
   top: calc(
@@ -6084,6 +6875,23 @@ fieldset:disabled .btn {
 }
 .bs-popover-bottom .popover-header::before,
 .bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before {
+=======
+.bs-popover-bottom > .popover-arrow, .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow {
+  top: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
+}
+.bs-popover-bottom > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::before, .bs-popover-bottom > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::after {
+  border-width: 0 calc(var(--bs-popover-arrow-width) * 0.5) var(--bs-popover-arrow-height);
+}
+.bs-popover-bottom > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::before {
+  top: 0;
+  border-bottom-color: var(--bs-popover-arrow-border);
+}
+.bs-popover-bottom > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::after {
+  top: var(--bs-popover-border-width);
+  border-bottom-color: var(--bs-popover-bg);
+}
+.bs-popover-bottom .popover-header::before, .bs-popover-auto[data-popper-placement^=bottom] .popover-header::before {
+>>>>>>> mahmoud-workshop
   position: absolute;
   top: 0;
   left: 50%;
@@ -6091,6 +6899,7 @@ fieldset:disabled .btn {
   width: var(--bs-popover-arrow-width);
   margin-left: calc(-0.5 * var(--bs-popover-arrow-width));
   content: "";
+<<<<<<< HEAD
   border-bottom: var(--bs-popover-border-width) solid
     var(--bs-popover-header-bg);
 }
@@ -6118,6 +6927,25 @@ fieldset:disabled .btn {
 }
 .bs-popover-start > .popover-arrow::after,
 .bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::after {
+=======
+  border-bottom: var(--bs-popover-border-width) solid var(--bs-popover-header-bg);
+}
+
+/* rtl:begin:ignore */
+.bs-popover-start > .popover-arrow, .bs-popover-auto[data-popper-placement^=left] > .popover-arrow {
+  right: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
+  width: var(--bs-popover-arrow-height);
+  height: var(--bs-popover-arrow-width);
+}
+.bs-popover-start > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=left] > .popover-arrow::before, .bs-popover-start > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=left] > .popover-arrow::after {
+  border-width: calc(var(--bs-popover-arrow-width) * 0.5) 0 calc(var(--bs-popover-arrow-width) * 0.5) var(--bs-popover-arrow-height);
+}
+.bs-popover-start > .popover-arrow::before, .bs-popover-auto[data-popper-placement^=left] > .popover-arrow::before {
+  right: 0;
+  border-left-color: var(--bs-popover-arrow-border);
+}
+.bs-popover-start > .popover-arrow::after, .bs-popover-auto[data-popper-placement^=left] > .popover-arrow::after {
+>>>>>>> mahmoud-workshop
   right: var(--bs-popover-border-width);
   border-left-color: var(--bs-popover-bg);
 }
@@ -6129,8 +6957,12 @@ fieldset:disabled .btn {
   font-size: var(--bs-popover-header-font-size);
   color: var(--bs-popover-header-color);
   background-color: var(--bs-popover-header-bg);
+<<<<<<< HEAD
   border-bottom: var(--bs-popover-border-width) solid
     var(--bs-popover-border-color);
+=======
+  border-bottom: var(--bs-popover-border-width) solid var(--bs-popover-border-color);
+>>>>>>> mahmoud-workshop
   border-top-left-radius: var(--bs-popover-inner-border-radius);
   border-top-right-radius: var(--bs-popover-inner-border-radius);
 }
@@ -6169,7 +7001,11 @@ fieldset:disabled .btn {
   width: 100%;
   margin-right: -100%;
   -webkit-backface-visibility: hidden;
+<<<<<<< HEAD
   backface-visibility: hidden;
+=======
+          backface-visibility: hidden;
+>>>>>>> mahmoud-workshop
   transition: transform 0.6s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -6242,8 +7078,12 @@ fieldset:disabled .btn {
     transition: none;
   }
 }
+<<<<<<< HEAD
 .carousel-control-prev:hover,
 .carousel-control-prev:focus,
+=======
+.carousel-control-prev:hover, .carousel-control-prev:focus,
+>>>>>>> mahmoud-workshop
 .carousel-control-next:hover,
 .carousel-control-next:focus {
   color: #fff;
@@ -6356,8 +7196,12 @@ fieldset:disabled .btn {
   height: var(--bs-spinner-height);
   vertical-align: var(--bs-spinner-vertical-align);
   border-radius: 50%;
+<<<<<<< HEAD
   animation: var(--bs-spinner-animation-speed) linear infinite
     var(--bs-spinner-animation-name);
+=======
+  animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
+>>>>>>> mahmoud-workshop
 }
 
 @keyframes spinner-border {
@@ -6412,12 +7256,16 @@ fieldset:disabled .btn {
     --bs-spinner-animation-speed: 1.5s;
   }
 }
+<<<<<<< HEAD
 .offcanvas,
 .offcanvas-xxl,
 .offcanvas-xl,
 .offcanvas-lg,
 .offcanvas-md,
 .offcanvas-sm {
+=======
+.offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
+>>>>>>> mahmoud-workshop
   --bs-offcanvas-zindex: 1045;
   --bs-offcanvas-width: 400px;
   --bs-offcanvas-height: 30vh;
@@ -6456,8 +7304,12 @@ fieldset:disabled .btn {
     top: 0;
     left: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-right: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(-100%);
   }
 }
@@ -6466,8 +7318,12 @@ fieldset:disabled .btn {
     top: 0;
     right: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-left: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(100%);
   }
 }
@@ -6478,8 +7334,12 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-bottom: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(-100%);
   }
 }
@@ -6489,21 +7349,33 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-top: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(100%);
   }
 }
 @media (max-width: 575.98px) {
+<<<<<<< HEAD
   .offcanvas-sm.showing,
   .offcanvas-sm.show:not(.hiding) {
+=======
+  .offcanvas-sm.showing, .offcanvas-sm.show:not(.hiding) {
+>>>>>>> mahmoud-workshop
     transform: none;
   }
 }
 @media (max-width: 575.98px) {
+<<<<<<< HEAD
   .offcanvas-sm.showing,
   .offcanvas-sm.hiding,
   .offcanvas-sm.show {
+=======
+  .offcanvas-sm.showing, .offcanvas-sm.hiding, .offcanvas-sm.show {
+>>>>>>> mahmoud-workshop
     visibility: visible;
   }
 }
@@ -6551,8 +7423,12 @@ fieldset:disabled .btn {
     top: 0;
     left: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-right: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(-100%);
   }
 }
@@ -6561,8 +7437,12 @@ fieldset:disabled .btn {
     top: 0;
     right: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-left: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(100%);
   }
 }
@@ -6573,8 +7453,12 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-bottom: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(-100%);
   }
 }
@@ -6584,21 +7468,33 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-top: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(100%);
   }
 }
 @media (max-width: 767.98px) {
+<<<<<<< HEAD
   .offcanvas-md.showing,
   .offcanvas-md.show:not(.hiding) {
+=======
+  .offcanvas-md.showing, .offcanvas-md.show:not(.hiding) {
+>>>>>>> mahmoud-workshop
     transform: none;
   }
 }
 @media (max-width: 767.98px) {
+<<<<<<< HEAD
   .offcanvas-md.showing,
   .offcanvas-md.hiding,
   .offcanvas-md.show {
+=======
+  .offcanvas-md.showing, .offcanvas-md.hiding, .offcanvas-md.show {
+>>>>>>> mahmoud-workshop
     visibility: visible;
   }
 }
@@ -6646,8 +7542,12 @@ fieldset:disabled .btn {
     top: 0;
     left: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-right: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(-100%);
   }
 }
@@ -6656,8 +7556,12 @@ fieldset:disabled .btn {
     top: 0;
     right: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-left: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(100%);
   }
 }
@@ -6668,8 +7572,12 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-bottom: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(-100%);
   }
 }
@@ -6679,21 +7587,33 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-top: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(100%);
   }
 }
 @media (max-width: 991.98px) {
+<<<<<<< HEAD
   .offcanvas-lg.showing,
   .offcanvas-lg.show:not(.hiding) {
+=======
+  .offcanvas-lg.showing, .offcanvas-lg.show:not(.hiding) {
+>>>>>>> mahmoud-workshop
     transform: none;
   }
 }
 @media (max-width: 991.98px) {
+<<<<<<< HEAD
   .offcanvas-lg.showing,
   .offcanvas-lg.hiding,
   .offcanvas-lg.show {
+=======
+  .offcanvas-lg.showing, .offcanvas-lg.hiding, .offcanvas-lg.show {
+>>>>>>> mahmoud-workshop
     visibility: visible;
   }
 }
@@ -6741,8 +7661,12 @@ fieldset:disabled .btn {
     top: 0;
     left: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-right: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(-100%);
   }
 }
@@ -6751,8 +7675,12 @@ fieldset:disabled .btn {
     top: 0;
     right: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-left: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(100%);
   }
 }
@@ -6763,8 +7691,12 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-bottom: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(-100%);
   }
 }
@@ -6774,21 +7706,33 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-top: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(100%);
   }
 }
 @media (max-width: 1199.98px) {
+<<<<<<< HEAD
   .offcanvas-xl.showing,
   .offcanvas-xl.show:not(.hiding) {
+=======
+  .offcanvas-xl.showing, .offcanvas-xl.show:not(.hiding) {
+>>>>>>> mahmoud-workshop
     transform: none;
   }
 }
 @media (max-width: 1199.98px) {
+<<<<<<< HEAD
   .offcanvas-xl.showing,
   .offcanvas-xl.hiding,
   .offcanvas-xl.show {
+=======
+  .offcanvas-xl.showing, .offcanvas-xl.hiding, .offcanvas-xl.show {
+>>>>>>> mahmoud-workshop
     visibility: visible;
   }
 }
@@ -6836,8 +7780,12 @@ fieldset:disabled .btn {
     top: 0;
     left: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-right: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(-100%);
   }
 }
@@ -6846,8 +7794,12 @@ fieldset:disabled .btn {
     top: 0;
     right: 0;
     width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
     border-left: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateX(100%);
   }
 }
@@ -6858,8 +7810,12 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-bottom: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(-100%);
   }
 }
@@ -6869,21 +7825,33 @@ fieldset:disabled .btn {
     left: 0;
     height: var(--bs-offcanvas-height);
     max-height: 100%;
+<<<<<<< HEAD
     border-top: var(--bs-offcanvas-border-width) solid
       var(--bs-offcanvas-border-color);
+=======
+    border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
     transform: translateY(100%);
   }
 }
 @media (max-width: 1399.98px) {
+<<<<<<< HEAD
   .offcanvas-xxl.showing,
   .offcanvas-xxl.show:not(.hiding) {
+=======
+  .offcanvas-xxl.showing, .offcanvas-xxl.show:not(.hiding) {
+>>>>>>> mahmoud-workshop
     transform: none;
   }
 }
 @media (max-width: 1399.98px) {
+<<<<<<< HEAD
   .offcanvas-xxl.showing,
   .offcanvas-xxl.hiding,
   .offcanvas-xxl.show {
+=======
+  .offcanvas-xxl.showing, .offcanvas-xxl.hiding, .offcanvas-xxl.show {
+>>>>>>> mahmoud-workshop
     visibility: visible;
   }
 }
@@ -6928,16 +7896,24 @@ fieldset:disabled .btn {
   top: 0;
   left: 0;
   width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
   border-right: var(--bs-offcanvas-border-width) solid
     var(--bs-offcanvas-border-color);
+=======
+  border-right: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
   transform: translateX(-100%);
 }
 .offcanvas.offcanvas-end {
   top: 0;
   right: 0;
   width: var(--bs-offcanvas-width);
+<<<<<<< HEAD
   border-left: var(--bs-offcanvas-border-width) solid
     var(--bs-offcanvas-border-color);
+=======
+  border-left: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
   transform: translateX(100%);
 }
 .offcanvas.offcanvas-top {
@@ -6946,8 +7922,12 @@ fieldset:disabled .btn {
   left: 0;
   height: var(--bs-offcanvas-height);
   max-height: 100%;
+<<<<<<< HEAD
   border-bottom: var(--bs-offcanvas-border-width) solid
     var(--bs-offcanvas-border-color);
+=======
+  border-bottom: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+>>>>>>> mahmoud-workshop
   transform: translateY(-100%);
 }
 .offcanvas.offcanvas-bottom {
@@ -6955,6 +7935,7 @@ fieldset:disabled .btn {
   left: 0;
   height: var(--bs-offcanvas-height);
   max-height: 100%;
+<<<<<<< HEAD
   border-top: var(--bs-offcanvas-border-width) solid
     var(--bs-offcanvas-border-color);
   transform: translateY(100%);
@@ -6966,6 +7947,15 @@ fieldset:disabled .btn {
 .offcanvas.showing,
 .offcanvas.hiding,
 .offcanvas.show {
+=======
+  border-top: var(--bs-offcanvas-border-width) solid var(--bs-offcanvas-border-color);
+  transform: translateY(100%);
+}
+.offcanvas.showing, .offcanvas.show:not(.hiding) {
+  transform: none;
+}
+.offcanvas.showing, .offcanvas.hiding, .offcanvas.show {
+>>>>>>> mahmoud-workshop
   visibility: visible;
 }
 
@@ -6992,8 +7982,12 @@ fieldset:disabled .btn {
   padding: var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x);
 }
 .offcanvas-header .btn-close {
+<<<<<<< HEAD
   padding: calc(var(--bs-offcanvas-padding-y) * 0.5)
     calc(var(--bs-offcanvas-padding-x) * 0.5);
+=======
+  padding: calc(var(--bs-offcanvas-padding-y) * 0.5) calc(var(--bs-offcanvas-padding-x) * 0.5);
+>>>>>>> mahmoud-workshop
   margin-top: calc(-0.5 * var(--bs-offcanvas-padding-y));
   margin-right: calc(-0.5 * var(--bs-offcanvas-padding-x));
   margin-bottom: calc(-0.5 * var(--bs-offcanvas-padding-y));
@@ -7045,6 +8039,7 @@ fieldset:disabled .btn {
   }
 }
 .placeholder-wave {
+<<<<<<< HEAD
   -webkit-mask-image: linear-gradient(
     130deg,
     #000 55%,
@@ -7059,13 +8054,23 @@ fieldset:disabled .btn {
   );
   -webkit-mask-size: 200% 100%;
   mask-size: 200% 100%;
+=======
+  -webkit-mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
+          mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
+  -webkit-mask-size: 200% 100%;
+          mask-size: 200% 100%;
+>>>>>>> mahmoud-workshop
   animation: placeholder-wave 2s linear infinite;
 }
 
 @keyframes placeholder-wave {
   100% {
     -webkit-mask-position: -200% 0%;
+<<<<<<< HEAD
     mask-position: -200% 0%;
+=======
+            mask-position: -200% 0%;
+>>>>>>> mahmoud-workshop
   }
 }
 .clearfix::after {
@@ -7117,64 +8122,96 @@ fieldset:disabled .btn {
 .link-primary {
   color: #0d6efd !important;
 }
+<<<<<<< HEAD
 .link-primary:hover,
 .link-primary:focus {
+=======
+.link-primary:hover, .link-primary:focus {
+>>>>>>> mahmoud-workshop
   color: #0a58ca !important;
 }
 
 .link-secondary {
   color: #6c757d !important;
 }
+<<<<<<< HEAD
 .link-secondary:hover,
 .link-secondary:focus {
+=======
+.link-secondary:hover, .link-secondary:focus {
+>>>>>>> mahmoud-workshop
   color: #565e64 !important;
 }
 
 .link-success {
   color: #198754 !important;
 }
+<<<<<<< HEAD
 .link-success:hover,
 .link-success:focus {
+=======
+.link-success:hover, .link-success:focus {
+>>>>>>> mahmoud-workshop
   color: #146c43 !important;
 }
 
 .link-info {
   color: #0dcaf0 !important;
 }
+<<<<<<< HEAD
 .link-info:hover,
 .link-info:focus {
+=======
+.link-info:hover, .link-info:focus {
+>>>>>>> mahmoud-workshop
   color: #3dd5f3 !important;
 }
 
 .link-warning {
   color: #ffc107 !important;
 }
+<<<<<<< HEAD
 .link-warning:hover,
 .link-warning:focus {
+=======
+.link-warning:hover, .link-warning:focus {
+>>>>>>> mahmoud-workshop
   color: #ffcd39 !important;
 }
 
 .link-danger {
   color: #dc3545 !important;
 }
+<<<<<<< HEAD
 .link-danger:hover,
 .link-danger:focus {
+=======
+.link-danger:hover, .link-danger:focus {
+>>>>>>> mahmoud-workshop
   color: #b02a37 !important;
 }
 
 .link-light {
   color: #f8f9fa !important;
 }
+<<<<<<< HEAD
 .link-light:hover,
 .link-light:focus {
+=======
+.link-light:hover, .link-light:focus {
+>>>>>>> mahmoud-workshop
   color: #f9fafb !important;
 }
 
 .link-dark {
   color: #212529 !important;
 }
+<<<<<<< HEAD
 .link-dark:hover,
 .link-dark:focus {
+=======
+.link-dark:hover, .link-dark:focus {
+>>>>>>> mahmoud-workshop
   color: #1a1e21 !important;
 }
 
@@ -7211,9 +8248,13 @@ fieldset:disabled .btn {
   --bs-aspect-ratio: 42.8571428571%;
 }
 
+<<<<<<< HEAD
 .fixed-top,
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav,
 .sb-nav-fixed .sb-topnav {
+=======
+.fixed-top, .sb-nav-fixed #layoutSidenav #layoutSidenav_nav, .sb-nav-fixed .sb-topnav {
+>>>>>>> mahmoud-workshop
   position: fixed;
   top: 0;
   right: 0;
@@ -7570,8 +8611,12 @@ fieldset:disabled .btn {
 }
 
 .border-top {
+<<<<<<< HEAD
   border-top: var(--bs-border-width) var(--bs-border-style)
     var(--bs-border-color) !important;
+=======
+  border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-top-0 {
@@ -7579,8 +8624,12 @@ fieldset:disabled .btn {
 }
 
 .border-end {
+<<<<<<< HEAD
   border-right: var(--bs-border-width) var(--bs-border-style)
     var(--bs-border-color) !important;
+=======
+  border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-end-0 {
@@ -7588,8 +8637,12 @@ fieldset:disabled .btn {
 }
 
 .border-bottom {
+<<<<<<< HEAD
   border-bottom: var(--bs-border-width) var(--bs-border-style)
     var(--bs-border-color) !important;
+=======
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-bottom-0 {
@@ -7597,8 +8650,12 @@ fieldset:disabled .btn {
 }
 
 .border-start {
+<<<<<<< HEAD
   border-left: var(--bs-border-width) var(--bs-border-style)
     var(--bs-border-color) !important;
+=======
+  border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-start-0 {
@@ -7607,26 +8664,38 @@ fieldset:disabled .btn {
 
 .border-primary {
   --bs-border-opacity: 1;
+<<<<<<< HEAD
   border-color: rgba(
     var(--bs-primary-rgb),
     var(--bs-border-opacity)
   ) !important;
+=======
+  border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-secondary {
   --bs-border-opacity: 1;
+<<<<<<< HEAD
   border-color: rgba(
     var(--bs-secondary-rgb),
     var(--bs-border-opacity)
   ) !important;
+=======
+  border-color: rgba(var(--bs-secondary-rgb), var(--bs-border-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-success {
   --bs-border-opacity: 1;
+<<<<<<< HEAD
   border-color: rgba(
     var(--bs-success-rgb),
     var(--bs-border-opacity)
   ) !important;
+=======
+  border-color: rgba(var(--bs-success-rgb), var(--bs-border-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-info {
@@ -7636,10 +8705,14 @@ fieldset:disabled .btn {
 
 .border-warning {
   --bs-border-opacity: 1;
+<<<<<<< HEAD
   border-color: rgba(
     var(--bs-warning-rgb),
     var(--bs-border-opacity)
   ) !important;
+=======
+  border-color: rgba(var(--bs-warning-rgb), var(--bs-border-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .border-danger {
@@ -8572,26 +9645,38 @@ fieldset:disabled .btn {
 
 .bg-primary {
   --bs-bg-opacity: 1;
+<<<<<<< HEAD
   background-color: rgba(
     var(--bs-primary-rgb),
     var(--bs-bg-opacity)
   ) !important;
+=======
+  background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .bg-secondary {
   --bs-bg-opacity: 1;
+<<<<<<< HEAD
   background-color: rgba(
     var(--bs-secondary-rgb),
     var(--bs-bg-opacity)
   ) !important;
+=======
+  background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .bg-success {
   --bs-bg-opacity: 1;
+<<<<<<< HEAD
   background-color: rgba(
     var(--bs-success-rgb),
     var(--bs-bg-opacity)
   ) !important;
+=======
+  background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .bg-info {
@@ -8601,10 +9686,14 @@ fieldset:disabled .btn {
 
 .bg-warning {
   --bs-bg-opacity: 1;
+<<<<<<< HEAD
   background-color: rgba(
     var(--bs-warning-rgb),
     var(--bs-bg-opacity)
   ) !important;
+=======
+  background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .bg-danger {
@@ -8634,10 +9723,14 @@ fieldset:disabled .btn {
 
 .bg-body {
   --bs-bg-opacity: 1;
+<<<<<<< HEAD
   background-color: rgba(
     var(--bs-body-bg-rgb),
     var(--bs-bg-opacity)
   ) !important;
+=======
+  background-color: rgba(var(--bs-body-bg-rgb), var(--bs-bg-opacity)) !important;
+>>>>>>> mahmoud-workshop
 }
 
 .bg-transparent {
@@ -8671,20 +9764,35 @@ fieldset:disabled .btn {
 
 .user-select-all {
   -webkit-user-select: all !important;
+<<<<<<< HEAD
   -moz-user-select: all !important;
   user-select: all !important;
+=======
+     -moz-user-select: all !important;
+          user-select: all !important;
+>>>>>>> mahmoud-workshop
 }
 
 .user-select-auto {
   -webkit-user-select: auto !important;
+<<<<<<< HEAD
   -moz-user-select: auto !important;
   user-select: auto !important;
+=======
+     -moz-user-select: auto !important;
+          user-select: auto !important;
+>>>>>>> mahmoud-workshop
 }
 
 .user-select-none {
   -webkit-user-select: none !important;
+<<<<<<< HEAD
   -moz-user-select: none !important;
   user-select: none !important;
+=======
+     -moz-user-select: none !important;
+          user-select: none !important;
+>>>>>>> mahmoud-workshop
 }
 
 .pe-none {
@@ -11450,11 +12558,15 @@ body {
   margin-left: auto;
   transition: transform 0.15s ease;
 }
+<<<<<<< HEAD
 .sb-sidenav
   .sb-sidenav-menu
   .nav
   .nav-link.collapsed
   .sb-sidenav-collapse-arrow {
+=======
+.sb-sidenav .sb-sidenav-menu .nav .nav-link.collapsed .sb-sidenav-collapse-arrow {
+>>>>>>> mahmoud-workshop
   transform: rotate(-90deg);
 }
 .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
@@ -11688,4 +12800,8 @@ body {
   width: 20px !important;
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> mahmoud-workshop

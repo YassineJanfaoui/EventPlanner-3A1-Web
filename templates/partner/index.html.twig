@@ -1,0 +1,40 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Partner index
+{% endblock %}
+
+{% block body %}
+	<h1>Partners</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>PartnerId</th>
+				<th>Name</th>
+				<th>Category</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for partner in partners %}
+				<tr>
+					<td>{{ partner.partnerId }}</td>
+					<td>{{ partner.name }}</td>
+					<td>{{ partner.category }}</td>
+					<td style="display:flex; gap:10px; ">
+						<button class="btn btn-primary">
+							<a style="text-decoration:none; color:white;" href="{{ path('app_partner_edit', {'partnerId': partner.partnerid}) }}">edit</a>
+						</button>
+						{{ include('partner/_delete_form.html.twig') }}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_partner_new') }}" style="color: white; width:20%; margin-left:37.5%" class="btn btn-primary">Create new</a>
+{% endblock %}

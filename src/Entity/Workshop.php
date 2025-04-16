@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Repository\WorkshopRepository;
 
@@ -15,7 +16,7 @@ class Workshop
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', name: 'workshopId')]
+    #[ORM\Column(name: 'workshopId', type: 'integer')]
     private ?int $workshopId = null;
 
     public function getWorkshopId(): ?int
@@ -30,6 +31,10 @@ class Workshop
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z]+$/",
+        message: "title can only contain letters"
+    )]
     private ?string $title = null;
 
     public function getTitle(): ?string
@@ -44,6 +49,11 @@ class Workshop
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Cannot be blank")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z]+$/",
+        message: "Coach name can only contain letters"
+    )]
     private ?string $coach = null;
 
     public function getCoach(): ?string
@@ -51,13 +61,18 @@ class Workshop
         return $this->coach;
     }
 
-    public function setCoach(string $coach): self
+    public function setCoach(?string $coach): self
     {
         $this->coach = $coach;
         return $this;
     }
 
-    #[ORM\Column(type: 'date', nullable: false, name: 'startDate')]
+    #[ORM\Column(name: 'startDate', type: 'date', nullable: false)]
+    #[Assert\Type("\DateTimeInterface", message: "Start date must be a valid date")]
+    #[Assert\GreaterThanOrEqual(
+        "today",
+        message: "Start date must be today or in the future"
+    )]
     private ?\DateTimeInterface $startDate = null;
 
     public function getStartDate(): ?\DateTimeInterface
@@ -72,6 +87,7 @@ class Workshop
     }
 
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: "Cannot be blank")]
     private ?int $duration = null;
 
     public function getDuration(): ?int
@@ -79,13 +95,14 @@ class Workshop
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration(?int $duration): self
     {
         $this->duration = $duration;
         return $this;
     }
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank(message: "Cannot be blank")]
     private ?string $description = null;
 
     public function getDescription(): ?string
@@ -101,6 +118,7 @@ class Workshop
 
     #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: 'workshops')]
     #[ORM\JoinColumn(name: 'partnerId', referencedColumnName: 'partnerId')]
+    #[Assert\NotBlank(message: "Cannot be blank")]
     private ?Partner $partner = null;
 
     public function getPartner(): ?Partner
@@ -111,6 +129,21 @@ class Workshop
     public function setPartner(?Partner $partner): self
     {
         $this->partner = $partner;
+        return $this;
+    }
+
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')]
+    private ?Event $event = null;
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
         return $this;
     }
 }
