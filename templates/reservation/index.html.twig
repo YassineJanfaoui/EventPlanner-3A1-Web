@@ -1,0 +1,103 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Reservation List{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="mb-4 text-center">Reservation List</h1>
+
+    <div class="text-end mb-3">
+        <a href="{{ path('app_reservation_new') }}" class="btn btn-success">Create New Reservation</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover table-bordered text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event Venue ID</th>
+                        <th>Reservation Date</th>
+                        <th>Reservation Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.eventVenueId }}</td>
+                        <td>{{ reservation.reservationDate }}</td>
+                        <td>{{ reservation.reservationPrice }}</td>
+                        <td>
+                            <a href="{{ path('app_reservation_show', {'eventVenueId': reservation.eventVenueId}) }}" class="btn btn-info btn-sm me-1">Show</a>
+                            <a href="{{ path('app_reservation_edit', {'eventVenueId': reservation.eventVenueId}) }}" class="btn btn-primary btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No reservations found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_event_index') }}" class="btn btn-lg btn-outline-primary shadow-sm px-4 py-2">Go to Event List</a>
+        <a href="{{ path('app_reservation_new') }}" class="btn btn-lg btn-success shadow-sm px-4 py-2 ms-3">Create New Reservation</a>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    }
+
+    .card-body {
+        padding: 2rem;
+        color: #495057;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.6rem;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 5px;
+    }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        background-color: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}

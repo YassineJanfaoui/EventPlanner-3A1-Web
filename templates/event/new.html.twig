@@ -1,0 +1,124 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    
+    <h1 class="mb-4 text-center">Create a New Event</h1>
+
+    {{ form_start(form) }}
+    
+    {# Event name #}
+    <div class="mb-3">
+        {{ form_label(form.name, 'Event Name') }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.startDate, 'Start Date') }}
+            {{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.endDate, 'End Date') }}
+            {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.maxParticipants, 'Max Participants') }}
+            {{ form_widget(form.maxParticipants, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.maxParticipants) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.fee, 'Participation Fee') }}
+            {{ form_widget(form.fee, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.fee) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.image, 'Image') }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{{ path('app_event_index') }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ path('event_list') }}" class="btn btn-outline-primary">Go to Front</a>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    }
+
+    .custom-header {
+        background-color: #053536;
+        color: #F1F2F6;
+        padding: 15px 20px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .card-body {
+        padding: 2rem;
+        color: #495057;
+    }
+
+    .btn-outline-primary {
+        border-color: #053536;
+        color: #053536;
+    }
+
+    .bg-custom-green {
+        background-color: #053536 !important;
+        border-color: #053536;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #053536;
+        color: white;
+    }
+
+    .card-footer {
+        background-color: #ffffff;
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .form-control {
+        border-radius: 0.375rem;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+        border-color: #053536;
+        box-shadow: 0 0 0 0.25rem rgba(5, 53, 54, 0.25);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,446 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %} Event Planner {% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    {% block css %}
+	<!-- CSS here -->
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+<!--<link rel="stylesheet" href=""> asset('css/owl.carousel.min.css') }}-->
+<link rel="stylesheet" href="{{ asset('css/slicknav.css') }}">
+<link rel="stylesheet" href="{{ asset('css/flaticon.css') }}">
+<link rel="stylesheet" href="{{ asset('css/gijgo.css') }}">
+<link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/fontawesome-all.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
+<link rel="stylesheet" href="{{ asset('css/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('css/nice-select.css') }}">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {% endblock %}
+    <style>
+    /* ===== Base Styles ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #2c234d;
+  line-height: 1.7;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+.no-js body {
+  padding-top: 3.125rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #fb246a;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.header-btn {
+  background: #fb246a;
+  color: #fff !important;
+}
+
+.header-btn:hover {
+  background: #2c234d;
+  color: #fff !important;
+}
+
+/* ===== Header Styles ===== */
+.header-area {
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.header-sticky {
+  padding: 15px 0;
+  transition: all 0.3s ease;
+}
+
+.main-header {
+  padding: 15px 0;
+}
+
+.logo img {
+  max-height: 50px;
+}
+
+.main-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-menu > nav > ul > li {
+  display: inline-block;
+  position: relative;
+  margin: 0 15px;
+}
+
+.main-menu > nav > ul > li > a {
+  color: #2c234d;
+  font-weight: 500;
+  padding: 10px 0;
+  display: block;
+}
+
+.main-menu > nav > ul > li:hover > a {
+  color: #fb246a;
+}
+
+/* Submenu Styles */
+.submenu {
+  position: absolute;
+  width: 200px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 15px 0;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.main-menu > nav > ul > li:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.submenu li {
+  padding: 0 20px;
+}
+
+.submenu li a {
+  display: block;
+  padding: 8px 0;
+  color: #2c234d;
+}
+
+.submenu li a:hover {
+  color: #fb246a;
+}
+
+/* Mobile Menu */
+.mobile_menu {
+  display: none;
+}
+
+/* ===== Footer Styles ===== */
+.footer-bg {
+  background: #040E27;
+  padding: 70px 0 20px;
+}
+
+.footer-border {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 20px;
+}
+
+.footer-copy-right p {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.footer-social a {
+  color: #fff;
+  font-size: 20px;
+  margin-left: 15px;
+  transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #fb246a;
+}
+
+/* Back to Top Button */
+#back-top {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 99;
+  display: none;
+}
+
+#back-top a {
+  width: 50px;
+  height: 50px;
+  background: #fb246a;
+  color: #fff;
+  display: block;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+#back-top a:hover {
+  background: #2c234d;
+}
+
+/* ===== Responsive Styles ===== */
+@media (max-width: 991px) {
+  .main-menu {
+    display: none;
+  }
+  
+  .mobile_menu {
+    display: block;
+  }
+  
+  .header-right-btn {
+    display: none;
+  }
+  
+  .logo {
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-copy-right {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .footer-social {
+    text-align: center;
+    float: none !important;
+  }
+  
+  .footer-social a {
+    margin: 0 8px;
+  }
+}
+
+/* ===== Animation Styles ===== */
+.wow {
+  visibility: hidden;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+/* ===== Utility Classes ===== */
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-lg-none {
+  display: none !important;
+}
+
+@media (min-width: 992px) {
+  .d-lg-block {
+    display: block !important;
+  }
+  
+  .d-lg-none {
+    display: none !important;
+  }
+}
+
+.ml-30 {
+  margin-left: 30px;
+}
+
+.f-right {
+  float: right;
+}
+
+/* ===== Form Styles ===== */
+.nice-select {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  height: 50px;
+  line-height: 50px;
+}
+
+/* ===== Plugin Overrides ===== */
+.slicknav_menu {
+  display: none;
+  background: transparent;
+  padding: 0;
+}
+
+@media (max-width: 991px) {
+  .slicknav_menu {
+    display: block;
+  }
+}
+
+.slicknav_btn {
+  background: #fb246a;
+  margin: 15px 0;
+}
+
+.slicknav_nav {
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.slicknav_nav a {
+  color: #2c234d;
+  padding: 10px 20px;
+}
+
+.slicknav_nav a:hover {
+  background: #fb246a;
+  color: #fff;
+}
+
+.slicknav_nav .slicknav_row:hover {
+  background: #fb246a;
+  color: #fff;
+}
+
+.slicknav_nav .submenu {
+  display: none;
+  padding-left: 20px;
+}
+
+.slicknav_nav .slicknav_item:hover .submenu {
+  display: block;
+}
+    </style>
+</head>
+<body>
+<header>
+    <!--? Header Start -->
+    <div class="header-area">
+        <div class="main-header header-sticky">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <!-- Logo -->
+                    <div class="col-xl-2 col-lg-2 col-md-1">
+                        <div class="logo">
+                            <a href="index.html"><img src="{{ asset('img/logo/logo.png') }}" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-10 col-lg-10 col-md-10">
+                        <div class="menu-main d-flex align-items-center justify-content-end">
+                            <!-- Main-menu -->
+                            <div class="main-menu f-right d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="speakers.html">Speakers</a></li>
+                                        <li><a href="schedule.html">Schedule</a></li>
+                                        <li><a href="blog.html">Blog</a>
+                                            <ul class="submenu">
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="blog_details.html">Blog Details</a></li>
+                                                <li><a href="elements.html">Element</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="header-right-btn f-right d-none d-lg-block ml-30">
+                                <a href="#" class="btn header-btn">Get Your Ticket</a>
+                            </div>
+                        </div>
+                    </div>   
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+        {% block body%}
+
+        {% endblock %}
+        
+    
+    <!-- Scroll Up -->
+    <div id="back-top" >
+        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
+{% block js %}
+    <!-- JS here -->
+
+    <script src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<!-- Jquery Mobile Menu -->
+<script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
+
+<!-- Jquery Slick, Owl-Carousel Plugins -->
+<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('js/slick.min.js') }}"></script>
+<!-- One Page, Animated-Headline -->
+<script src="{{ asset('js/wow.min.js') }}"></script>
+<script src="{{ asset('js/animated.headline.js') }}"></script>
+<script src="{{ asset('js/jquery.magnific-popup.js') }}"></script>
+
+<!-- Date Picker -->
+<script src="{{ asset('js/gijgo.min.js') }}"></script>
+<!-- Nice-select, sticky -->
+<script src="{{ asset('js/jquery.nice-select.min.js') }}"></script>
+<script src="{{ asset('js/jquery.sticky.js') }}"></script>
+
+<!-- Counter, Waypoint -->
+<script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
+<script src="{{ asset('js/waypoints.min.js') }}"></script>
+<script src="{{ asset('js/jquery.countdown.min.js') }}"></script>
+
+<!-- Contact JS -->
+<script src="{{ asset('js/contact.js') }}"></script>
+<script src="{{ asset('js/jquery.form.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/mail-script.js') }}"></script>
+<script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
+
+<!-- Main JS -->
+<script src="{{ asset('js/plugins.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+    {% endblock %}
+    </body>
+</html>

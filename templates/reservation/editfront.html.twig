@@ -1,0 +1,110 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Edit Reservation{% endblock %}
+
+{% block body %}
+<div class="container py-5 elegant-bg">
+
+    <h1 class="mb-4 text-center elegant-title">Edit Reservation</h1>
+
+    <div class="card elegant-card shadow-sm">
+        <div class="card-body">
+            {{ include('reservation/_form.html.twig') }}
+
+            <div class="mt-4 d-flex justify-content-center gap-3">
+                <a href="{{ path('app_reservation_index_front') }}" class="btn btn-secondary elegant-back-link">
+                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                </a>
+                {{ include('reservation/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    :root {
+        --primary-color: #5f6caf;
+        --secondary-color: #8a94c6;
+        --accent-color: #e8b7d4;
+        --light-bg: #f8f9ff;
+        --dark-text: #2a2d3b;
+        --light-text: #6c757d;
+    }
+
+    body {
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+    }
+
+    .elegant-bg {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8eef8 100%);
+        min-height: 100vh;
+    }
+
+    .elegant-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(95, 108, 175, 0.1);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.6s ease forwards;
+    }
+
+    .elegant-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .elegant-title {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 2.2rem;
+        letter-spacing: -0.5px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 12px 16px;
+        border: 1px solid #e0e3ed;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 3px rgba(138, 148, 198, 0.2);
+    }
+
+    .elegant-back-link {
+        color: white;
+        background-color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        padding: 12px 24px;
+        border-radius: 8px;
+    }
+
+    .elegant-back-link:hover {
+        background-color: #7c87be;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+</style>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Add Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
