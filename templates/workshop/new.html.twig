@@ -1,0 +1,10 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}New Workshop
+{% endblock %}
+
+{% block body %}
+
+	{{ include('workshop/_form.html.twig', {'button_label': 'Create','text_label': 'Create New Workshop'} ) }}
+
+{% endblock %}

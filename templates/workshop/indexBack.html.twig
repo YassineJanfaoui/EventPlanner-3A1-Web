@@ -1,0 +1,47 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Workshop
+{% endblock %}
+
+{% block body %}
+	<div class="card mb-4">
+		<div class="card-header">Workshops</div>
+		<div class="card-body">
+			<table id="datatablesSimple">
+				<thead>
+					<tr>
+						<th>WorkshopId</th>
+						<th>Title</th>
+						<th>Coach</th>
+						<th>StartDate</th>
+						<th>Duration</th>
+						<th>Description</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for workshop in workshops %}
+						<tr>
+							<td>
+								<a href="{{ path('app_admin_workshop_show', {'workshopId': workshop.workshopId}) }}">{{ workshop.workshopId }}</a>
+							</td>
+							<td>{{ workshop.title }}</td>
+							<td>{{ workshop.coach }}</td>
+							<td>{{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}</td>
+							<td>{{ workshop.duration }}</td>
+							<td>{{ workshop.description }}</td>
+							<td>
+								{{ include('workshop/_delete_form.html.twig') }}</td>
+
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="7">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+{% endblock %}

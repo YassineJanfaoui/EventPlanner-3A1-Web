@@ -1,0 +1,31 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Partner
+{% endblock %}
+
+{% block body %}
+	<h1>Partner</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>PartnerId</th>
+				<td>{{ partner.partnerId }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ partner.name }}</td>
+			</tr>
+			<tr>
+				<th>Category</th>
+				<td>{{ partner.category }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_partner_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">back to list</a>
+
+	<a href="{{ path('app_partner_edit', {'partnerId': partner.partnerId}) }}">edit</a>
+
+	{{ include('partner/_delete_form.html.twig') }}
+{% endblock %}

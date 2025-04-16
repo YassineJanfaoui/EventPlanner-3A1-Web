@@ -1,0 +1,39 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Partner index
+{% endblock %}
+
+{% block body %}
+	<div class="card mb-4">
+		<div class="card-header">Partners</div>
+		<div class="card-body">
+			<table id="datatablesSimple">
+				<thead>
+					<tr>
+						<th>PartnerId</th>
+						<th>Name</th>
+						<th>Category</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for partner in partners %}
+						<tr>
+							<td>
+								<a href="{{ path('app_admin_partner_show', {'partnerId': partner.partnerId}) }}">{{ partner.partnerId }}</a>
+							</td>
+							<td>{{ partner.name }}</td>
+							<td>{{ partner.category }}</td>
+							<td>
+								{{ include('partner/_delete_form.html.twig') }}</td>
+						</tr>
+					</td>
+				</tbody>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="4">no records found</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table></div></div>{% endblock %}
