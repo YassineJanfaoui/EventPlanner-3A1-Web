@@ -132,11 +132,11 @@ final class ParticipantController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_participant_index_back', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
     }
 
 
-    #[Route('/{participantId}', name: 'app_participant_delete_back', methods: ['POST'])]
+    #[Route('/{participantId}/delete', name: 'app_participant_delete_back', methods: ['POST'])]
     public function deleteBack(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$participant->getParticipantId(), $request->getPayload()->getString('_token'))) {

@@ -9,21 +9,6 @@
             <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ app.request.query.get('search') }}">
         </div>
     </form>
-    <a href="#" class="btn custom-btn">Book Now</a>
-    <a href="#" class="btn custom-btn">More Info</a>
-    <a href="#" class="btn custom-btn">Contact</a>
-    <a href="#" class="btn custom-btn">Memories</a>
-    <!-- Sound buttons -->
-    <a href="#" class="btn custom-btn" onclick="playSound()"><i class="fas fa-volume-up"></i></a>
-    <a href="#" class="btn custom-btn" onclick="pauseSound()"><i class="fas fa-volume-mute"></i></a>
-
-    <!-- Sorting -->
-    <form method="get" class="ms-2">
-        <select name="sort" class="form-select custom-select" onchange="this.form.submit()">
-            <option value="date" {{ app.request.query.get('sort') == 'date' ? 'selected' }}>📅 Date</option>
-            <option value="price" {{ app.request.query.get('sort') == 'price' ? 'selected' }}>💰 Price</option>
-        </select>
-    </form>
 </div>
 
 <h1 class="fancy-title">

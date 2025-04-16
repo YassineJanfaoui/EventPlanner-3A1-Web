@@ -40,7 +40,7 @@ final class EventController extends AbstractController
                 $imageFile = $form->get('image')->getData();
                 if ($imageFile) {
                     $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                    $imageFile->move('D:\telechargement\EventPlanner-3A1-Web-main\public\images', $newFilename);
+                    $imageFile->move('C:/Users/ayoub/Desktop/merge/EventPlanner-3A1-Web/public/images', $newFilename);
                     $event->setImage('/images/' . $newFilename);
                 }
                /*else
@@ -57,13 +57,13 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{eventId}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event): Response
-    {
-        return $this->render('event/show.html.twig', [
-            'event' => $event,
-        ]);
-    }
+    #[Route('/event/{eventId}', name: 'app_event_show', methods: ['GET'])]
+public function show(Event $event): Response
+{
+    return $this->render('event/show.html.twig', [  // Actually render a template
+        'event' => $event,
+    ]);
+}
 
     #[Route('/{eventId}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
@@ -79,7 +79,7 @@ final class EventController extends AbstractController
             if ($imageFile) {
                 // If an image is uploaded, process it and save it
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $imageFile->move('D:/telechargement/EventPlanner-3A1-Web-main/public/images', $newFilename);
+                $imageFile->move('C:/Users/ayoub/Desktop/merge/EventPlanner-3A1-Web/public/images', $newFilename);
                 // Update the event image path
                 $event->setImage('/images/' . $newFilename);
             }
@@ -112,7 +112,7 @@ final class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/event/list', name: 'event_list')]
+    #[Route('/list', name: 'event_list')]
 public function list(Request $request, EventRepository $eventRepository): Response
 {
     $search = $request->query->get('search');
@@ -175,15 +175,15 @@ public function newFront(Request $request, EntityManagerInterface $entityManager
         if ($imageFile) {
             $newFilename = uniqid().'.'.$imageFile->guessExtension();
             
-            // Hardcoded path (same as your working `new()` method)
-            $uploadDirectory = 'D:\telechargement\EventPlanner-3A1-Web-main\public\images';
+            // Hardcoded path (same as your working new() method)
+            $uploadDirectory = 'C:/Users/ayoub/Desktop/merge/EventPlanner-3A1-Web/public/images';
             
             try {
                 $imageFile->move(
                     $uploadDirectory, // Use hardcoded path
                     $newFilename
                 );
-                // Match the path format in `new()`: '/images/filename.jpg'
+                // Match the path format in new(): '/images/filename.jpg'
                 $event->setImage('/images/' . $newFilename);
             } catch (FileException $e) {
                 $this->addFlash('error', 'Image upload failed.');
@@ -195,7 +195,7 @@ public function newFront(Request $request, EntityManagerInterface $entityManager
         $entityManager->flush();
 
         $this->addFlash('success', 'Event created successfully!');
-        return $this->redirectToRoute('app_reservation_index', ['id' => $event->getEventId()]);
+        return $this->redirectToRoute('app_event_indexx', ['id' => $event->getEventId()]);
     }
 
     return $this->render('event/newfront.html.twig', [
@@ -227,67 +227,63 @@ public function newFront(Request $request, EntityManagerInterface $entityManager
     }
 
     #[Route('/event/{id}/editt', name: 'app_event_editt', methods: ['GET', 'POST'])]
-    public function editt(
-        Request $request,
-        Event $event,
-        EntityManagerInterface $entityManager
-    ): Response {
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+public function editt(
+    Request $request,
+    Event $event,
+    EntityManagerInterface $entityManager
+): Response {
+    $form = $this->createForm(EventType::class, $event);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Handle image removal
-            if ($request->request->get('remove_image')) {
-                $oldImagePath = $event->getImage();
-                if ($oldImagePath) {
-                    $fullPath = $this->getParameter('kernel.project_dir').'/public'.$oldImagePath;
-                    if (file_exists($fullPath)) {
-                        unlink($fullPath);
-                    }
-                    $event->setImage(null);
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Handle image removal
+        if ($request->request->get('remove_image')) {
+            $oldImagePath = $event->getImage();
+            if ($oldImagePath) {
+                $fullPath = $this->getParameter('kernel.project_dir').'/public'.$oldImagePath;
+                if (file_exists($fullPath)) {
+                    unlink($fullPath);
                 }
+                $event->setImage(null);
             }
-
-            // Handle new image upload
-            $imageFile = $form->get('image')->getData();
-            if ($imageFile) {
-                $uploadDirectory = 'D:\telechargement\EventPlanner-3A1-Web-main\public\images';
-                
-                // Remove old image if exists
-                $oldImagePath = $event->getImage();
-                if ($oldImagePath) {
-                    $fullPath = $this->getParameter('kernel.project_dir').'/public'.$oldImagePath;
-                    if (file_exists($fullPath)) {
-                        unlink($fullPath);
-                    }
-                }
-
-                // Upload new image
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                try {
-                    $imageFile->move(
-                        $uploadDirectory,
-                        $newFilename
-                    );
-                    $event->setImage('/images/'.$newFilename);
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'There was an error uploading your image.');
-                    return $this->redirectToRoute('app_event_editt', ['id' => $event->getEventId()]);
-                }
-            }
-
-            $entityManager->flush();
-            $this->addFlash('success', 'Event updated successfully!');
-            return $this->redirectToRoute('app_event_show', ['id' => $event->getEventId()]);
         }
 
-        return $this->render('event/editfront.html.twig', [
-            'event' => $event,
-            'form' => $form->createView(),
-        ]);
+        // Handle new image upload
+        $imageFile = $form->get('image')->getData();
+        if ($imageFile) {
+            $uploadDirectory = 'C:/Users/ayoub/Desktop/merge/EventPlanner-3A1-Web/public/images';
+            
+            // Remove old image if exists
+            $oldImagePath = $event->getImage();
+            if ($oldImagePath) {
+                $fullPath = $this->getParameter('kernel.project_dir').'/public'.$oldImagePath;
+                if (file_exists($fullPath)) {
+                    unlink($fullPath);
+                }
+            }
+
+            // Upload new image
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+            try {
+                $imageFile->move(
+                    $uploadDirectory,
+                    $newFilename
+                );
+                $event->setImage('/images/'.$newFilename);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'There was an error uploading your image.');
+                return $this->redirectToRoute('app_event_editt', ['id' => $event->getEventId()]);
+            }
+        }
+
+        $entityManager->flush();
+        $this->addFlash('success', 'Event updated successfully!');
+        return $this->redirectToRoute('app_event_details_front', ['id' => $event->getEventId()]);
     }
+
+    return $this->render('event/editfront.html.twig', [
+        'event' => $event,
+        'form' => $form->createView(),
+    ]);
 }
-
-
-
-
+}
