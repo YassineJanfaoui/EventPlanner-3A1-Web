@@ -13,7 +13,7 @@ use App\Repository\ReservationRepository;
 class Reservation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: 'integer', name: 'eventVenueId')]
     private ?int $eventVenueId = null;
 
@@ -29,7 +29,7 @@ class Reservation
     }
 
     #[ORM\OneToOne(targetEntity: Venue::class, inversedBy: 'reservation')]
-    #[ORM\JoinColumn(name: 'venueId', referencedColumnName: 'VenueId', unique: true)]
+    #[ORM\JoinColumn(name: 'VenueId', referencedColumnName: 'VenueId', unique: true)]
     private ?Venue $venue = null;
 
     public function getVenue(): ?Venue
@@ -47,6 +47,7 @@ class Reservation
     #[ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId', unique: true)]
     private ?Event $event = null;
 
+    
     public function getEvent(): ?Event
     {
         return $this->event;
@@ -58,7 +59,7 @@ class Reservation
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: true, name: 'reservationDate')]
+    #[ORM\Column(name: 'reservationDate',type: 'string', nullable: true)]
     private ?string $reservationDate = null;
 
     public function getReservationDate(): ?string
@@ -72,7 +73,7 @@ class Reservation
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false, name: 'reservationPrice')]
+    #[ORM\Column(name: 'reservationPrice',type: 'string', nullable: false)]
     private ?string $reservationPrice = null;
 
     public function getReservationPrice(): ?string
@@ -85,4 +86,5 @@ class Reservation
         $this->reservationPrice = $reservationPrice;
         return $this;
     }
+
 }

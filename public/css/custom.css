@@ -1,0 +1,375 @@
+/* public/css/custom.css */
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+}
+.nav-link {
+    color: #F1F2F6; /* Supprime !important pour permettre le hover */
+    display: flex;
+    align-items: center;
+    padding: 10px 15px; 
+    margin-bottom: 12px;
+    font-size: 18px; 
+    transition: color 0.3s ease-in-out; /* Transition fluide */
+}
+
+.nav-link i {
+    margin-right: 14px; /* Ajuste selon tes préférences */
+    transition: color 0.3s ease-in-out; /* Transition fluide */
+}
+
+.nav-item {
+    border-radius: 5px; /* Coins arrondis */
+    transition: background-color 0.3s ease-in-out; /* Effet fluide */
+}
+
+.nav-item:hover {
+    background-color: #F1F2F6; /* Fond blanc au survol */
+}
+
+.nav-item:hover .nav-link {
+    color: black; /* Texte en noir au survol */
+}
+
+.nav-item:hover .nav-link i {
+    color: black; /* Icône en noir au survol */
+}
+
+
+.card-header {
+    font-size: 1.5rem;
+    background-color: #053536;
+}
+
+.card-footer {
+    background-color: #f1f1f1;
+}
+
+.btn-secondary {
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+/* Réinitialisation de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Conteneur du formulaire */
+.form-container {
+    background-color: #F1F2F6;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #053536;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Champs de texte et DatePicker */
+.input-field {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 3px 10px rgba(5, 53, 54, 0.5);
+}
+
+.input-field:focus {
+    border-color: #053536;
+    border-width: 2px;
+    outline: none;
+    box-shadow: none; /* Supprime l'effet bleu */
+}
+
+/* Style des boutons */
+.my-button {
+    background-color: #053536;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+   /* transition: background 0.3s;*/
+    border: none;
+}
+
+.my-button:hover {
+    background-color: black;
+}
+
+/* Style des boutons de sidebar */
+.my-button2 {
+    background-color: transparent;
+    color: white;
+    font-size: 14px;
+    text-align: left;
+    padding: 15px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: none;
+  /*  transition: background 0.3s, color 0.3s;*/
+}
+
+.my-button2 i {
+    margin-right: 10px; /* Espace entre l'icône et le texte */
+}
+
+.my-button2:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Style des labels */
+.label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #053536;
+}
+
+.title {
+    font-size: 42px;
+    color: #053536;
+    font-weight: bold;
+    text-shadow: 0px 3px 10px rgba(5, 53, 54, 0.5);
+}
+
+/* Messages d'erreur et d'information */
+.error-message {
+    color: #D32F2F;
+    font-size: 12px;
+}
+
+.info-message {
+    color: #053536;
+    font-size: 12px;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #053536;
+    width: 250px;
+    height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+}
+
+.sidebar .image-logo {
+    display: block;
+    margin: 0 auto;
+    width: 130px;
+    height: 140px;
+}
+
+/* Table View */
+.table-view {
+    background-color: #f4f4f4;
+    border: 1px solid #b0b0b0;
+    border-radius: 5px;
+}
+
+.table-header {
+    background-color: white;
+    color: #053536;
+    font-weight: bold;
+}
+
+.table-row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-row:hover {
+    background-color: #053536;
+    color: white;
+}
+
+/* Style des icônes */
+.font-awesome-icon {
+    color: white;
+    font-size: 1.4em;
+    transition: color 0.3s;
+}
+
+.my-button2:hover .font-awesome-icon {
+    color: black;
+}
+.logo {
+    width: 150px; /* Ajuste la largeur */
+    height: auto; /* Garde le ratio */
+    display: block;
+    margin: 20px auto; /* Centre le logo */
+}
+
+/* Style de l'en-tête */
+.custom-header {
+    background-color: #053536; /* Même couleur que la sidebar */
+    color: #F1F2F6; /* Texte en blanc */
+    padding: 15px 20px; /* Ajuste l'espacement */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Aligne les éléments */
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 60px; /* Ajuste selon la taille de ton header */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustement du body pour ne pas cacher le contenu sous le header */
+body {
+    padding-top: 60px;
+}
+
+/* Style du texte et icônes */
+.custom-header h1,
+.custom-header span,
+.custom-header i {
+    color: #F1F2F6;
+}
+
+.custom-form-container {
+    margin-top: -30px;  /* Déplace vers le haut */
+    margin-right: 50px;  /* Déplace vers la droite */
+}
+
+.main-content {
+    margin-left: 260px; /* Décale le contenu pour ne pas être sous le sidebar */
+    padding: 20px;
+    width: calc(100% - 260px); /* Ajuste la largeur */
+}
+.custom-btn-container {
+    display: flex;
+    gap: 8px; /* Espacement entre les boutons */
+    align-items: center; /* Alignement vertical */
+}
+
+.custom-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacement entre l'icône et le texte */
+    border-radius: 8px; /* Coins arrondis */
+    font-weight: bold;
+    padding: 8px 16px;
+    width: 120px; /* Largeur uniforme */
+    justify-content: center; /* Centrage du texte */
+}
+h1 {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 2.8rem;
+    color: #2c3e50;
+    text-align: center;
+    background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    max-width: 600px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Barre de recherche */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 5px 10px;
+    border: 2px solid #d1d5db;
+    width: 280px;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 8px;
+    width: 100%;
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.search-bar input::placeholder {
+    color: #adb5bd;
+}
+
+.search-bar .search-icon {
+    color: #6c757d;
+    margin-right: 8px;
+}
+
+/* Bouton de tri */
+.custom-select-sort {
+    background: #043933;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.custom-select-sort:hover {
+    background: #052f29;
+}
+
+.custom-select-sort:focus {
+    outline: none;
+}
+/* Barre de recherche stylée */
+.search-form .input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-form .form-control {
+    border: none;
+    min-width: 250px;
+}
+
+.search-form .input-group-text {
+    background-color: #003f44;
+    color: white;
+    border: none;
+}
+
+/* Select stylé */
+.sort-select {
+    border-radius: 12px;
+    padding: 8px 16px;
+    background-color: #003f44;
+    color: white;
+    border: none;
+    min-width: 120px;
+    font-weight: bold;
+}
+
+/* Select focus effet */
+.sort-select:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 63, 68, 0.6);
+}

@@ -1,0 +1,127 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="mb-4 text-center">Edit Event</h1>
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+
+            {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ path('app_event_index') }}" class="btn btn-back">Back to List</a>
+                {{ include('event/_delete_form.html.twig') }}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 2.5rem;
+        color: #495057;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.375rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+    /* Custom Back to List button */
+    .btn-back {
+        background-color: #6c757d;
+        color: #fff;
+        border: 1px solid #6c757d;
+    }
+
+    .btn-back:hover {
+        background-color: #5a6268;
+        border-color: #5a6268;
+        transform: translateY(-2px);
+    }
+
+    /* Custom Update button */
+    .btn-update {
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+    }
+
+    .btn-update:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    /* Custom Delete button */
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: 1px solid #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #c82333;
+        transform: translateY(-2px);
+    }
+
+    /* Form input styles */
+    .form-control {
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #ced4da;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
+    }
+
+    /* Adjusting form labels */
+    label {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Spacing between form fields */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Form container layout */
+    .container {
+        max-width: 800px;
+    }
+</style>
+{% endblock %}

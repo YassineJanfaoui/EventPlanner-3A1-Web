@@ -1,0 +1,65 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Event Index{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Event List</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Max Participants</th>
+                        <th>Description</th>
+                        <th>Fee</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.eventId }}</td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.startDate }}</td>
+                        <td>{{ event.endDate }}</td>
+                        <td>{{ event.maxParticipants }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.fee }}</td>
+                        <td>
+                            {% if event.image %}
+                                <img src="{{ asset(event.image) }}" alt="Event Image" class="img-thumbnail" width="100">
+                            {% else %}
+                                <span class="text-muted">No image</span>
+                            {% endif %}
+                        </td>                
+                        <td>
+                            <a href="{{ path('app_event_show', {'eventId': event.eventId}) }}" class="btn btn-sm btn-info mb-1">Show</a>
+                            <a href="{{ path('app_event_edit', {'eventId': event.eventId}) }}" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No events found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Button Section -->
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{{ path('app_event_new') }}" class="btn btn-success btn-lg">Create Event</a>
+                <a href="{{ path('app_reservation_index') }}" class="btn btn-primary btn-lg">Go to Reservation List</a>
+            </div>
+        </div>
+            <a href="{{ path('event_list') }}" class="btn btn-outline-dark btn-lg">View Front Office</a>
+
+    </div>
+</div>
+{% endblock %}

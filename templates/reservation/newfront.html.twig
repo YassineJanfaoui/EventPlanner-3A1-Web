@@ -1,0 +1,140 @@
+{% extends 'basePlanner.html.twig' %}
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+<div class="container py-5 elegant-bg">
+
+    <h1 class="mb-4 text-center elegant-title">Create a New Reservation</h1>
+
+    <div class="card elegant-card shadow-lg">
+        <div class="card-body">
+
+            {{ include('reservation/_form.html.twig') }}
+
+            <div class="mt-4 text-center">
+                <a href="{{ path('app_reservation_index_front') }}" class="btn elegant-back-link">
+                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    :root {
+        --primary-color: #4e54c8;
+        --secondary-color: #8f94fb;
+        --accent-color: #f78fb3;
+        --light-bg: #f3f4fb;
+        --dark-text: #2e2e4d;
+        --light-text: #6b6f8a;
+    }
+
+    body {
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+    }
+
+    .elegant-bg {
+        background: linear-gradient(145deg, #eef1fa, #dbe1f2);
+        min-height: 100vh;
+        padding-top: 60px;
+    }
+
+    .elegant-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 12px 24px rgba(78, 84, 200, 0.15);
+        border: none;
+        position: relative;
+        overflow: hidden;
+        padding: 30px;
+    }
+
+    .elegant-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    }
+
+    .elegant-title {
+        font-weight: 700;
+        font-size: 2.4rem;
+        color: var(--primary-color);
+        letter-spacing: -0.5px;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-text);
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 12px 18px;
+        border: 1px solid #d0d3e0;
+        background-color: #fbfbfe;
+        transition: all 0.3s ease-in-out;
+        font-size: 1rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 4px rgba(143, 148, 251, 0.25);
+    }
+
+    .elegant-save-btn {
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 12px 28px;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 6px 14px rgba(78, 84, 200, 0.3);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .elegant-save-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(78, 84, 200, 0.4);
+    }
+
+    .elegant-back-link {
+        color: var(--primary-color);
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+    }
+
+    .elegant-back-link:hover {
+        color: var(--accent-color);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .elegant-card {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
