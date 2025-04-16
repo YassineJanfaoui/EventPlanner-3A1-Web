@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ParticipantRepository;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
@@ -29,6 +29,17 @@ class Participant
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Participant name cannot be blank.")]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: "Participant name must be at least {{ limit }} characters long.",
+        maxMessage: "Participant name cannot be longer than {{ limit }} characters."
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z\s]+$/",
+        message: "Participant name can only contain letters and spaces."
+    )]
     private ?string $name = null;
 
     public function getName(): ?string
@@ -43,6 +54,10 @@ class Participant
     }
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Affiliation cannot be longer than {{ limit }} characters."
+    )]
     private ?string $affiliation = null;
 
     public function getAffiliation(): ?string
@@ -57,6 +72,11 @@ class Participant
     }
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\Range(
+        min: 1,
+        max: 120,
+        notInRangeMessage: "Age must be between {{ min }} and {{ max }}."
+    )]
     private ?int $age = null;
 
     public function getAge(): ?int
@@ -84,5 +104,4 @@ class Participant
         $this->team = $team;
         return $this;
     }
-
 }
