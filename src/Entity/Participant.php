@@ -73,8 +73,8 @@ class Participant
 
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\Range(
-        min: 1,
-        max: 120,
+        min: 5,
+        max: 99,
         notInRangeMessage: "Age must be between {{ min }} and {{ max }}."
     )]
     private ?int $age = null;

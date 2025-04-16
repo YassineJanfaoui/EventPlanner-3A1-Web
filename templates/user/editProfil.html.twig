@@ -65,6 +65,13 @@
             margin-bottom: 20px;
         }
 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
         input, select {
             width: 100%;
             padding: 14px 16px;
@@ -122,6 +129,32 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .invalid-feedback {
+            display: block;
+            color: #e63946;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            font-weight: 500;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        .is-invalid {
+            border-color: #e63946;
+            background-color: #fff5f5;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -132,36 +165,81 @@
 
         <h1>Edit Your Profile</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
 
             <div class="form-group">
-                {{ form_row(form.username, {
-                    'attr': {'placeholder': 'Username'}
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.username.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Username'
+                    }
                 }) }}
+                {% if form.username.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.username) }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="form-group">
-                {{ form_row(form.email, {
-                    'attr': {'placeholder': 'Email'}
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Email'
+                    }
                 }) }}
+                {% if form.email.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.email) }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="form-group">
-                {{ form_row(form.name, {
-                    'attr': {'placeholder': 'Full Name'}
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Full Name'
+                    }
                 }) }}
+                {% if form.name.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.name) }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="form-group">
-                {{ form_row(form.phonenumber, {
-                    'attr': {'placeholder': 'Phone Number'}
+                {{ form_label(form.phonenumber) }}
+                {{ form_widget(form.phonenumber, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.phonenumber.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Phone Number'
+                    }
                 }) }}
+                {% if form.phonenumber.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.phonenumber) }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="form-group">
-                {{ form_row(form.plainPassword, {
-                    'attr': {'placeholder': 'Leave blank to keep current password'}
+                {{ form_label(form.plainPassword) }}
+                {{ form_widget(form.plainPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.plainPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Leave blank to keep current password'
+                    }
                 }) }}
+                {% if form.plainPassword.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.plainPassword) }}
+                    </div>
+                {% endif %}
             </div>
 
             <button type="submit">
@@ -174,5 +252,15 @@
             <a href="{{ path('app_participant_index') }}">Cancel</a>
         </p>
     </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            this.classList.add('was-validated');
+        });
+    </script>
 </body>
 </html>
