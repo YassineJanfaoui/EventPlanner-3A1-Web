@@ -1,0 +1,145 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Add New Participant - Admin{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .is-invalid {
+            border-color: #dc3545 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        .is-invalid:focus {
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+        
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+        
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div id="layoutSidenav_content">
+    <main class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg rounded-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+                        <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Add New Participant</h4>
+                        <a href="{{ path('app_participant_index_back') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+
+                    <div class="card-body px-5 py-4">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+                        <div class="mb-4">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.name, {'attr': {
+                                'class': 'form-control rounded-pill px-4 py-2' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
+                            }}) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.vars.errors %}
+                                    <span>{{ error.message }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.age, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.age, {'attr': {
+                                'class': 'form-control rounded-pill px-4 py-2' ~ (form.age.vars.errors|length ? ' is-invalid' : ''),
+                            }}) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.age.vars.errors %}
+                                    <span>{{ error.message }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.affiliation, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.affiliation, {'attr': {
+                                'class': 'form-control rounded-pill px-4 py-2' ~ (form.affiliation.vars.errors|length ? ' is-invalid' : ''),
+                            }}) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.affiliation.vars.errors %}
+                                    <span>{{ error.message }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_label(form.team, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                            {{ form_widget(form.team, {'attr': {
+                                'class': 'form-select rounded-pill px-4 py-2' ~ (form.team.vars.errors|length ? ' is-invalid' : ''),
+                            }}) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.team.vars.errors %}
+                                    <span>{{ error.message }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button class="btn btn-success rounded-pill px-4 py-2">
+                                <i class="fas fa-save me-2"></i>Save Participant
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Add validation classes on form submission
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!this.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            
+            // Add was-validated class to show validation messages
+            this.classList.add('was-validated')
+        }, false)
+        
+        // Add real-time validation on blur
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
+            input.addEventListener('blur', function() {
+                this.classList.add('validate-on-blur')
+                if (this.checkValidity()) {
+                    this.classList.remove('is-invalid')
+                } else {
+                    this.classList.add('is-invalid')
+                }
+            })
+        })
+    </script>
+{% endblock %}

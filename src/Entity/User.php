@@ -7,14 +7,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', name: 'userid')]
+    #[ORM\Column(type: 'integer')]
     private ?int $userid = null;
 
     public function getUserid(): ?int
@@ -51,10 +54,11 @@ class User
     }
 
     public function setPassword(string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
+{
+    // Don't hash here - let the controller handle hashing
+    $this->password = $password;
+    return $this;
+}
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $email = null;
@@ -84,7 +88,7 @@ class User
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false, name: 'phonenumber')]
+    #[ORM\Column(type: 'string', nullable: false)]
     private ?string $phonenumber = null;
 
     public function getPhonenumber(): ?string
@@ -158,4 +162,28 @@ class User
         $this->getEvents()->removeElement($event);
         return $this;
     }
+    public function getRoles(): array
+{
+    // Return an array of roles with ROLE_ prefix
+    $roles = [];
+    if ($this->role) {
+        $roles[] = 'ROLE_' . strtoupper($this->role);
+    }
+    
+    // Every user must have at least ROLE_USER
+    $roles[] = 'ROLE_USER';
+    
+    return array_unique($roles);
+}
+
+    public function eraseCredentials(): void
+    {
+        // Clear any temporary sensitive data
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
 }

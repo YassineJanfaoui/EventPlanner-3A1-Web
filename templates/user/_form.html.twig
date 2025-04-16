@@ -1,0 +1,131 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+    {# Username Field #}
+    <div class="mb-3">
+        {{ form_label(form.username) }}
+        {{ form_widget(form.username, {
+            'attr': {
+                'class': 'form-control' ~ (form.username.vars.errors|length ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form.username.vars.errors|length %}
+            <div class="invalid-feedback">
+                {% for error in form.username.vars.errors %}
+                    <span>{{ error.message }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Email Field #}
+    <div class="mb-3">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email, {
+            'attr': {
+                'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form.email.vars.errors|length %}
+            <div class="invalid-feedback">
+                {% for error in form.email.vars.errors %}
+                    <span>{{ error.message }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Full Name Field #}
+    <div class="mb-3">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name, {
+            'attr': {
+                'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form.name.vars.errors|length %}
+            <div class="invalid-feedback">
+                {% for error in form.name.vars.errors %}
+                    <span>{{ error.message }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Phone Number Field #}
+    <div class="mb-3">
+        {{ form_label(form.phonenumber) }}
+        {{ form_widget(form.phonenumber, {
+            'attr': {
+                'class': 'form-control' ~ (form.phonenumber.vars.errors|length ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form.phonenumber.vars.errors|length %}
+            <div class="invalid-feedback">
+                {% for error in form.phonenumber.vars.errors %}
+                    <span>{{ error.message }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Password Field #}
+    <div class="mb-3">
+        {{ form_label(form.plainPassword) }}
+        {{ form_widget(form.plainPassword, {
+            'attr': {
+                'class': 'form-control' ~ (form.plainPassword.vars.errors|length ? ' is-invalid' : '')
+            }
+        }) }}
+        {% if form.plainPassword.vars.errors|length %}
+            <div class="invalid-feedback">
+                {% for error in form.plainPassword.vars.errors %}
+                    <span>{{ error.message }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# Submit Button #}
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-save me-1"></i> Save
+    </button>
+
+{{ form_end(form) }}
+
+<style>
+    .invalid-feedback {
+        display: block;
+        color: #e63946;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        font-weight: 500;
+        animation: fadeInDown 0.3s ease-out;
+    }
+
+    .is-invalid {
+        border-color: #e63946;
+        background-color: #fff5f5;
+        box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+    });
+</script>

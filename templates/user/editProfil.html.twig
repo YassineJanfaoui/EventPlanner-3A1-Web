@@ -1,0 +1,266 @@
+{# templates/user/editProfil.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | Event Planner</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .edit-profile-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        h1 {
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        input::placeholder {
+            color: var(--gray);
+            opacity: 0.6;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .footer-text a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: #e63946;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            font-weight: 500;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        .is-invalid {
+            border-color: #e63946;
+            background-color: #fff5f5;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-profile-container">
+        <div class="logo">
+            <img src="{{ asset('img/logo/logo.png') }}" alt="Event Planner">
+        </div>
+
+        <h1>Edit Your Profile</h1>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.username.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Username'
+                    }
+                }) }}
+                {% if form.username.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.username) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Email'
+                    }
+                }) }}
+                {% if form.email.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.email) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Full Name'
+                    }
+                }) }}
+                {% if form.name.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.name) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.phonenumber) }}
+                {{ form_widget(form.phonenumber, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.phonenumber.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Phone Number'
+                    }
+                }) }}
+                {% if form.phonenumber.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.phonenumber) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.plainPassword) }}
+                {{ form_widget(form.plainPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.plainPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Leave blank to keep current password'
+                    }
+                }) }}
+                {% if form.plainPassword.vars.errors|length %}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.plainPassword) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-save me-2"></i> Save Changes
+            </button>
+
+        {{ form_end(form) }}
+
+        <p class="footer-text">
+            <a href="{{ path('app_participant_index') }}">Cancel</a>
+        </p>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            this.classList.add('was-validated');
+        });
+    </script>
+</body>
+</html>

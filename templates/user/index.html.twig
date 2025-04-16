@@ -1,0 +1,115 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}User Management{% endblock %}
+
+{% block body %}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">User Management</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Users</li>
+                </ol>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        User List
+                        <a href="{{ path('app_user_new') }}" class="btn btn-primary btn-sm float-end">
+                            <i class="fas fa-plus me-1"></i>
+                            Create New
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="datatablesSimple">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                        <th>Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.userid }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.phonenumber }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ user.status == 'active' ? 'success' : 'danger' }}">
+                                                {{ user.status|capitalize }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ user.role == 'admin' ? 'primary' : 'secondary' }}">
+                                                {{ user.role|capitalize }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ path('app_user_show', {'userid': user.userid}) }}" 
+                                                   class="btn btn-sm btn-info" 
+                                                   title="View">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ path('app_user_edit', {'userid': user.userid}) }}" 
+                                                   class="btn btn-sm btn-warning" 
+                                                   title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="8" class="text-center">No records found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the datatable
+            const dataTable = new simpleDatatables.DataTable("#datatablesSimple", {
+                perPage: 10,
+                labels: {
+                    placeholder: "Search...",
+                    perPage: "{select} entries per page",
+                    noRows: "No data found",
+                    info: "Showing {start} to {end} of {rows} entries"
+                }
+            });
+        });
+    </script>
+{% endblock %}

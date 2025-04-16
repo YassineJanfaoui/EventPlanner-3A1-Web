@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ participant.name }} - Participant Details{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .participant-details-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        
+        .detail-title {
+            color: #2B2B2B;
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .detail-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: #FF5F13;
+        }
+        
+        .detail-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+        
+        .detail-table tr {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .detail-table th {
+            padding: 15px 20px;
+            text-align: left;
+            width: 30%;
+            background-color: #e9ecef;
+            font-weight: 600;
+        }
+        
+        .detail-table td {
+            padding: 15px 20px;
+            background-color: white;
+            border-left: 1px solid #dee2e6;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            gap: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="participant-details-container">
+                <h1 class="detail-title">
+                    <i class="fas fa-user-circle mr-2"></i>{{ participant.name }}
+                </h1>
+                
+                <table class="detail-table">
+                    <tbody>
+                        <tr>
+                            <th>Participant ID</th>
+                            <td>{{ participant.participantId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Full Name</th>
+                            <td>{{ participant.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Affiliation</th>
+                            <td>{{ participant.affiliation ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>{{ participant.age ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Team</th>
+                            <td>
+                                {% if participant.team %}
+                                    {{ participant.team.teamname }}
+                                {% else %}
+                                    Not assigned
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="action-buttons">
+                    <a href="{{ path('app_participant_index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to list
+                    </a>
+                    <a href="{{ path('app_participant_edit', {'participantId': participant.participantId}) }}" class="btn btn-warning">
+                        <i class="fas fa-edit mr-2"></i>Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
