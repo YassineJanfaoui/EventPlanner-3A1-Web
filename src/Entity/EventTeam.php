@@ -15,25 +15,37 @@ use App\Repository\EventTeamRepository;
 class EventTeam
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(name:'submission_id',type: 'integer')]
-    private ?int $submission_id = null;
-
-    public function getSubmission_id(): ?int
-    {
-        return $this->submission_id;
-    }
-
-    public function setSubmission_id(int $submission_id): self
-    {
-        $this->submission_id = $submission_id;
-        return $this;
-    }
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "submission_id", type: Types::INTEGER)]
+    private ?int $submissionId = null;
 
     #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'eventTeams')]
-    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'eventId', nullable: false)]
-    #[Assert\NotNull(message: "Event must be selected")]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'eventId')] // Updated name to match DB
     private ?Event $event = null;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'eventTeams')]
+    #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'teamid')] // Updated name to match DB
+    private ?Team $team = null;
+
+    #[ORM\Column(name: "title", type: "string", length: 255, nullable: true)] // Added title property
+    private ?string $title = null;
+
+    #[ORM\Column(name: "file_link", type: "string", length: 255, nullable: true)]
+    private ?string $file_link = null;
+
+    #[ORM\Column(name: "submission_date", type: "date", nullable: true)]
+    private ?\DateTimeInterface $submission_date = null;
+
+    public function getSubmissionId(): ?int
+    {
+        return $this->submissionId;
+    }
+
+    public function setSubmissionId(?int $submissionId): self
+    {
+        $this->submissionId = $submissionId;
+        return $this;
+    }
 
     public function getEvent(): ?Event
     {
@@ -46,11 +58,6 @@ class EventTeam
         return $this;
     }
 
-    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'eventTeams')]
-    #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'id', nullable: false)]
-    #[Assert\NotNull(message: "Team must be selected")]
-    private ?Team $team = null;
-
     public function getTeam(): ?Team
     {
         return $this->team;
@@ -62,71 +69,14 @@ class EventTeam
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    #[Assert\NotBlank(message: "Title cannot be empty")]
-    private ?string $title = null;
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    #[ORM\Column(type: 'string', nullable: false)]
-    #[Assert\NotBlank(message: "File link cannot be empty")]
-    #[Assert\Url(message: "The file link '{{ value }}' is not a valid URL")]
-    private ?string $file_link = null;
-
-    public function getFile_link(): ?string
-    {
-        return $this->file_link;
-    }
-
-    public function setFile_link(string $file_link): self
-    {
-        $this->file_link = $file_link;
-        return $this;
-    }
-
-    #[ORM\Column(type: 'date', nullable: false)]
-    private ?\DateTimeInterface $submission_date = null;
-
-    public function __construct()
-    {
-        // Set default submission date to current date
-        $this->submission_date = new \DateTime();
-    }
-
-    public function getSubmission_date(): ?\DateTimeInterface
-    {
-        return $this->submission_date;
-    }
-
-    public function setSubmission_date(\DateTimeInterface $submission_date): self
-    {
-        $this->submission_date = $submission_date;
-        return $this;
-    }
-
-    public function getSubmissionId(): ?int
-    {
-        return $this->submission_id;
-    }
-
     public function getFileLink(): ?string
     {
         return $this->file_link;
     }
 
-    public function setFileLink(string $file_link): static
+    public function setFileLink(?string $file_link): self
     {
         $this->file_link = $file_link;
-
         return $this;
     }
 
@@ -135,10 +85,20 @@ class EventTeam
         return $this->submission_date;
     }
 
-    public function setSubmissionDate(\DateTimeInterface $submission_date): static
+    public function setSubmissionDate(?\DateTimeInterface $submission_date): self
     {
         $this->submission_date = $submission_date;
+        return $this;
+    }
 
+    public function getTitle(): ?string // Added getter for title
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self // Added setter for title
+    {
+        $this->title = $title;
         return $this;
     }
 }

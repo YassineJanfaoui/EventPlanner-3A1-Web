@@ -1,19 +1,18 @@
 <?php
+ namespace App\Form;
+ use App\Entity\Feedback;
+ use Symfony\Component\Form\AbstractType;
+ use Symfony\Component\Form\FormBuilderInterface;
+ use Symfony\Component\OptionsResolver\OptionsResolver;
+ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+ use Symfony\Bridge\Doctrine\Form\Type\EntityType; // Assuming Event and Team are entities
+ use App\Entity\Event;
+ use App\Entity\Team;
 
-namespace App\Form;
 
-use App\Entity\Event;
-use App\Entity\Feedback;
-use App\Entity\Team;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class FeedbackType extends AbstractType
-{
+ class FeedbackType extends AbstractType
+ {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -27,20 +26,28 @@ class FeedbackType extends AbstractType
                 'label_attr' => ['class' => 'form-label']
             ])
             ->add('rate', ChoiceType::class, [
-                'label' => 'Rating',
+                'label' => 'Rating', // Label for the hidden select
                 'choices' => [
+                    // The keys (1, 2, 3, 4, 5) MUST match the data-value in the HTML
+                    // The values ('1 Star', '2 Stars', etc.) are less critical here as the select is hidden,
+                    // but good for clarity if it were visible.
                     '1 Star' => 1,
                     '2 Stars' => 2,
                     '3 Stars' => 3,
                     '4 Stars' => 4,
                     '5 Stars' => 5,
                 ],
-                'attr' => ['class' => 'form-select'],
-                'label_attr' => ['class' => 'form-label']
+                'expanded' => false, // Render as a <select> element
+                'multiple' => false, // Only one choice allowed
+                'required' => true, // Or false, depending on your needs
+                // Add constraints if needed
+                // 'constraints' => [ ... ],
+                // Ensure it maps correctly to your entity property
+                'mapped' => true,
             ])
             ->add('team', EntityType::class, [
                 'class' => Team::class,
-                'choice_label' => 'id',
+                'choice_label' => 'TeamName',
                 'label' => 'Select Team',
                 'attr' => ['class' => 'form-select'],
                 'label_attr' => ['class' => 'form-label']
@@ -55,10 +62,11 @@ class FeedbackType extends AbstractType
         ;
     }
 
+    // Uncomment the configureOptions method
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Feedback::class,
         ]);
     }
-}
+} // Corrected closing brace

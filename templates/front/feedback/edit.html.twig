@@ -2,6 +2,77 @@
 
 {% block title %}Edit Feedback{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .star-rating-container {
+            position: relative;
+        }
+        
+        .rating-value {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            font-size: 2rem;
+            line-height: 1;
+        }
+        
+        .star {
+            color: #ddd;
+            cursor: pointer;
+            padding: 0 0.1rem;
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .star:hover,
+        .star:hover ~ .star,
+        .star.selected,
+        .star.selected ~ .star {
+            color: #FFD700;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star');
+            const rateInput = document.querySelector('select[name="feedback[rate]"]'); // Updated selector
+            
+            // Set initial rating if exists
+            if (rateInput.value) {
+                updateStars(rateInput.value);
+            }
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    rateInput.value = value;  // Update the select value
+                    updateStars(value);
+                });
+            });
+            
+            function updateStars(value) {
+                stars.forEach(star => {
+                    const starValue = star.getAttribute('data-value');
+                    if (starValue <= value) {
+                        star.classList.add('selected');
+                    } else {
+                        star.classList.remove('selected');
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="container mt-5 mb-5">
         <div class="row">
@@ -45,7 +116,7 @@
                             
                             <div class="mb-3">
                                 {{ form_label(form.rate, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                                {{ form_widget(form.rate) }}
+                                {{ form_widget(form.rate, {'attr': {'class': 'form-select'}}) }}
                                 <div class="text-danger small">
                                     {{ form_errors(form.rate) }}
                                 </div>

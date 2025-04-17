@@ -5,8 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use App\Repository\FeedbackRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FeedbackRepository::class)]
 #[ORM\Table(name: 'feedback')]
@@ -29,6 +29,13 @@ class Feedback
     }
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Comment cannot be empty")]
+    #[Assert\Length(
+        min: 10,
+        max: 1000,
+        minMessage: "Comment must be at least {{ limit }} characters long",
+        maxMessage: "Comment cannot be longer than {{ limit }} characters"
+    )]
     private ?string $comment = null;
 
     public function getComment(): ?string
@@ -43,6 +50,12 @@ class Feedback
     }
 
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: "Rating is required")]
+    #[Assert\Range(
+        min: 1,
+        max: 5,
+        notInRangeMessage: "Rating must be between {{ min }} and {{ max }} stars"
+    )]
     private ?int $rate = null;
 
     public function getRate(): ?int
@@ -56,8 +69,9 @@ class Feedback
         return $this;
     }
 
+    #[Assert\NotNull(message: "Team must be selected")]
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'feedbacks')]
-    #[ORM\JoinColumn(name: 'teamId', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'teamId', referencedColumnName: 'teamid')]  // Update this line
     private ?Team $team = null;
 
     public function getTeam(): ?Team
@@ -71,6 +85,7 @@ class Feedback
         return $this;
     }
 
+    #[Assert\NotNull(message: "Event must be selected")]
     #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'feedbacks')]
     #[ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')]
     private ?Event $event = null;

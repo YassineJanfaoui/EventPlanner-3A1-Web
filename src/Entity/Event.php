@@ -5,26 +5,26 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use App\Repository\EventRepository;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\Table(name: 'event')]
 class Event
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(name: "eventId",type: 'integer')]
-    private ?int $id  = null;
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name:"eventId",type: Types::INTEGER)]
+    private ?int $eventId = null;
 
     public function getId(): ?int
     {
-        return $this->id ;
+        return $this->eventId;
     }
 
     public function setId(int $eventId): self
     {
-        $this->id  = $eventId;
+        $this->eventId = $eventId;
         return $this;
     }
 

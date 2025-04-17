@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
-#[Route('/admin/team')]
+#[Route('/admin')]  // Change the base route to handle both dashboard and team routes
 class AdminTeamController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -20,7 +20,13 @@ class AdminTeamController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/', name: 'app_admin_team_index')]
+    #[Route('/', name: 'app_admin_dashboard')]
+    public function dashboard(): Response
+    {
+        return $this->render('back/dashboard/index.html.twig');
+    }
+
+    #[Route('/team', name: 'app_admin_team_index')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $this->entityManager->getRepository(Team::class)
@@ -39,7 +45,7 @@ class AdminTeamController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_admin_team_delete')]
+    #[Route('/team/delete/{id}', name: 'app_admin_team_delete')]
     public function delete(int $id): Response
     {
         $team = $this->entityManager->getRepository(Team::class)->find($id);

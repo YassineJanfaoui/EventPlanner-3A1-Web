@@ -4,68 +4,63 @@ namespace App\Form;
 
 use App\Entity\Team;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Event;
 
 class TeamType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Only add TeamName field if show_team_name is true
-        if ($options['show_team_name']) {
+        // Only add TeamName field if show_team_name is true or not set
+        if ($options['show_team_name'] ?? true) {
             $builder
                 ->add('TeamName', TextType::class, [
                     'label' => 'Team Name',
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control',
                         'placeholder' => 'Enter team name'
-                    ],
-                    'label_attr' => [
-                        'class' => 'form-label'
                     ]
                 ]);
         }
-            
-        // Only add Score and Rank fields if show_score_rank is true
-        if ($options['show_score_rank']) {
+        
+        $builder
+            ->add('event', EntityType::class, [
+                'class' => Event::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select an event',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Event'
+            ])
+        ;
+
+        // Only add Score and Rank fields if explicitly requested
+        if ($options['show_score_rank'] ?? false) {
             $builder
                 ->add('Score', NumberType::class, [
-                    'label' => 'Score',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => 'Enter team score'
-                    ],
-                    'label_attr' => [
-                        'class' => 'form-label'
-                    ],
-                    'required' => true,
+                    'required' => false
                 ])
-                ->add('Rank', NumberType::class, [
-                    'label' => 'Rank',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => 'Enter team rank'
-                    ],
-                    'label_attr' => [
-                        'class' => 'form-label'
-                    ],
-                    'required' => true,
-                ]);
+                ->add('Rank', IntegerType::class, [
+                    'required' => false
+                ])
+            ;
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Team::class,
-            'show_score_rank' => true,  // By default, show score and rank fields
-            'show_team_name' => true,   // By default, show team name field
+            'show_score_rank' => false,
+            'show_team_name' => true
         ]);
-        
-        // Define the new options
-        $resolver->setAllowedTypes('show_score_rank', 'bool');
-        $resolver->setAllowedTypes('show_team_name', 'bool');
     }
 }

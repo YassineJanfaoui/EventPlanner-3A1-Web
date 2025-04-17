@@ -27,6 +27,7 @@
                                     <thead class="table-dark">
                                         <tr>
                                             <th>Team Name</th>
+                                            <th>Event</th>
                                             <th>Score</th>
                                             <th>Rank</th>
                                             <th class="text-center">Actions</th>
@@ -36,6 +37,7 @@
                                         {% for team in teams %}
                                             <tr>
                                                 <td class="fw-bold">{{ team.teamName }}</td>
+                                                <td>{{ team.event ? team.event.name : 'N/A' }}</td>
                                                 <td>{{ team.score }}</td>
                                                 <td>{{ team.rank }}</td>
                                                 <td>

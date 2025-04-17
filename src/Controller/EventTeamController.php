@@ -25,14 +25,18 @@ class EventTeamController extends AbstractController
     #[Route('/', name: 'app_event_team_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $this->entityManager->getRepository(EventTeam::class)->createQueryBuilder('et')
-            ->orderBy('et.submission_id', 'DESC')
+        $query = $this->entityManager->getRepository(EventTeam::class)
+            ->createQueryBuilder('et')
+            ->select('et, e, t')
+            ->leftJoin('et.event', 'e')
+            ->leftJoin('et.team', 't')
+            ->orderBy('et.submissionId', 'DESC')
             ->getQuery();
 
         $eventTeams = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            5 // 5 items per page
+            5
         );
 
         return $this->render('front/event_team/index.html.twig', [
@@ -44,14 +48,13 @@ class EventTeamController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $eventTeam = new EventTeam();
-        // Set today's date as default
         $eventTeam->setSubmissionDate(new \DateTime());
         
         $form = $this->createForm(EventTeamType::class, $eventTeam);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Ensure event_id is set
+            // Ensure event is set using the getter method
             if ($eventTeam->getEvent() === null) {
                 $this->addFlash('error', 'Event must be selected.');
                 return $this->redirectToRoute('app_event_team_new');
@@ -63,7 +66,6 @@ class EventTeamController extends AbstractController
             return $this->redirectToRoute('app_event_team_index', [], Response::HTTP_SEE_OTHER);
         }
     
-        // Update the path to include the 'front' folder
         return $this->render('front/event_team/new.html.twig', [
             'event_team' => $eventTeam,
             'form' => $form,

@@ -36,15 +36,15 @@
                                             <tr>
                                                 <td class="fw-bold">{{ event_team.title }}</td>
                                                 <td>
-                                                    {% if event_team.event %}
+                                                    {% if event_team.event is not null and event_team.event.name is defined %}
                                                         {{ event_team.event.name }}
                                                     {% else %}
                                                         <span class="text-muted">N/A</span>
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    {% if event_team.team %}
-                                                        {{ event_team.team.teamName }}
+                                                    {% if event_team.team is not null and event_team.team.TeamName is defined %}
+                                                        {{ event_team.team.TeamName }}
                                                     {% else %}
                                                         <span class="text-muted">N/A</span>
                                                     {% endif %}

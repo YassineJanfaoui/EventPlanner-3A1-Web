@@ -123,7 +123,7 @@ final class TeamController extends AbstractController
     {
         // Create a form with only Score and Rank fields
         $form = $this->createForm(TeamType::class, $team, [
-            'show_team_name' => false, // Don't show team name field
+            'show_team_name' => true, // Don't show team name field
             'show_score_rank' => true,  // Show score and rank fields
         ]);
         
