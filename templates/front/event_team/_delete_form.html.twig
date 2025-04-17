@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_event_team_delete', {'submission_id': event_team.submissionId}) }}" onsubmit="return confirm('Are you sure you want to delete this submission?');" class="d-inline">
+    <button class="btn btn-danger btn-sm">
+        <i class="fas fa-trash-alt me-1"></i> Delete
+    </button>
+</form>

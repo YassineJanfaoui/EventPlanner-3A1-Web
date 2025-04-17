@@ -1,0 +1,60 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Feedback Management{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Feedback Management</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ path('app_admin_dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Feedback</li>
+    </ol>
+    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-comments me-1"></i>
+            Feedback List
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Team</th>
+                        <th>Event</th>
+                        <th>Comment</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in feedbacks %}
+                    <tr>
+                        <td>{{ feedback.feedbackId }}</td>
+                        <td>{{ feedback.team ? feedback.team.TeamName : 'N/A' }}</td>
+                        <td>{{ feedback.event ? feedback.event.name : 'N/A' }}</td>
+                        <td>{{ feedback.comment|slice(0, 50) }}{% if feedback.comment|length > 50 %}...{% endif %}</td>
+                        <td>{{ feedback.rate }}</td>
+                        <td>
+                            <a href="{{ path('app_admin_feedback_delete', {'id': feedback.feedbackId}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this feedback?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="navigation">
+                {{ knp_pagination_render(feedbacks) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

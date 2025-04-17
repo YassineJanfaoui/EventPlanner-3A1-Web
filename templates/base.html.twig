@@ -27,6 +27,19 @@
 			<link rel="stylesheet" href="{{ asset('css/slick.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/nice-select.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slicknav.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/flaticon.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/gijgo.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/animate.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/magnific-popup.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/fontawesome-all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/themify-icons.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slick.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/nice-select.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 		{% endblock %}
 	</head>
 	<body>
@@ -88,9 +101,9 @@
 													<li>
 														<a href="#">Teams</a>
 														<ul class="submenu">
-															<li><a href="#">Teams</a></li>
-															<li><a href="#">Project Submissions</a></li>
-															<li><a href="#">Feedback</a></li>
+															<li><a href="{{ path('app_team_index') }}">Teams</a></li>
+															<li><a href="{{ path('app_event_team_index') }}">Project Submissions</a></li>
+															<li><a href="{{ path('app_feedback_index') }}">Feedback</a></li>
 														</ul>
 													</li>
 													<li>

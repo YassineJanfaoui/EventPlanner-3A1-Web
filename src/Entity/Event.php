@@ -55,6 +55,8 @@ class Event
 
     #[ORM\OneToOne(targetEntity: Reservation::class, mappedBy: 'event')]
     private ?Reservation $reservation = null;
+    
+    
 
   /*  #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'events')]
     #[ORM\JoinTable(
@@ -80,6 +82,33 @@ class Event
     )]
     private Collection $partners;
 */
+#[ORM\OneToMany(targetEntity: EventTeam::class, mappedBy: 'event')]
+    private Collection $eventTeams;
+
+    /**
+     * @return Collection<int, EventTeam>
+     */
+    public function getEventTeams(): Collection
+    {
+        if (!$this->eventTeams instanceof Collection) {
+            $this->eventTeams = new ArrayCollection();
+        }
+        return $this->eventTeams;
+    }
+
+    public function addEventTeam(EventTeam $eventTeam): self
+    {
+        if (!$this->getEventTeams()->contains($eventTeam)) {
+            $this->getEventTeams()->add($eventTeam);
+        }
+        return $this;
+    }
+
+    public function removeEventTeam(EventTeam $eventTeam): self
+    {
+        $this->getEventTeams()->removeElement($eventTeam);
+        return $this;
+    }
     public function __construct()
     {
         $this->bills = new ArrayCollection();
@@ -88,6 +117,7 @@ class Event
         $this->teams = new ArrayCollection();
         $this->equipments = new ArrayCollection();
         $this->partners = new ArrayCollection();
+        $this->eventTeams = new ArrayCollection();
     }
 
     public function getEventId(): ?int

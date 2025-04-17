@@ -1,0 +1,60 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Event Team Management{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Event Team Management</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ path('app_admin_dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Event Teams</li>
+    </ol>
+    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-calendar-alt me-1"></i>
+            Event Team List
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Submission ID</th>
+                        <th>Title</th>
+                        <th>Event</th>
+                        <th>Team</th>
+                        <th>Submission Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eventTeam in eventTeams %}
+                    <tr>
+                        <td>{{ eventTeam.submissionId }}</td>
+                        <td>{{ eventTeam.title }}</td>
+                        <td>{{ eventTeam.event ? eventTeam.event.name : 'N/A' }}</td>
+                        <td>{{ eventTeam.team ? eventTeam.team.TeamName : 'N/A' }}</td>
+                        <td>{{ eventTeam.submissionDate ? eventTeam.submissionDate|date('Y-m-d') : 'N/A' }}</td>
+                        <td>
+                            <a href="{{ path('app_admin_event_team_delete', {'id': eventTeam.submissionId}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this event team?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="navigation">
+                {{ knp_pagination_render(eventTeams) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
