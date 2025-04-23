@@ -28,7 +28,7 @@
 
 					<div class="form-floating mb-3">
 						<label for="{{ form.category.vars.id }}">Category</label>
-						{{ form_widget(form.category, {'attr': {'class': 'form-control', 'placeholder': 'Category'}}) }}
+						{{ form_widget(form.category, {'attr': {'class': 'form-select', 'placeholder': 'Category'}}) }}
 
 						<div class="form-error-message">
 							{{ form_errors(form.category) }}
@@ -41,6 +41,15 @@
 
 						<div class="form-error-message">
 							{{ form_errors(form.quantity) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						<label for="{{ form.price.vars.id }}">Price</label>
+						{{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': 'Price'}}) }}
+
+						<div class="form-error-message">
+							{{ form_errors(form.price) }}
 						</div>
 					</div>
 

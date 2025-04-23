@@ -1,38 +1,181 @@
 {% extends 'basePlanner.html.twig' %}
 
-{% block title %}Bill index
+{% block title %}Bill List
 {% endblock %}
 
 {% block body %}
-	<h1>Bill index</h1>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+if (!("Notification" in window)) {
+console.log("This browser does not support desktop notifications");
+return;
+}
+
+{% if upcoming_bills|length > 0 %}
+if (Notification.permission !== "granted") {
+Notification.requestPermission().then(function (permission) {
+if (permission === "granted") {
+showUpcomingBillsNotification();
+}
+});
+} else {
+showUpcomingBillsNotification();
+}
+{% endif %}
+
+function showUpcomingBillsNotification() {
+const count = {{ upcoming_bills|length }};
+const notification = new Notification (`Upcoming Bills (${count})`, {
+body: `You have ${count} bill(s) due within a week`,
+icon: '/images/bill-icon.png',
+tag: 'upcoming-bills-notification'
+});
+
+notification.onclick = function () {
+window.focus();
+};
+}
+
+let currentCurrency = 'USD';
+const currencyRates = {
+USD: 1,
+EUR: {{ bill_service.convert(1, 'USD', 'EUR') }},
+CNY: {{ bill_service.convert(1, 'USD', 'CNY') }}
+};
+
+function convertCurrency(newCurrency) {
+currentCurrency = newCurrency;
+const rows = document.querySelectorAll('tbody tr');
+const currencySymbols = {
+USD: '$',
+EUR: '€',
+CNY: '¥'
+};
+
+rows.forEach(row => {
+const amountCell = row.querySelector('td:nth-child(2)');
+if (amountCell) {
+const originalAmount = parseFloat(amountCell.dataset.originalAmount);
+const convertedAmount = (originalAmount * currencyRates[newCurrency]).toFixed(2);
+amountCell.textContent = `${convertedAmount}${
+currencySymbols[newCurrency]
+}`;
+}
+});
+
+document.getElementById('currency-toggle').textContent = `Currency: ${currentCurrency}`;
+}
+
+window.convertCurrency = convertCurrency;
+});
+	</script>
+	<style>
+		.equipment-id-link {
+			color: black;
+			font-weight: bold;
+			padding: none;
+			text-decoration: none;
+			transition: all 0.6s ease;
+		}
+
+		.equipment-id-link:hover {
+			color: blue;
+
+		}
+		.title {
+			text-align: center;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+		.filter {
+			margin-left: 12.5%;
+			margin-top: 20px;
+
+		}
+		th,
+		td {
+			text-align: center;
+		}
+	</style>
+	<h1 class="title">Bill List</h1>
+	<form method="get" action="{{ path('app_bill_index') }}" class="mb-4 filter">
+		<div class="row g-3">
+			<div class="col-md-2">
+				<button type="button" id="currency-toggle" class="btn btn-primary" onclick="cycleCurrency()">Currency: USD</button>
+			</div>
+			<div class="col-md-4">
+				<input type="text" name="q" class="form-control" placeholder="Search bills..." value="{{ search_query|default('') }}">
+			</div>
+
+			<div class="col-md-3">
+				<select name="archived" class="form-select">
+					<option value="1" {% if archived_filter is not null and archived_filter == 1 %} selected {% endif %}>
+						Archived
+					</option>
+					<option value="0" {% if archived_filter is not null and archived_filter == 0 %} selected {% endif %}>
+						Active
+					</option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<button type="submit" class="btn btn-primary">Filter</button>
+				<a href="{{ path('app_bill_index') }}" class="btn btn-primary">Reset</a>
+			</div>
+
+		</div>
+	</form>
 	<table class="table">
 		<thead>
 			<tr>
 				<th>Billid</th>
-				<th>Amount</th>
+				<th>
+					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'Amount', 'direction': (sort_by == 'Amount' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+						Amount
+						{% if sort_by == 'Amount' %}
+							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+						{% endif %}
+					</a>
+				</th>
 				<th>Description</th>
 				<th>Event</th>
-				<th>DueDate</th>
-				<th>PaymentStatus</th>
+				<th>
+					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'DueDate', 'direction': (sort_by == 'DueDate' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+						Due Date
+						{% if sort_by == 'DueDate' %}
+							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+						{% endif %}
+					</a>
+				</th>
+				<th>
+					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'PaymentStatus', 'direction': (sort_by == 'PaymentStatus' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+						Payment Status
+						{% if sort_by == 'PaymentStatus' %}
+							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+						{% endif %}
+					</a>
+				</th>
+				<th>Archived</th>
 				<th>actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for bill in bills %}
-				<tr>
+				<tr style="{%if bill.Archived %}background-color: lightgrey;{% endif %} {% if not bill.Archived and bill.PaymentStatus == 'Paid' %}background-color: #b1ffa8;{% endif %} {% if not bill.Archived and bill.PaymentStatus == 'Pending' %}background-color: #f7b3b3;{% endif %}">
 					<td style="width: 80px;">
 						<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a>
 					</td>
-					<td>{{ bill.Amount }}</td>
+					<td data-original-amount="{{ bill.Amount }}">{{ bill.Amount }}$</td>
 					<td>{{ bill.Description }}</td>
 					<td>{{  bill.event ? bill.event.name : ''  }}</td>
 					<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
 					<td>{{ bill.PaymentStatus }}</td>
-					<td style="display:flex; gap:10px; ">
+					<td>{{ bill.Archived ? 'Yes' : 'No' }}</td>
+					<td>
 						<button class="btn btn-primary">
 							<a style="text-decoration:none; color:white;" href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
 						</button>
-						{{ include('bill/_delete_form.html.twig') }}
+						{{ include('bill/_delete_form.html.twig', { redirect_route: 'app_bill_index' }) }}
 					</td>
 				</tr>
 			{% else %}
@@ -45,4 +188,11 @@
 </div>
 <a href="{{ path('app_bill_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
 	Create new
-</a></div>{% endblock %}
+</a></div><script>
+function cycleCurrency() {
+const current = document.getElementById('currency-toggle').textContent;
+const currencies = ['USD', 'EUR', 'CNY'];
+const currentIndex = currencies.indexOf(current.replace('Currency: ', ''));
+const nextIndex = (currentIndex + 1) % currencies.length;
+convertCurrency(currencies[nextIndex]);
+}</script>{% endblock %}

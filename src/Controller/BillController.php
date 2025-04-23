@@ -10,17 +10,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Service\BillService;
 
 
 #[Route('/bill')]
 final class BillController extends AbstractController
 {
     #[Route('/', name: 'app_bill_index', methods: ['GET'])]
-    public function index(BillRepository $billRepository): Response
+    public function index(Request $request, BillRepository $billRepository, BillService $billService): Response
     {
+        $searchQuery = $request->query->get('q');
+        $archivedFilter = $request->query->get('archived');
+        $sortBy = $request->query->get('sort_by');
+        $sortDirection = $request->query->get('direction', 'ASC');
+
+        $archivedFilter = $archivedFilter == '' ? 0 : (int)$archivedFilter;
+
+        $bills = $billRepository->findAllWithFiltersAndSorting(
+            $searchQuery,
+            $archivedFilter,
+            $sortBy,
+            $sortDirection
+        );
+        $upcomingBills = $billService->checkUpcomingBills();
+
         return $this->render('bill/indexFront.html.twig', [
-            'bills' => $billRepository->findAll(),
+            'bills' => $bills,
+            'search_query' => $searchQuery,
+            'archived_filter' => $archivedFilter,
+            'sort_by' => $sortBy,
+            'sort_direction' => $sortDirection,
+            'upcoming_bills' => $upcomingBills,
+            'bill_service' => $billService
         ]);
     }
 
@@ -70,14 +91,18 @@ final class BillController extends AbstractController
         ]);
     }
 
-    #[Route('/{billid}', name: 'app_bill_delete', methods: ['POST'])]
-    public function delete(Request $request, Bill $bill, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/{billid}/{redirect_route}', name: 'app_bill_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Bill $bill,
+        EntityManagerInterface $entityManager,
+        string $redirect_route = 'app_bill_index'
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $bill->getBillid(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($bill);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_bill_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute($redirect_route, [], Response::HTTP_SEE_OTHER);
     }
 }

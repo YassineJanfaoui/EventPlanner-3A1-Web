@@ -22,7 +22,7 @@
 			<link rel="stylesheet" href="{{ asset('css/gijgo.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
-			<link rel="stylesheet" href="{{ asset('assets/css/fontawesome-all.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/slick.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/nice-select.css') }}">
@@ -41,6 +41,9 @@
 					-moz-border-radius: 10px;
 					-ms-border-radius: 10px;
 					-o-border-radius: 10px;
+				}
+				li {
+					z-index: 9999 !important;
 				}
 			</style>
 		{% endblock %}
@@ -78,6 +81,9 @@
 														</li>
 														<li>
 															<a href="{{path('app_bill_index')}}">Bills</a>
+														</li>
+														<li>
+															<a href="{{path('app_statistics_resources')}}">Stats</a>
 														</li>
 													</ul>
 												</li>

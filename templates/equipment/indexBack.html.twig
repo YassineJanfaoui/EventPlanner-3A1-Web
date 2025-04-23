@@ -16,6 +16,7 @@
 						<th>State</th>
 						<th>Category</th>
 						<th>Quantity</th>
+						<th>Price</th>
 						<th>actions</th>
 					</tr>
 				</thead>
@@ -29,9 +30,8 @@
 							<td>{{ equipment.state }}</td>
 							<td>{{ equipment.category }}</td>
 							<td>{{ equipment.quantity }}</td>
-							<td style="display:flex;">
-
-								{{ include('equipment/_delete_form.html.twig') }}</td>
+							<td>{{ equipment.price }}</td>
+							<td>{{ include('equipment/_delete_form.html.twig', { redirect_route: 'app_admin_equipment' }) }}</td>
 						</tr>
 					</td>
 				</tbody>

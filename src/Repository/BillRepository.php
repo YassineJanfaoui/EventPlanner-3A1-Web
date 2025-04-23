@@ -15,29 +15,71 @@ class BillRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Bill::class);
     }
+    public function findAllWithFiltersAndSorting(
+        ?string $searchQuery = null,
+        ?int $archivedFilter = 0,
+        ?string $sortBy = null,
+        ?string $sortDirection = 'ASC'
+    ): array {
+        $qb = $this->createQueryBuilder('b');
 
-//    /**
-//     * @return Bill[] Returns an array of Bill objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        if ($searchQuery) {
+            $qb->andWhere('b.Description LIKE :query 
+                OR b.Amount LIKE :query 
+                OR b.PaymentStatus LIKE :query')
+                ->setParameter('query', '%' . $searchQuery . '%');
+        }
 
-//    public function findOneBySomeField($value): ?Bill
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($archivedFilter !== null && $archivedFilter !== '') {
+            $qb->andWhere('b.Archived = :archived')
+                ->setParameter('archived', $archivedFilter);
+        }
+
+        if ($sortBy) {
+            $validSortFields = ['DueDate', 'PaymentStatus', 'Amount'];
+            if (in_array($sortBy, $validSortFields)) {
+                $qb->orderBy('b.' . $sortBy, $sortDirection);
+            }
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+    public function findBillsDueWithin(int $days): array
+    {
+        $qb = $this->createQueryBuilder('b');
+
+        return $qb
+            ->where('b.DueDate BETWEEN :now AND :future')
+            ->andWhere('b.PaymentStatus = :pending')
+            ->setParameter('now', new \DateTime())
+            ->setParameter('future', (new \DateTime())->modify("+$days days"))
+            ->setParameter('pending', 'pending')
+            ->orderBy('b.DueDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    //    /**
+    //     * @return Bill[] Returns an array of Bill objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('b')
+    //            ->andWhere('b.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('b.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Bill
+    //    {
+    //        return $this->createQueryBuilder('b')
+    //            ->andWhere('b.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
