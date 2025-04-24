@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EventEquipment;
+use App\Entity\Bill;
 use App\Form\EventEquipmentType;
 use App\Repository\EventEquipmentRepository;
 use App\Repository\EquipmentRepository;
@@ -103,5 +104,64 @@ final class EventEquipmentController extends AbstractController
         }
 
         return $this->redirectToRoute('app_event_equipment_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/generate-all', name: 'app_bill_generate_all', methods: ['GET', 'POST'])]
+    public function generateAll(EventEquipmentRepository $eventEquipmentRepo, EntityManagerInterface $entityManager)
+    {
+        $eventEquipments = $eventEquipmentRepo->findAll();
+
+        if (empty($eventEquipments)) {
+            $this->addFlash('warning', 'No equipment found.');
+            return $this->redirectToRoute('app_bill_index');
+        }
+
+        $events = [];
+        foreach ($eventEquipments as $eventEquipment) {
+            $event = $eventEquipment->getEvent();
+            $eventId = $event->getId();
+            if (!isset($events[$eventId])) {
+                $events[$eventId] = [
+                    'event' => $event,
+                    'equipments' => []
+                ];
+            }
+            $events[$eventId]['equipments'][] = $eventEquipment;
+        }
+
+        foreach ($events as $eventData) {
+            $event = $eventData['event'];
+            $equipments = $eventData['equipments'];
+            $totalAmount = 0;
+            $description = "Equipment for event: " . $event->getName() . "\n";
+
+            foreach ($equipments as $eventEquipment) {
+                $equipment = $eventEquipment->getEquipment();
+                if ($equipment) {
+                    $price = $equipment->getPrice() ?? 0;
+                    $quantity = $equipment->getQuantity() ?? 1;
+                    $totalAmount += $price * $quantity;
+
+                    $description .= sprintf(
+                        "%s (Qty: %d @ %s each)\n",
+                        $equipment->getName(),
+                        $quantity,
+                        $price
+                    );
+                }
+            }
+
+            $bill = new Bill();
+            $bill->setEvent($event);
+            $bill->setAmount($totalAmount);
+            $bill->setDueDate(new \DateTime());
+            $bill->setArchived(0);
+            $bill->setPaymentStatus('Pending');
+            $bill->setDescription($description);
+            $entityManager->persist($bill);
+        }
+
+        $entityManager->flush();
+        $this->addFlash('success', 'Bills generated for all events.');
+        return $this->redirectToRoute('app_bill_index');
     }
 }

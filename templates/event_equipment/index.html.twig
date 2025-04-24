@@ -37,7 +37,12 @@
 			{% endfor %}
 		</tbody>
 	</table>
-
-
-	<a style="width:25%; margin-left:37.5%; display:block;" class="btn btn-primary " href="{{ path('app_equipment_index') }}">Back to equipment</a>
+	<div style="display:flex; gap:10px; margin-left:32.5%">
+		{% if event_equipments|length > 0 %}
+			<!--<a href="{{ path('app_bill_generate_all') }}" class="btn btn-success" onclick="return confirm('Generate bills for all events? This will sum all equipment costs for each event.')">
+							Generate Bills for All Events
+						</a>-->
+		{% endif %}
+		<a class="btn btn-primary " href="{{ path('app_equipment_index') }}">Back to equipment</a>
+	</div>
 {% endblock %}

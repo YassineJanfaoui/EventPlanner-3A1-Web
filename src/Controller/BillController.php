@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\BillService;
+use App\Repository\EventEquipmentRepository;
 
 
 #[Route('/bill')]
@@ -104,5 +105,58 @@ final class BillController extends AbstractController
         }
 
         return $this->redirectToRoute($redirect_route, [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/generate/{eventId}', name: 'app_bill_generate', methods: ['GET', 'POST'])]
+    public function generate(
+        int $eventId,
+        EntityManagerInterface $entityManager,
+        EventEquipmentRepository $eventEquipmentRepository
+    ): Response {
+        $eventEquipments = $eventEquipmentRepository->findBy(['event' => $eventId]);
+
+        if (empty($eventEquipments)) {
+            $this->addFlash('warning', 'No equipment found for this event.');
+            return $this->redirectToRoute('app_bill_index');
+        }
+
+        $event = $eventEquipments[0]->getEvent(); // Get event from first equipment
+        $totalAmount = 0;
+        $description = "Equipment for event: " . $event->getName() . "\n";
+
+        foreach ($eventEquipments as $eventEquipment) {
+            $equipment = $eventEquipment->getEquipment();
+            if ($equipment) {
+                $price = $equipment->getPrice() ?? 0;
+                $quantity = $equipment->getQuantity() ?? 1;
+                $totalAmount += $price * $quantity;
+
+                $description .= sprintf(
+                    "%s (Qty: %d @ %s each)\n",
+                    $equipment->getName(),
+                    $quantity,
+                    $price
+                );
+            }
+        }
+
+        // Only create bill if there's equipment with price > 0
+        if ($totalAmount > 0) {
+            $bill = new Bill();
+            $bill->setEvent($event);
+            $bill->setAmount($totalAmount);
+            $bill->setDescription($description);
+            $bill->setDueDate(new \DateTime('+15 days'));
+            $bill->setPaymentStatus('pending');
+            $bill->setArchived(0);
+
+            $entityManager->persist($bill);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Bill generated successfully!');
+        } else {
+            $this->addFlash('warning', 'No billable equipment found for this event.');
+        }
+
+        return $this->redirectToRoute('app_bill_index');
     }
 }

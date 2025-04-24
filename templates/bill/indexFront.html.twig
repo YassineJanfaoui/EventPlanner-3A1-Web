@@ -166,7 +166,7 @@ window.convertCurrency = convertCurrency;
 						<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a>
 					</td>
 					<td data-original-amount="{{ bill.Amount }}">{{ bill.Amount }}$</td>
-					<td>{{ bill.Description }}</td>
+					<td style="width: 300px; text-overflow: wrap; ">{{ bill.Description }}</td>
 					<td>{{  bill.event ? bill.event.name : ''  }}</td>
 					<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
 					<td>{{ bill.PaymentStatus }}</td>
@@ -186,7 +186,7 @@ window.convertCurrency = convertCurrency;
 		</tbody>
 	</table>
 </div>
-<a href="{{ path('app_bill_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+<a href="{{ path('app_bill_new') }}" class="btn btn-primary" style="width:25%; margin-left:37.5%; display:block; margin-top:10px;">
 	Create new
 </a></div><script>
 function cycleCurrency() {

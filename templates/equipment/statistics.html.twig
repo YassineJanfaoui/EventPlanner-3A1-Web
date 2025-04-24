@@ -29,23 +29,33 @@
 			font-weight: bold;
 			margin-top: 20px;
 		}
+		.description {
+			margin-top: 15px;
+			padding: 10px;
+			background-color: #f8f9fa;
+			border-radius: 5px;
+			font-size: 14px;
+			text-align: left;
+		}
 	</style>
 	<h1 class="title">Resources Statistics</h1>
 	<div class="charts">
 		<div class="chart-card">
 			<h3>Equipment by Category</h3>
 			<canvas id="categoryChart"></canvas>
+			<div class="description">{{ aiDescriptions.category }}</div>
 		</div>
 		<div class="chart-card">
 			<h3>Equipment by State</h3>
 			<canvas id="stateChart" style="height: 350px;"></canvas>
+			<div class="description">{{ aiDescriptions.state }}</div>
 		</div>
 		<div class="chart-card">
 			<h3>Bills by Payment Status</h3>
 			<canvas id="paymentChart"></canvas>
+			<div class="description">{{ aiDescriptions.payment }}</div>
 		</div>
 	</div>
-
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
