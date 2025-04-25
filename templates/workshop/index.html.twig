@@ -1,52 +1,97 @@
 {% extends 'basePlanner.html.twig' %}
 
-{% block title %}Workshop
-{% endblock %}
+{% block title %}Workshops{% endblock %}
 
 {% block body %}
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
-	<table class="table">
-		<h1>Workshops</h1>
-		<thead>
-			<tr>
-				<th>WorkshopId</th>
-				<th>Title</th>
-				<th>Coach</th>
-				<th>StartDate</th>
-				<th>Duration</th>
-				<th>Description</th>
-				<th>Events</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for workshop in workshops %}
-				<tr>
-					<td>{{ workshop.workshopId }}</td>
-					<td>{{ workshop.title }}</td>
-					<td>{{ workshop.coach }}</td>
-					<td>{{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}</td>
-					<td>{{ workshop.duration }}</td>
-					<td>{{ workshop.description }}</td>
-					<td>
-						{%if workshop.event %}
-							{{ workshop.event.name }}
-						{% endif %}
-					</td>
-					<td style="display:flex; gap:10px; ">
+    <h1>Workshops</h1>
+
+    <form method="get" class="mb-4" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" name="search" placeholder="Search by title or coach" value="{{ app.request.get('search') }}" class="form-control" style="max-width: 200px;" />
+        <input type="text" name="coach" placeholder="Filter by coach" value="{{ app.request.get('coach') }}" class="form-control" style="max-width: 200px;" />
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{{ path('app_workshop_index') }}" class="btn btn-secondary">Reset</a>
+    </form>
+
+    <table class="table">
+          <thead>
+        {% set currentSort = app.request.get('sortBy') %}
+        {% set currentDir = app.request.get('sortDirection', 'ASC') %}
+        {% set nextDir = currentDir == 'ASC' ? 'DESC' : 'ASC' %}
+        <tr>
+            <th>WorkshopId</th>
+            <th>
+                <a style = "color:black" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'sortBy': 'title', 'sortDirection': (currentSort == 'title') ? nextDir : 'ASC'})) }}">
+                    Title
+                </a>
+            </th>
+            <th>
+                <a style = "color:black" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'sortBy': 'coach', 'sortDirection': (currentSort == 'coach') ? nextDir : 'ASC'})) }}">
+                    Coach
+                </a>
+            </th>
+            <th>
+                <a style = "color:black" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'sortBy': 'startDate', 'sortDirection': (currentSort == 'startDate') ? nextDir : 'ASC'})) }}">
+                    StartDate
+                </a>
+            </th>
+            <th>
+                <a style = "color:black"  href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'sortBy': 'duration', 'sortDirection': (currentSort == 'duration') ? nextDir : 'ASC'})) }}">
+                    Duration
+                </a>
+            </th>
+            <th>Description</th>
+            <th>Events</th>
+            <th>QR Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for workshop in workshops %}
+                <tr>
+                    <td>{{ workshop.workshopId }}</td>
+                    <td>{{ workshop.title }}</td>
+                    <td>{{ workshop.coach }}</td>
+                    <td>{{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}</td>
+                    <td>{{ workshop.duration }}</td>
+                    <td>{{ workshop.description }}</td>
+                    <td>
+                        <!-- Create a container for each workshop's QR code -->
+                        <div id="qrcode-{{ workshop.workshopId }}" class="qrcode"></div>
+                    </td>
+					<td style="display:flex; gap:10px;">
 						<button class="btn btn-primary">
-							<a style="text-decoration:none; color:white;" href="{{ path('app_workshop_edit', {'workshopId': workshop.workshopid}) }}">edit</a>
+							<a style="text-decoration:none; color:white;" href="{{ path('app_workshop_edit', {'workshopId': workshop.workshopId}) }}">Edit</a>
 						</button>
 						{{ include('workshop/_delete_form.html.twig') }}
-					</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="7">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
 	<a href="{{ path('app_workshop_new') }}" style="color: white; width:20%; margin-left:37.5%" class="btn btn-primary">Create new</a>
+
+    <script>
+        // Use the QRCode.js library to generate a QR code for each workshop's details
+        {% for workshop in workshops %}
+            // Construct the details string to be encoded in the QR code
+            var workshopDetails = "Title: {{ workshop.title }}, Coach: {{ workshop.coach }}, Start Date: {{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}, Duration: {{ workshop.duration }}, Description: {{ workshop.description }}";
+
+            // Generate the QR code for the workshop details
+            new QRCode(document.getElementById("qrcode-{{ workshop.workshopId }}"), {
+                text: workshopDetails,  // Workshop details as the QR code content
+                width: 150,            // QR code width
+                height: 150,           // QR code height
+                colorDark: "#000000",  // Dark color for the QR code
+                colorLight: "#ffffff", // Light color for the background
+                correctLevel: QRCode.CorrectLevel.H  // Error correction level
+            });
+        {% endfor %}
+    </script>
+
 {% endblock %}

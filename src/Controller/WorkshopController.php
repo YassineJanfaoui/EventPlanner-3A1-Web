@@ -15,12 +15,26 @@ use Symfony\Component\Routing\Attribute\Route;
 final class WorkshopController extends AbstractController
 {
     #[Route(name: 'app_workshop_index', methods: ['GET'])]
-    public function index(WorkshopRepository $workshopRepository): Response
-    {
-        return $this->render('workshop/index.html.twig', [
-            'workshops' => $workshopRepository->findAll(),
-        ]);
-    }
+public function index(Request $request, WorkshopRepository $workshopRepository): Response
+{
+    $searchQuery = $request->query->get('search');
+    $coachFilter = $request->query->get('coach');
+    $sortBy = $request->query->get('sortBy');
+    $sortDirection = strtoupper($request->query->get('sortDirection', 'ASC'));
+
+    $workshops = $workshopRepository->findAllWithFiltersAndSorting(
+        $searchQuery,
+        $coachFilter,
+        $sortBy,
+        $sortDirection
+    );
+
+    return $this->render('workshop/index.html.twig', [
+        'workshops' => $workshops,
+    ]);
+}
+
+
 
     #[Route('/new', name: 'app_workshop_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

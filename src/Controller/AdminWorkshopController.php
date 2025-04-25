@@ -29,4 +29,14 @@ final class AdminWorkshopController extends AbstractController
             'workshop' => $workshop,
         ]);
     }
+    #[Route('/{workshopId}', name: 'app_workshop_delete_admin', methods: ['POST'])]
+    public function delete(Request $request, Workshop $workshop, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$workshop->getWorkshopId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($workshop);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app__admin_workshop_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

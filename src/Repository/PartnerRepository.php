@@ -16,6 +16,25 @@ class PartnerRepository extends ServiceEntityRepository
         parent::__construct($registry, Partner::class);
     }
 
+    public function findAllWithFiltersAndSorting(
+        ?string $searchQuery = null,
+        ?string $categoryFilter = null,
+    ): array {
+        $qb = $this->createQueryBuilder('w');
+
+        if ($searchQuery) {
+            $qb->andWhere('w.name LIKE :query OR w.name LIKE :query')
+                ->setParameter('query', '%' . $searchQuery . '%');
+        }
+
+        if ($categoryFilter !== null && $categoryFilter !== '') {
+            $qb->andWhere('w.category = :category')
+                ->setParameter('category', $categoryFilter);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Partner[] Returns an array of Partner objects
     //     */

@@ -30,4 +30,31 @@ final class AdminPartnerController extends AbstractController
             'partner' => $partner,
         ]);
     }
+    #[Route('/{partnerId}/edit', name: 'app_partner_edit_admin', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(PartnerType::class, $partner);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_partner_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('partner/edit.html.twig', [
+            'partner' => $partner,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{partnerId}', name: 'app_partner_delete_admin', methods: ['POST'])]
+    public function delete(Request $request, Partner $partner, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$partner->getPartnerId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($partner);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_admin_partner_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

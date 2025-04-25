@@ -14,7 +14,7 @@ class Reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', name: 'eventVenueId')]
+    #[ORM\Column(type: 'integer')]
     private ?int $eventVenueId = null;
 
     public function getEventVenueId(): ?int
@@ -58,7 +58,7 @@ class Reservation
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: true, name: 'reservationDate')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $reservationDate = null;
 
     public function getReservationDate(): ?string
@@ -72,7 +72,7 @@ class Reservation
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false, name: 'reservationPrice')]
+    #[ORM\Column(type: 'string', nullable: false)]
     private ?string $reservationPrice = null;
 
     public function getReservationPrice(): ?string
@@ -85,4 +85,5 @@ class Reservation
         $this->reservationPrice = $reservationPrice;
         return $this;
     }
+
 }

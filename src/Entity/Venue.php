@@ -14,7 +14,7 @@ class Venue
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer', name: 'VenueId')]
+    #[ORM\Column(type: 'integer')]
     private ?int $VenueId = null;
 
     public function getVenueId(): ?int
@@ -158,4 +158,5 @@ class Venue
         $this->reservation = $reservation;
         return $this;
     }
+
 }

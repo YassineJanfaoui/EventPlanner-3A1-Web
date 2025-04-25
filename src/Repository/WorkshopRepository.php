@@ -9,12 +9,42 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Workshop>
  */
-class WorkshopRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
+    class WorkshopRepository extends ServiceEntityRepository
     {
-        parent::__construct($registry, Workshop::class);
+        public function __construct(ManagerRegistry $registry)
+        {
+            parent::__construct($registry, Workshop::class);
+        }
+
+        public function findAllWithFiltersAndSorting(
+            ?string $searchQuery = null,
+            ?string $coachFilter = null,
+            ?string $sortBy = null,
+            ?string $sortDirection = 'ASC'
+        ): array {
+            $qb = $this->createQueryBuilder('w');
+
+            if ($searchQuery) {
+                $qb->andWhere('w.title LIKE :query OR w.coach LIKE :query')
+                    ->setParameter('query', '%' . $searchQuery . '%');
+            }
+
+            if ($coachFilter !== null && $coachFilter !== '') {
+                $qb->andWhere('w.coach = :coach')
+                    ->setParameter('coach', $coachFilter);
+            }
+
+            if ($sortBy) {
+                $validSortFields = ['startDate', 'duration', 'title', 'coach'];
+                if (in_array($sortBy, $validSortFields)) {
+                    $qb->orderBy('w.' . $sortBy, $sortDirection);
+                }
+            }
+
+            return $qb->getQuery()->getResult();
+        }
     }
+
 
     //    /**
     //     * @return Workshop[] Returns an array of Workshop objects
@@ -40,4 +70,3 @@ class WorkshopRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}

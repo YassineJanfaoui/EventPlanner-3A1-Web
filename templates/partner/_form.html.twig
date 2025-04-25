@@ -26,6 +26,33 @@
 						</div>
 					</div>
 
+					<!-- Add your new fields here 👇 -->
+
+					<div class="form-floating mb-3">
+						{{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.email) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						{{ form_label(form.number, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.number, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.number) }}
+						</div>
+					</div>
+
+					<div class="form-floating mb-3">
+						{{ form_label(form.officeLocation, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.officeLocation, {'attr': {'class': 'form-control'}}) }}
+						<div class="form-error-message">
+							{{ form_errors(form.officeLocation) }}
+						</div>
+					</div>
+
+					<!-- Submit button stays here -->
 					<div class="mt-4 mb-0">
 						<div class="d-grid">
 							<button class="btn btn-primary btn-block">

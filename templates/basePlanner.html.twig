@@ -74,10 +74,10 @@
 													<a href="#">Resources</a>
 													<ul class="submenu">
 														<li>
-															<a href="">Equipment</a>
+															{# <a href="{{path('app_equipment_index')}}">Equipment</a> #}
 														</li>
 														<li>
-															<a href="">Bills</a>
+															{# <a href="{{path('app_bill_index')}}">Bills</a> #}
 														</li>
 													</ul>
 												</li>
@@ -88,6 +88,9 @@
 															<a href="{{ path('app_partner_index') }}">Partners</a>
 														</li>
 														<li>
+															<a href="{{ path('partner_stats') }}">stats</a>
+														</li>
+														<li>
 															<a href="{{ path('app_workshop_index') }}">Workshops</a>
 														</li>
 													</ul>
@@ -96,10 +99,10 @@
 													<a href="#">Accommodation</a>
 													<ul class="submenu">
 														<li>
-															<a href="#">Venues</a>
+															{# <a href="{{ path('app_venue_index') }}">Venues</a> #}
 														</li>
 														<li>
-															<a href="#">Catering</a>
+															{# <a href="{{ path('app_catering_index') }}">Catering</a> #}
 														</li>
 													</ul>
 												</li>
@@ -125,7 +128,7 @@
 										</nav>
 									</div>
 									<div class="header-right-btn f-right d-none d-lg-block ml-30">
-										<a href="{{ path('app_admin_partner_index') }}" class="btn header-btn">Get Your Ticket</a>
+										{# <a href="{{ path('app_admin_bill') }}" class="btn header-btn">Get Your Ticket</a> #}
 									</div>
 								</div>
 							</div>
@@ -140,7 +143,6 @@
 			<!-- Header End -->
 		</header>
 		{% block body%}{% endblock %}
-
 	</body>
 </html></footer><!-- Scroll Up --><div id="back-top">
 <a title="Go to Top" href="#">
@@ -184,4 +186,5 @@
 
 <!-- Main JS -->
 <script src="{{ asset('js/plugins.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>{% endblock %}</body></html>
+<script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}</body></html>

@@ -35,7 +35,9 @@
 					</tr>
 					<tr>
 						<th>Event</th>
-						<td>{{ workshop.event.name }}</td>
+						<td>{%if workshop.event %}
+							{{ workshop.event.name }}
+						{% endif %}</td>
 					</tr>
 				</tbody>
 			</table>
