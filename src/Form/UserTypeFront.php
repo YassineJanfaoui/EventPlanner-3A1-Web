@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserTypeFront extends AbstractType
 {
@@ -131,6 +133,27 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
                 new Regex([
                     'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/',
                     'message' => 'Password must contain an uppercase letter, a lowercase letter, a number, and a special character.',
+                ])
+            ],
+            'row_attr' => ['class' => 'mb-3'],
+        ])
+        ->add('imageFile', FileType::class, [
+            'label' => 'Profile Photo',
+            'required' => false,
+            'mapped' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'accept' => 'image/*'
+            ],
+            'constraints' => [
+                new \Symfony\Component\Validator\Constraints\File([
+                    'maxSize' => '2M',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, GIF)',
                 ])
             ],
             'row_attr' => ['class' => 'mb-3'],

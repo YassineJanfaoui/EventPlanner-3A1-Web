@@ -66,6 +66,12 @@ public function register(
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+        // Handle file upload
+        $imageFile = $form->get('imageFile')->getData();
+        if ($imageFile) {
+            $user->setImageFile($imageFile);
+        }
+        
         // Set default status to 'active'
         $user->setStatus('active');
         
@@ -98,44 +104,58 @@ public function register(
     }
 
     #[Route('/profile/edit', name: 'app_user_edit_profil', methods: ['GET', 'POST'])]
-public function EditProfil(
-    Request $request, 
-    EntityManagerInterface $entityManager, 
-    UserPasswordHasherInterface $passwordHasher
-    ): Response 
-    {
+public function editProfil(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    UserPasswordHasherInterface $passwordHasher,
+    LoggerInterface $logger
+): Response {
     /** @var User $user */
     $user = $this->getUser();
+    $originalImage = $user->getImageName(); // Store original image name
 
-    // Create the form using the front-facing form type
     $form = $this->createForm(UserTypeFront::class, $user, [
-        'is_edit' => true // To control optional password and constraints
+        'is_edit' => true
     ]);
-
-    // Remove role field to prevent changes to it
-    $form->remove('role');
+    $form->remove('role'); // Remove role field for profile editing
 
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Only update password if the user typed a new one
-        $newPassword = $form->get('plainPassword')->getData();
-        if ($newPassword) {
-            $user->setPassword(
-                $passwordHasher->hashPassword($user, $newPassword)
-            );
+        try {
+            // Handle file upload first
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $user->setImageFile($imageFile);
+                // Force Doctrine to recognize changes
+                $user->setUpdatedAt(new \DateTimeImmutable());
+            }
+
+            // Handle password change
+            $plainPassword = $form->get('plainPassword')->getData();
+            if ($plainPassword) {
+                $user->setPassword(
+                    $passwordHasher->hashPassword($user, $plainPassword)
+                );
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Profile updated successfully!');
+            return $this->redirectToRoute('app_participant_index');
+
+        } catch (\Exception $e) {
+            // Revert image if error occurs
+            $user->setImageName($originalImage);
+            $logger->error('Profile update error: '.$e->getMessage());
+            $this->addFlash('error', 'Error updating profile: '.$e->getMessage());
         }
-
-        $entityManager->flush();
-
-        // You can customize redirection as needed
-        return $this->redirectToRoute('app_participant_index'); // or any profile/dashboard route
     }
 
     return $this->render('user/editProfil.html.twig', [
         'form' => $form->createView(),
+        'user' => $user
     ]);
-    }
+}
 
 
     #[Route('/{userid}', name: 'app_user_show', methods: ['GET'])]
