@@ -9,8 +9,29 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Copy all the CSS styles from your login.html.twig */
-        :root {
+    .google-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: #555;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 15px;
+    }
+
+    .google-btn:hover {
+        background-color: #f7f7f7;
+    }
+
+    .google-icon {
+        height: 20px;
+        margin-right: 8px;
+    }
+    :root {
             --primary: #4361ee;
             --primary-dark: #3a56d4;
             --danger: #f72585;
@@ -35,12 +56,12 @@
             padding: 20px;
         }
         
-        .register-container {
+        .login-container {
             background: white;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 500px;
+            max-width: 420px;
             padding: 40px;
             animation: fadeIn 0.6s ease-out;
         }
@@ -76,7 +97,7 @@
             margin-bottom: 20px;
         }
         
-        input, select {
+        input {
             width: 100%;
             padding: 14px 16px;
             border: 1px solid #dee2e6;
@@ -85,7 +106,7 @@
             transition: all 0.3s;
         }
         
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
@@ -133,7 +154,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-    </style>
+
+</style>
+
 </head>
 <body>
     <div class="register-container">
@@ -209,7 +232,13 @@
                 <i class="fas fa-user-plus me-2"></i> Register
             </button>
         {{ form_end(form) }}
-        
+        <div class="oauth-register">
+    <p>Or register with:</p>
+    <a href="{{ path('connect_google_start') }}" class="google-btn">
+        <img src="{{ asset('img/google-icon.png') }}" alt="Google" class="google-icon">
+        Continue with Google
+    </a>
+</div>
         <p class="footer-text">
             Already have an account? <a href="{{ path('app_login') }}">Sign in here</a>
         </p>

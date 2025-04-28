@@ -5,3 +5,10 @@ controllers:
     type: attribute
 app_logout:
     path: /logout
+connect_google_start:
+    path: /connect/google
+    controller: App\Controller\GoogleController::connect
+
+connect_google_check:
+    path: /connect/google/check
+

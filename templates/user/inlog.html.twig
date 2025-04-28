@@ -130,28 +130,6 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .google-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        color: #555;
-        border: 1px solid #ddd;
-        padding: 10px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: 500;
-        margin-top: 15px;
-    }
-
-    .google-btn:hover {
-        background-color: #f7f7f7;
-    }
-
-    .google-icon {
-        height: 20px;
-        margin-right: 8px;
-    }
     </style>
 </head>
 <body>
@@ -189,15 +167,9 @@
             
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             
-            <button type="submit">log In</button>
+            <button type="submit">Sign In</button>
         </form>
-        <div class="oauth-login">
-    <p>Or sign in with:</p>
-    <a href="{{ path('connect_google_start') }}" class="google-btn">
-        <img src="{{ asset('img/google-icon.png') }}" alt="Google" class="google-icon">
-        Continue with Google
-    </a>
-</div>
+        
 <p class="footer-text">
     Don't have an account? <a href="{{ path('app_user_register') }}">Register here</a>
 </p>

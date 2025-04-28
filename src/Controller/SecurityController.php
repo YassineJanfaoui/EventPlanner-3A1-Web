@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 
 class SecurityController extends AbstractController
 {
@@ -45,5 +46,21 @@ class SecurityController extends AbstractController
         }
         
         return $this->redirectToRoute('app_participant_index');
+    }
+
+    #[Route('/connect/google', name: 'connect_google_start')]
+    public function connectGoogle(ClientRegistry $clientRegistry)
+    {
+        // Redirects to Google
+        return $clientRegistry
+            ->getClient('google')
+            ->redirect([], []);
+    }
+
+    #[Route('/connect/google/check', name: 'connect_google_check')]
+    public function connectGoogleCheck(Request $request)
+    {
+        // This will be handled by Symfony firewall, no code needed here usually
+        // You can handle it manually if needed
     }
 }
