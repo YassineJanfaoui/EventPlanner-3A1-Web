@@ -1,0 +1,111 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Equipment Statistics
+{% endblock %}
+
+{% block body %}
+	<style>
+		.charts {
+			display: flex;
+			margin-left: 10%;
+			margin-right: 7.5%;
+			margin-top: 5%;
+			gap: 5%;
+		}
+
+		.chart-card {
+			flex: 0 0 auto;
+			width: 300px;
+			margin-right: 10%;
+			text-align: center;
+		}
+
+		canvas {
+			width: 300px !important;
+			height: 300px !important;
+		}
+		.title {
+			text-align: center;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+		.description {
+			margin-top: 15px;
+			padding: 10px;
+			background-color: #f8f9fa;
+			border-radius: 5px;
+			font-size: 14px;
+			text-align: left;
+		}
+	</style>
+	<h1 class="title">Resources Statistics</h1>
+	<div class="charts">
+		<div class="chart-card">
+			<h3>Equipment by Category</h3>
+			<canvas id="categoryChart"></canvas>
+			<div class="description">{{ aiDescriptions.category }}</div>
+		</div>
+		<div class="chart-card">
+			<h3>Equipment by State</h3>
+			<canvas id="stateChart" style="height: 350px;"></canvas>
+			<div class="description">{{ aiDescriptions.state }}</div>
+		</div>
+		<div class="chart-card">
+			<h3>Bills by Payment Status</h3>
+			<canvas id="paymentChart"></canvas>
+			<div class="description">{{ aiDescriptions.payment }}</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {
+type: 'pie',
+data: {
+labels: {{ categoryStats|map(stat => stat.name)|json_encode|raw }},
+datasets: [
+{
+data: {{ categoryStats|map(stat => stat.count)|json_encode|raw }},
+backgroundColor: [
+'#FF6384',
+'#36A2EB',
+'#FFCE56',
+'#4BC0C0',
+'#9966FF'
+]
+}
+]
+}
+});
+
+const stateCtx = document.getElementById('stateChart').getContext('2d');
+new Chart(stateCtx, {
+type: 'bar',
+data: {
+labels: {{ stateStats|map(stat => stat.name)|json_encode|raw }},
+datasets: [
+{
+label: 'Equipment by State',
+data: {{ stateStats|map(stat => stat.count)|json_encode|raw }},
+backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)']
+}
+]
+}
+});
+
+const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+new Chart(paymentCtx, {
+type: 'doughnut',
+data: {
+labels: {{ paymentStats|map(stat => stat.name)|json_encode|raw }},
+datasets: [
+{
+data: {{ paymentStats|map(stat => stat.count)|json_encode|raw }},
+backgroundColor: ['#FF2026', '#205820', '#63FF84']
+}
+]
+}
+});
+	</script>
+{% endblock %}

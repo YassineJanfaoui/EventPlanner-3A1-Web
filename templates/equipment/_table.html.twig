@@ -1,0 +1,107 @@
+<style>
+	.navigation {
+		display: flex;
+		justify-content: center;
+	}
+
+	.pagination {
+		display: flex;
+		gap: 5px;
+	}
+
+	.pagination span {
+		display: inline-block;
+	}
+
+	.pagination a {
+		padding: 8px 12px;
+		border: 1px solid #dee2e6;
+		border-radius: 4px;
+		text-decoration: none;
+		color: #007bff;
+		background-color: #fff;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.pagination a:hover,
+	.pagination .current {
+		background-color: #e9ecef;
+		text-decoration: none;
+	}
+
+	.pagination .current {
+		background-color: #007bff;
+		padding: 8px 12px;
+		color: #fff;
+		font-weight: bold;
+		cursor: default;
+	}
+</style>
+<table class="table">
+	<thead>
+		<tr>
+			<th>EquipmentId</th>
+			<th>QR Code</th>
+			<th>Name</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'state', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					State
+					{% if sort_by == 'state' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>Category</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'quantity', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					Quantity
+					{% if sort_by == 'quantity' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'price', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					Price
+					{% if sort_by == 'price' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in equipmentWithQrCodes %}
+			<tr style="{%if item.equipment.state == 'maintenance' %}background-color: lightyellow;{% endif %} {%if item.equipment.state == 'unavailable' %}background-color: lightgrey;{% endif %}">
+				<td>
+					<a class="equipment-id-link" href="{{ path('app_equipment_show', {'EquipmentId': item.equipment.EquipmentId}) }}">{{ item.equipment.EquipmentId }}</a>
+				</td>
+				<td><img src="{{ item.qrCode }}" alt="QR Code" width="75"></td>
+				<td>{{ item.equipment.name }}</td>
+				<td>{{ item.equipment.state }}</td>
+				<td>{{ item.equipment.category }}</td>
+				<td>{{ item.equipment.quantity }}</td>
+				<td>{{ item.equipment.price }}</td>
+				<td>
+					<button class="btn btn-primary">
+						<a style="text-decoration:none; color:white;" href="{{ path('app_equipment_edit', {'EquipmentId': item.equipment.EquipmentId}) }}">edit</a>
+					</button>
+					{% if item.equipment.state == 'functional' %}
+						<button class="btn btn-success">
+							<a style="text-decoration:none; color:white;" href="{{ path('app_event_equipment_new', {'equipment_id': item.equipment.EquipmentId}) }}">Assign to Event</a>
+						</button>
+					{% endif %}
+					{{ include('equipment/_delete_form.html.twig', { redirect_route: 'app_equipment_index' }) }}
+				</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="6">no records found</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div class="navigation">
+	{{ knp_pagination_render(equipments) }}
+</div>

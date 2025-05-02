@@ -33,7 +33,7 @@
 							<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
 							<td>{{ bill.PaymentStatus }}</td>
 							<td style="display:flex;">
-								{{ include('bill/_delete_form_admin.html.twig') }}
+								{{ include('bill/_delete_form.html.twig', { redirect_route: 'app_admin_bill' }) }}
 							</td>
 						</tr>
 					{% else %}

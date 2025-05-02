@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 
 class EquipmentType extends AbstractType
@@ -29,8 +30,20 @@ class EquipmentType extends AbstractType
                 'empty_data' => 'unavailable',
                 'required' => true,
             ])
-            ->add('category', TextType::class, [
-                'empty_data' => ''
+            ->add('price', IntegerType::class, [
+                'empty_data' => 0
+            ])
+            ->add('category', ChoiceType::class, [
+                'choices' => [
+                    'Tools' => 'tools',
+                    'IT' => 'IT',
+                    'Accomodation' => 'accomodation',
+                    'Audio & Visual' => 'Audio & Visual',
+                    'Transport' => 'Transport'
+                ],
+                'required' => true,
+                'placeholder' => 'Select a category',
+                'empty_data' => null
             ])
             ->add('quantity', IntegerType::class, [
                 'empty_data' => 0

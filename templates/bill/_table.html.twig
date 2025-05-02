@@ -1,0 +1,105 @@
+<style>
+	.navigation {
+		display: flex;
+		justify-content: center;
+	}
+
+	.pagination {
+		display: flex;
+		gap: 5px;
+	}
+
+	.pagination span {
+		display: inline-block;
+	}
+
+	.pagination a {
+		padding: 8px 12px;
+		border: 1px solid #dee2e6;
+		border-radius: 4px;
+		text-decoration: none;
+		color: #007bff;
+		background-color: #fff;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.pagination a:hover,
+	.pagination .current {
+		background-color: #e9ecef;
+		text-decoration: none;
+	}
+
+	.pagination .current {
+		background-color: #007bff;
+		padding: 8px 12px;
+		color: #fff;
+		font-weight: bold;
+		cursor: default;
+	}
+</style>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Billid</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'Amount', 'direction': (sort_by == 'Amount' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					Amount
+					{% if sort_by == 'Amount' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>Description</th>
+			<th>Event</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'DueDate', 'direction': (sort_by == 'DueDate' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					Due Date
+					{% if sort_by == 'DueDate' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>
+				<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_index', { 'q': search_query|default(''), 'archived': archived_filter is defined ? archived_filter : '', 'sort_by': 'PaymentStatus', 'direction': (sort_by == 'PaymentStatus' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
+					Payment Status
+					{% if sort_by == 'PaymentStatus' %}
+						{{ sort_direction == 'ASC' ? '↑' : '↓' }}
+					{% endif %}
+				</a>
+			</th>
+			<th>Archived</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for bill in bills %}
+			<tr style="{%if bill.Archived %}background-color: lightgrey;{% endif %} {% if not bill.Archived and bill.PaymentStatus == 'Paid' %}background-color: #b1ffa8;{% endif %} {% if not bill.Archived and bill.PaymentStatus == 'Pending' %}background-color: #f7b3b3;{% endif %}">
+				<td style="width: 80px;">
+					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a>
+				</td>
+				<td data-original-amount="{{ bill.Amount }}">{{ bill.Amount }}$</td>
+				<td style="width: 300px; text-overflow: wrap; ">{{ bill.Description }}</td>
+				<td>{{  bill.event ? bill.event.name : ''  }}</td>
+				<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
+				<td>{{ bill.PaymentStatus }}</td>
+				<td>{{ bill.Archived ? 'Yes' : 'No' }}</td>
+				<td>
+					<button class="btn btn-primary">
+						<a style="text-decoration:none; color:white;" href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
+					</button>
+					{{ include('bill/_delete_form.html.twig', { redirect_route: 'app_bill_index' }) }}
+					<button class="btn btn-primary">
+						<a style="text-decoration:none; color:white;" href="{{ path('app_bill_pdf', {'billid': bill.billid}) }}">PDF</a>
+					</button>
+				</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="8">no records found</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div class="navigation">
+	{{ knp_pagination_render(bills) }}
+</div>
