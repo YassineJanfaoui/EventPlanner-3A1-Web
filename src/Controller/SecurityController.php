@@ -71,9 +71,6 @@ public function login(
     ]);
 }
 
-
-// src/Controller/SecurityController.php
-
 #[Route('/faceid', name: 'app_faceid_page')]
     public function faceIdPage(): Response
     {

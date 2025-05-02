@@ -43,6 +43,8 @@
         .logo {
             text-align: center;
             margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 50px;
         }
         
         .logo img {
@@ -173,15 +175,13 @@
 <body>
 <div class="login-container">
     <div class="logo">
-        <img src="{{ asset('img/logo/logo.png') }}" alt="Event Planner">
+        HackForge
     </div>
 
     <h1>Face ID Login</h1>
 
     <form id="faceid-login-form">
-        <div class="form-group">
-            <input type="text" name="username" placeholder="Username" required>
-        </div>
+        
         
         <div id="camera-section">
             <video id="video" width="320" height="240" autoplay muted playsinline></video>
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const preview = document.getElementById('preview');
     const previewContainer = document.getElementById('preview-container');
-    const usernameInput = document.querySelector('input[name="username"]');
+    //const usernameInput = document.querySelector('input[name="username"]');
     let stream = null;
 
     // Start camera when page loads
@@ -260,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleFaceLogin() {
-        if (!canvas.width || !usernameInput.value) {
-            alert('Please enter username and capture your face first');
+        if (!canvas.width) {
+            alert('Please enter capture your face first');
             return;
         }
 
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Prepare form data
             const formData = new FormData();
-            formData.append('username', usernameInput.value);
+            //formData.append('username', usernameInput.value);
             formData.append('face_image', imageData.split(',')[1]); // Send only base64 data
 
             // Add CSRF token

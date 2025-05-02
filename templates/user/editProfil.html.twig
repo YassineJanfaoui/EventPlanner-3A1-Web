@@ -46,6 +46,8 @@
         .logo {
             text-align: center;
             margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 50px;
         }
 
         .logo img {
@@ -212,7 +214,7 @@
 <body>
     <div class="edit-profile-container">
         <div class="logo">
-            <img src="{{ asset('img/logo/logo.png') }}" alt="Event Planner">
+            HackForge
         </div>
 
         <h1>Edit Your Profile</h1>
@@ -221,12 +223,12 @@
 
             <div class="profile-photo-container">
                 {% if user.imageName %}
-                    <img src="{{ asset('images/profiles/' ~ user.imageName) }}" 
+                    <img src="{{ asset('uploads/faceid/faces/' ~ user.imageName) }}" 
                          alt="Profile Photo" 
                          class="profile-photo"
                          id="profilePhotoPreview">
                 {% else %}
-                    <img src="{{ asset('public/images/default-profile.png') }}" 
+                    <img src="{{ asset('/images/default-profile.png') }}" 
                          alt="Default Profile" 
                          class="profile-photo"
                          id="profilePhotoPreview">

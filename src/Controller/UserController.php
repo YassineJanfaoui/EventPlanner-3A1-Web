@@ -18,6 +18,8 @@ use Psr\Log\LoggerInterface; // Add this for LoggerInterface
 use Symfony\Component\Security\Core\Exception\AuthenticationException; // Add this for AuthenticationException
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; // Add this import
 use Twilio\Rest\Client;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 #[Route('/user')]
@@ -71,13 +73,34 @@ public function register(
         // Handle file upload
         $imageFile = $form->get('imageFile')->getData();
         if ($imageFile) {
-            $user->setImageFile($imageFile);
+            $uploadsDir = $this->getParameter('kernel.project_dir').'/public/uploads/faceid/faces';
+            
+            // Ensure directory exists
+            if (!file_exists($uploadsDir)) {
+                mkdir($uploadsDir, 0777, true);
+            }
+
+            // Generate filename from username
+            $newFilename = $user->getUsername().'.'.$imageFile->guessExtension();
+            
+            try {
+                $imageFile->move(
+                    $uploadsDir,
+                    $newFilename
+                );
+                
+                // Create a new File object pointing to the uploaded file
+                $uploadedFile = new File($uploadsDir.'/'.$newFilename);
+                $user->setImageFile($uploadedFile);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'There was an error uploading your profile picture.');
+                // You might want to return here if the image is required
+            }
         }
         
-        // Set default status to 'active'
+        // Rest of your registration logic...
         $user->setStatus('active');
-        
-        // Hash the plain password
+        $user->setImageName($newFilename);
         $plainPassword = $form->get('plainPassword')->getData();
         if ($plainPassword) {
             $user->setPassword(
@@ -126,12 +149,33 @@ public function editProfil(
 
     if ($form->isSubmitted() && $form->isValid()) {
         try {
-            // Handle file upload first
+            // Handle file upload
             $imageFile = $form->get('imageFile')->getData();
             if ($imageFile) {
-                $user->setImageFile($imageFile);
-                // Force Doctrine to recognize changes
-                $user->setUpdatedAt(new \DateTimeImmutable());
+                $uploadsDir = $this->getParameter('kernel.project_dir').'/public/uploads/faceid/faces';
+                
+                // Ensure directory exists
+                if (!file_exists($uploadsDir)) {
+                    mkdir($uploadsDir, 0777, true);
+                }
+
+                // Generate filename from username
+                $newFilename = $user->getUsername().'.'.$imageFile->guessExtension();
+                
+                try {
+                    // Remove old image if it exists
+                    if ($originalImage && file_exists($uploadsDir.'/'.$originalImage)) {
+                        unlink($uploadsDir.'/'.$originalImage);
+                    }
+                    
+                    $imageFile->move($uploadsDir, $newFilename);
+                    
+                    // Update the image name in the entity
+                    $user->setImageName($newFilename);
+                } catch (FileException $e) {
+                    $logger->error('File upload error: '.$e->getMessage());
+                    $this->addFlash('error', 'There was an error uploading your profile picture.');
+                }
             }
 
             // Handle password change
