@@ -132,7 +132,26 @@ class ResourcesController extends AbstractController
             'new_state' => $equipment->getState()
         ]);
     }
+    #[Route('/api/statistics/equipment', name: 'app_statistics_resources', methods: ['GET'])]
+    public function equipmentStatisticsAPI(EquipmentRepository $equipmentRepository, BillRepository $billRepository): JsonResponse
+    {
+        $categoryStats = $equipmentRepository->createQueryBuilder('e')
+            ->select('e.category as name, COUNT(e.EquipmentId) as count')
+            ->groupBy('e.category')
+            ->getQuery()
+            ->getResult();
 
+        $stateStats = $equipmentRepository->createQueryBuilder('e')
+            ->select('e.state as name, COUNT(e.EquipmentId) as count')
+            ->groupBy('e.state')
+            ->getQuery()
+            ->getResult();
+
+        return $this->json([
+            'categoryStats' => $categoryStats,
+            'stateStats' => $stateStats
+        ]);
+    }
     private function generateAiDescription(array $stats, string $type): string
     {
         $client = HttpClient::create();
