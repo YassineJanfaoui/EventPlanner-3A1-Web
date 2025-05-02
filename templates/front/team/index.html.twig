@@ -23,6 +23,42 @@
                     <div class="card-body p-4">
                         {% if teams|length > 0 %}
                             <div class="table-responsive">
+                                {# Add search form at the top of the table #}
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <form method="get" class="row g-3">
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input type="text" name="search" class="form-control" placeholder="Search teams..." value="{{ search }}">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="fas fa-search"></i> Search
+                                                    </button>
+                                                </div>
+                                                {% if search %}
+                                                    <a href="{{ path('app_team_index') }}" class="btn btn-outline-secondary mt-2">
+                                                        <i class="fas fa-times"></i> Clear
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class="input-group-text" for="sortSelect">
+                                                        <i class="fas fa-sort"></i> Sort by
+                                                    </label>
+                                                    <select class="form-select" id="sortSelect" name="sort" onchange="this.form.submit()">
+                                                        <option value="recent" {% if sort == 'recent' or sort == '' %}selected{% endif %}>Most recent</option>
+                                                        <option value="highest_score" {% if sort == 'highest_score' %}selected{% endif %}>Highest score</option>
+                                                        <option value="lowest_score" {% if sort == 'lowest_score' %}selected{% endif %}>Lowest score</option>
+                                                        <option value="best_rank" {% if sort == 'best_rank' %}selected{% endif %}>Best rank</option>
+                                                        <option value="name_az" {% if sort == 'name_az' %}selected{% endif %}>Name (A-Z)</option>
+                                                        <option value="name_za" {% if sort == 'name_za' %}selected{% endif %}>Name (Z-A)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
                                 <table class="table table-striped table-hover align-middle">
                                     <thead class="table-dark">
                                         <tr>

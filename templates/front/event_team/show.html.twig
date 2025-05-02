@@ -87,20 +87,23 @@
 
                             <hr class="my-4">
 
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{{ path('app_event_team_index') }}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-arrow-left me-1"></i> Back to List
-                                </a>
-                                <div class="d-flex gap-2">
-                                    <a href="{{ path('app_event_team_edit', {'submission_id': event_team.submissionId}) }}" class="btn btn-warning">
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="{{ path('app_event_team_index') }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                                    </a>
+                                    <a href="{{ path('app_event_team_edit', {'submission_id': event_team.submissionId}) }}" class="btn btn-primary">
                                         <i class="fas fa-edit me-1"></i> Edit
                                     </a>
-                                    <form method="post" action="{{ path('app_event_team_delete', {'submission_id': event_team.submissionId}) }}" onsubmit="return confirm('Are you sure you want to delete this event team?');" style="display: inline-block;">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event_team.submissionId) }}">
-                                        <button class="btn btn-danger">
-                                            <i class="fas fa-trash-alt me-1"></i> Delete
-                                        </button>
-                                    </form>
+                                </div>
+                                
+                                <div>
+                                    <a href="{{ path('app_event_team_certificate', {'submission_id': event_team.submissionId}) }}" class="btn btn-success">
+                                        <i class="fas fa-certificate me-1"></i> View Certificate
+                                    </a>
+                                    
+                                    {# Include the delete form if you have one #}
+                                    {{ include('front/event_team/_delete_form.html.twig') }}
                                 </div>
                             </div>
                         </div>
@@ -120,23 +123,147 @@
                 </div>
                 
                 {% if event_team is defined and event_team is not null %}
-                    <div class="card mt-4 border-danger">
-                        <div class="card-header bg-danger text-white">
-                            <h3 class="mb-0 fs-5">Danger Zone</h3>
+                   <div class="card mt-4 shadow">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0 fs-5">Rate This Submission</h3>
                         </div>
                         <div class="card-body">
-                            <p class="text-muted mb-3">Once you delete this submission, there is no going back. Please be certain.</p>
-                            <div class="text-end">
-                                <a href="{{ path('app_event_team_delete', {'submission_id': event_team.submissionId}) }}" 
-                                   class="btn btn-danger"
-                                   onclick="return confirm('Are you sure you want to delete this submission? This action cannot be undone.');">
-                                    <i class="fas fa-trash-alt me-1"></i> Delete Submission
-                                </a>
-                            </div>
+                            <form action="{{ path('app_event_team_rate', {'submission_id': event_team.submissionId}) }}" method="post" id="ratingForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Your Rating:</label>
+                                    <div class="star-rating-container text-center">
+                                        <div class="star-rating">
+                                            <span class="star-icon" data-value="1"><i class="fas fa-star"></i></span>
+                                            <span class="star-icon" data-value="2"><i class="fas fa-star"></i></span>
+                                            <span class="star-icon" data-value="3"><i class="fas fa-star"></i></span>
+                                            <span class="star-icon" data-value="4"><i class="fas fa-star"></i></span>
+                                            <span class="star-icon" data-value="5"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <input type="hidden" name="rating" id="selected-rating" value="0">
+                                        <div class="mt-2 rating-text">Click to rate</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment" class="form-label fw-bold">Comment (Optional):</label>
+                                    <textarea name="comment" id="comment" class="form-control" rows="3" placeholder="Share your thoughts about this submission..."></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane me-1"></i> Submit Rating
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .star-rating {
+            font-size: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .star-icon {
+            color: #ccc;
+            cursor: pointer;
+            padding: 0 0.2rem;
+            transition: color 0.2s ease;
+        }
+        
+        .star-icon:hover,
+        .star-icon.selected {
+            color: #FFD700; /* Gold color for selected stars */
+        }
+        
+        /* Make all previous stars gold on hover */
+        .star-icon:hover ~ .star-icon {
+            color: #ccc;
+        }
+        
+        .star-rating:hover .star-icon {
+            color: #FFD700;
+        }
+        
+        .rating-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star-icon');
+            const ratingInput = document.getElementById('selected-rating');
+            const ratingText = document.querySelector('.rating-text');
+            const ratingTexts = [
+                'Click to rate',
+                'Poor',
+                'Fair',
+                'Good',
+                'Very Good',
+                'Excellent'
+            ];
+            
+            // Set initial state if there's a saved rating
+            const initialRating = parseInt(ratingInput.value) || 0;
+            if (initialRating > 0) {
+                updateStars(initialRating);
+                ratingText.textContent = ratingTexts[initialRating];
+            }
+            
+            // Add click event to each star
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    ratingInput.value = value;
+                    updateStars(value);
+                    ratingText.textContent = ratingTexts[value];
+                });
+                
+                // Add hover effect to show rating text
+                star.addEventListener('mouseenter', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    ratingText.textContent = ratingTexts[value];
+                });
+                
+                // Reset text when not hovering over any star
+                star.addEventListener('mouseleave', function() {
+                    const selectedRating = parseInt(ratingInput.value) || 0;
+                    ratingText.textContent = selectedRating > 0 ? ratingTexts[selectedRating] : ratingTexts[0];
+                });
+            });
+            
+            // Function to update the visual state of stars
+            function updateStars(rating) {
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value'));
+                    if (starValue <= rating) {
+                        star.classList.add('selected');
+                    } else {
+                        star.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // Validate form submission - ensure a rating is selected
+            document.getElementById('ratingForm').addEventListener('submit', function(e) {
+                const rating = parseInt(ratingInput.value);
+                if (rating === 0) {
+                    e.preventDefault();
+                    alert('Please select a star rating before submitting.');
+                }
+            });
+        });
+    </script>
 {% endblock %}

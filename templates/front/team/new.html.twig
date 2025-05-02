@@ -19,12 +19,21 @@
                         <h2 class="mb-0 fs-4">Create New Team</h2>
                     </div>
                     <div class="card-body p-4">
-                        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'id': 'team-form'}}) }}
                             {{ form_errors(form) }}
                             
                             <div class="mb-3">
                                 {{ form_label(form.TeamName, 'Team Name', {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                                {{ form_widget(form.TeamName, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.TeamName, {'attr': {
+                                    'class': 'form-control',
+                                    'required': 'required',
+                                    'minlength': '3',
+                                    'maxlength': '50',
+                                    'data-validation-required-message': 'Please enter a team name',
+                                    'data-validation-minlength-message': 'Team name must be at least 3 characters',
+                                    'data-validation-maxlength-message': 'Team name cannot exceed 50 characters'
+                                }}) }}
+                                <div class="invalid-feedback" id="TeamName-error"></div>
                                 <div class="text-danger small">
                                     {{ form_errors(form.TeamName) }}
                                 </div>
@@ -32,10 +41,16 @@
                             
                             <div class="mb-3">
                                 {{ form_label(form.event, 'Event', {'label_attr': {'class': 'form-label fw-bold'}}) }}
-                                {{ form_widget(form.event, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.event, {'attr': {
+                                    'class': 'form-control event-select',
+                                    'required': 'required',
+                                    'data-validation-required-message': 'Please select an event'
+                                }}) }}
+                                <div class="invalid-feedback" id="event-error"></div>
                                 <div class="text-danger small">
                                     {{ form_errors(form.event) }}
                                 </div>
+                                <small class="text-muted mt-1">Selecting an event is mandatory. Please choose an event from the list.</small>
                             </div>
                             
                             <hr class="my-4">
@@ -54,4 +69,165 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('team-form');
+            const teamNameInput = document.getElementById('{{ form.TeamName.vars.id }}');
+            const eventSelect = document.getElementById('{{ form.event.vars.id }}');
+            
+            // Add validation styling
+            function addValidationStyling(input, isValid, message = '') {
+                if (isValid) {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                    const errorDiv = document.getElementById(input.id + '-error');
+                    if (errorDiv) errorDiv.textContent = '';
+                } else {
+                    input.classList.remove('is-valid');
+                    input.classList.add('is-invalid');
+                    const errorDiv = document.getElementById(input.id + '-error');
+                    if (errorDiv) errorDiv.textContent = message;
+                }
+            }
+            
+            // Validate team name
+            teamNameInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                let isValid = true;
+                let message = '';
+                
+                if (value === '') {
+                    isValid = false;
+                    message = 'Team name is required';
+                } else if (value.length < 3) {
+                    isValid = false;
+                    message = 'Team name must be at least 3 characters';
+                } else if (value.length > 50) {
+                    isValid = false;
+                    message = 'Team name cannot exceed 50 characters';
+                }
+                
+                addValidationStyling(this, isValid, message);
+            });
+            
+            // Enhanced event validation
+            eventSelect.addEventListener('change', function() {
+                validateEventSelection();
+            });
+            
+            // Specific validation for event selection
+            function validateEventSelection() {
+                const value = eventSelect.value;
+                let isValid = value !== '';
+                let message = '';
+                
+                if (!isValid) {
+                    message = 'Please select an event for your team';
+                    eventSelect.classList.add('border-danger');
+                    eventSelect.classList.add('shake-error');
+                    setTimeout(() => {
+                        eventSelect.classList.remove('shake-error');
+                    }, 500);
+                } else {
+                    eventSelect.classList.remove('border-danger');
+                }
+                
+                addValidationStyling(eventSelect, isValid, message);
+                return isValid;
+            }
+            
+            // Initial validation on page load
+            window.setTimeout(function() {
+                // Check if event is already selected (in case of form resubmission)
+                if (eventSelect.value !== '') {
+                    addValidationStyling(eventSelect, true);
+                }
+            }, 100);
+            
+            // Form submission validation
+            form.addEventListener('submit', function(event) {
+                let isFormValid = true;
+                
+                // Validate team name
+                const teamNameValue = teamNameInput.value.trim();
+                let teamNameIsValid = true;
+                let teamNameMessage = '';
+                
+                if (teamNameValue === '') {
+                    teamNameIsValid = false;
+                    teamNameMessage = 'Team name is required';
+                } else if (teamNameValue.length < 3) {
+                    teamNameIsValid = false;
+                    teamNameMessage = 'Team name must be at least 3 characters';
+                } else if (teamNameValue.length > 50) {
+                    teamNameIsValid = false;
+                    teamNameMessage = 'Team name cannot exceed 50 characters';
+                }
+                
+                addValidationStyling(teamNameInput, teamNameIsValid, teamNameMessage);
+                if (!teamNameIsValid) isFormValid = false;
+                
+                // Validate event selection using the dedicated function
+                const eventIsValid = validateEventSelection();
+                if (!eventIsValid) {
+                    isFormValid = false;
+                    // Highlight the event field with a visual effect
+                    eventSelect.focus();
+                }
+                
+                if (!isFormValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // Show an error message
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'alert alert-danger mt-3';
+                    errorAlert.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Please correct the errors in the form before submitting.';
+                    
+                    // Insert the alert at the top of the form if it doesn't exist yet
+                    if (!document.querySelector('.alert-danger')) {
+                        form.insertBefore(errorAlert, form.firstChild);
+                        
+                        // Scroll to the top of the form
+                        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .is-invalid {
+            border-color: #dc3545 !important;
+            padding-right: calc(1.5em + 0.75rem) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right calc(0.375em + 0.1875rem) center !important;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+        }
+        
+        .is-valid {
+            border-color: #198754 !important;
+            padding-right: calc(1.5em + 0.75rem) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right calc(0.375em + 0.1875rem) center !important;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+        }
+        
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+    </style>
 {% endblock %}

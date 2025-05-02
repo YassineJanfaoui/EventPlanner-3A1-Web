@@ -19,6 +19,18 @@
                         <h2 class="mb-0 fs-4">Create New Feedback</h2>
                     </div>
                     <div class="card-body p-4">
+                        {% if feedback.sentiment is defined and feedback.sentiment %}
+                            <div class="alert alert-info mb-4">
+                                <h5 class="mb-2">Sentiment Analysis:</h5>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-{{ feedback.sentiment == 'positive' ? 'success' : (feedback.sentiment == 'negative' ? 'danger' : 'secondary') }} me-2" style="font-size: 1rem; padding: 8px 12px;">
+                                        {{ feedback.sentiment|capitalize }}
+                                    </span>
+                                    <span class="text-muted">Our AI has analyzed your feedback as {{ feedback.sentiment }}.</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
                         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
                             {{ form_errors(form) }}
                             
@@ -57,6 +69,9 @@
                                 <div class="text-danger small">
                                     {{ form_errors(form.comment) }}
                                 </div>
+                                <div class="form-text mt-1">
+                                    <i class="fas fa-robot me-1"></i> Your feedback will be analyzed for sentiment automatically.
+                                </div>
                             </div>
                             
                             <hr class="my-4">
@@ -78,10 +93,9 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }} {# Keep parent() if base.html.twig defines stylesheets #}
+    {{ parent() }}
     <style>
         .rate-select-hidden {
-            /* Visually hide the select but keep it accessible */
             position: absolute;
             opacity: 0;
             width: 1px;
@@ -91,168 +105,209 @@
             padding: 0;
             overflow: hidden;
             clip: rect(0, 0, 0, 0);
-            pointer-events: none; /* Prevent interaction */
         }
 
         .star-rating {
-            font-size: 1.8rem; /* Adjust size as needed */
-            color: #ccc; /* Default empty star color */
-            display: inline-block; /* Or flex */
+            font-size: 2.2rem;
+            display: inline-flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            width: 100%;
         }
 
         .star-icon {
             cursor: pointer;
-            padding: 0 0.1em; /* Spacing between stars */
-            transition: color 0.2s ease-in-out;
+            padding: 0 0.2em;
+            transition: color 0.2s ease;
+            color: #e0e0e0;
         }
 
-        /* Styles for when stars are hovered or selected */
-        .star-rating:hover .star-icon, /* Highlight all on container hover */
-        .star-icon.hovered, /* Individual star hover */
-        .star-icon.selected { /* Selected stars */
-            color: #FFD700; /* Gold color */
+        .star-icon:hover,
+        .star-icon.selected {
+            color: #dc3545;
         }
 
-         /* Make stars before the hovered/selected one also highlighted */
-        .star-rating:hover .star-icon:hover ~ .star-icon,
-        .star-icon.hovered ~ .star-icon,
-        .star-icon.selected ~ .star-icon {
-             color: #ccc; /* Reset stars after the hovered/selected one */
+        .star-rating:hover .star-icon {
+            color: #dc3545;
         }
 
+        .star-rating .star-icon:hover ~ .star-icon {
+            color: #e0e0e0;
+        }
+
+        .rating-text {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #dc3545;
+            text-align: center;
+            margin-top: 0.5rem;
+            min-height: 24px;
+        }
+        
+        .rating-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 1.5rem;
+        }
+        
+        .rating-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #343a40;
+            text-align: center;
+        }
     </style>
 {% endblock %}
 
 {% block javascripts %}
-    {# {{ parent() }} - Removed as base.html.twig likely doesn't define this block #}
+    {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Star Rating: DOMContentLoaded event fired."); // Log: Script start
-
-            const starContainers = document.querySelectorAll('.star-rating');
-            console.log(`Star Rating: Found ${starContainers.length} star container(s) with class '.star-rating'.`); // Log: Found containers
-
-            if (starContainers.length === 0) {
-                console.warn("Star Rating: No elements with class '.star-rating' found. Stars will not function.");
+            // Star rating functionality
+            const stars = document.querySelectorAll('.star-icon');
+            const ratingSelect = document.querySelector('#{{ form.rate.vars.id }}');
+            const ratingText = document.querySelector('.rating-text');
+            const ratingTexts = [
+                'Click to rate',
+                'Poor',
+                'Fair',
+                'Good',
+                'Very Good',
+                'Excellent'
+            ];
+            
+            // Set initial state if there's a saved rating
+            const initialRating = parseInt(ratingSelect.value) || 0;
+            if (initialRating > 0) {
+                updateStars(initialRating);
+                ratingText.textContent = ratingTexts[initialRating];
             }
-
-            starContainers.forEach((container, index) => {
-                console.log(`Star Rating: Processing container #${index}`);
-                const stars = container.querySelectorAll('.star-icon');
-                const targetName = container.getAttribute('data-rating-target'); // Should be 'feedback[rate]'
-
-                if (!targetName) {
-                    console.error(`Star Rating: Container #${index} is missing the 'data-rating-target' attribute.`);
-                    return; // Skip this container
-                }
-
-                // Construct the selector carefully, especially with brackets
-                const selector = `select[name="${targetName.replace(/\[/g, '\\[').replace(/\]/g, '\\]')}"]`;
-                console.log(`Star Rating: Attempting to find select with selector: ${selector}`);
-                const rateInput = document.querySelector(selector);
-
-                if (!rateInput) {
-                    console.error(`Star Rating: Could not find select input with name "${targetName}" for container #${index}. Ensure the form field exists and the name matches.`);
-                    return; // Skip this container if select not found
-                }
-                console.log(`Star Rating: Found select input for container #${index}:`, rateInput);
-
-                if (stars.length === 0) {
-                     console.error(`Star Rating: No elements with class '.star-icon' found within container #${index}. Check the HTML structure.`);
-                     return; // Skip if no stars found
-                }
-                console.log(`Star Rating: Found ${stars.length} stars in container #${index}.`);
-
-                // Function to update star visuals (filled/empty)
-                function updateStarsVisual(ratingValue) {
-                    const valueInt = parseInt(ratingValue, 10) || 0;
-                    console.log(`Star Rating: Updating visual for container #${index} to value: ${valueInt}`);
-                    stars.forEach((star, starIndex) => {
-                        const starValue = parseInt(star.getAttribute('data-value'), 10);
-                        if (!isNaN(starValue)) {
-                            if (starValue <= valueInt) {
-                                star.classList.remove('far');
-                                star.classList.add('fas');
-                                star.classList.add('selected');
-                            } else {
-                                star.classList.remove('fas');
-                                star.classList.add('far');
-                                star.classList.remove('selected');
-                            }
-                            star.classList.remove('hovered'); // Clear any temporary hover state
-                        } else {
-                             console.warn(`Star Rating: Star #${starIndex} in container #${index} has invalid 'data-value': ${star.getAttribute('data-value')}`);
-                        }
-                    });
-                }
-
-                 // Function to preview stars on hover
-                function previewStars(hoverValue) {
-                     const valueInt = parseInt(hoverValue, 10) || 0;
-                     stars.forEach(star => {
-                        const starValue = parseInt(star.getAttribute('data-value'), 10);
-                         if (!isNaN(starValue)) {
-                            if (starValue <= valueInt) {
-                                star.classList.add('hovered');
-                                star.classList.remove('far');
-                                star.classList.add('fas');
-                            } else {
-                                star.classList.remove('hovered');
-                                if (!star.classList.contains('selected')) {
-                                     star.classList.remove('fas');
-                                     star.classList.add('far');
-                                }
-                            }
-                        }
-                    });
-                }
-
-                // --- Initialization ---
-                console.log(`Star Rating: Initializing stars for container #${index} with initial select value: '${rateInput.value}'`);
-                updateStarsVisual(rateInput.value);
-
-                // --- Event Listeners ---
-                stars.forEach((star, starIndex) => {
-                    // Click Event
-                    star.addEventListener('click', function(event) {
-                        event.preventDefault(); // Prevent potential default actions
-                        event.stopPropagation(); // Stop the event from bubbling up
-
-                        const clickedValue = this.getAttribute('data-value');
-                        console.log(`Star Rating: CLICK detected on star #${starIndex} (value: ${clickedValue}) in container #${index}.`);
-
-                        // Check if value exists in select options
-                        const isValidOption = Array.from(rateInput.options).some(option => option.value === clickedValue);
-                        console.log(`Star Rating: Is value '${clickedValue}' a valid option in the select? ${isValidOption}`);
-
-                        if (isValidOption) {
-                            rateInput.value = clickedValue;
-                            console.log(`Star Rating: Set hidden select value to: '${rateInput.value}'`);
-                            updateStarsVisual(clickedValue); // Update visual *after* setting value
-                            // Optional: Trigger change event if needed elsewhere
-                            rateInput.dispatchEvent(new Event('change', { bubbles: true }));
-                            console.log(`Star Rating: Dispatched 'change' event on select.`);
-                        } else {
-                             console.error(`Star Rating: Clicked value '${clickedValue}' is not a valid <option> value in select[name="${targetName}"]. Check FeedbackType choices.`);
-                        }
-                    });
-
-                    // Hover Events
-                    star.addEventListener('mouseover', function() {
-                        const hoverValue = this.getAttribute('data-value');
-                        // console.log(`Star Rating: Hover over star #${starIndex} (value: ${hoverValue}) in container #${index}.`); // Uncomment for detailed hover debugging
-                        previewStars(hoverValue);
-                    });
-                }); // End stars.forEach
-
-                 // Mouseleave from the container resets hover preview
-                container.addEventListener('mouseleave', function() {
-                    // console.log(`Star Rating: Mouse left container #${index}. Resetting visual to selected value.`); // Uncomment for detailed hover debugging
-                    updateStarsVisual(rateInput.value);
+            
+            // Add click event to each star
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    ratingSelect.value = value;
+                    updateStars(value);
+                    ratingText.textContent = ratingTexts[value];
+                    
+                    // Trigger change event on the select for form validation
+                    const event = new Event('change', { bubbles: true });
+                    ratingSelect.dispatchEvent(event);
                 });
-            }); // End starContainers.forEach
-
-            console.log("Star Rating: Script finished initialization."); // Log: Script end
+                
+                // Add hover effect to show rating text
+                star.addEventListener('mouseenter', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    ratingText.textContent = ratingTexts[value];
+                });
+                
+                // Reset text when not hovering over any star
+                star.addEventListener('mouseleave', function() {
+                    const selectedRating = parseInt(ratingSelect.value) || 0;
+                    ratingText.textContent = selectedRating > 0 ? ratingTexts[selectedRating] : ratingTexts[0];
+                });
+            });
+            
+            // Function to update the visual state of stars
+            function updateStars(rating) {
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value'));
+                    if (starValue <= rating) {
+                        star.classList.add('selected');
+                    } else {
+                        star.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // Sentiment analysis code (keeping your existing code)
+            const commentField = document.querySelector('#{{ form.comment.vars.id }}');
+            const sentimentContainer = document.createElement('div');
+            sentimentContainer.className = 'mt-2 sentiment-analysis-container';
+            sentimentContainer.innerHTML = '<div class="d-flex align-items-center">' +
+                '<span class="me-2">Sentiment analysis:</span>' +
+                '<div id="sentiment-badge"><span class="badge bg-secondary">Waiting for input...</span></div>' +
+                '</div>';
+            
+            // Insert the sentiment container after the comment field
+            commentField.parentNode.insertBefore(sentimentContainer, commentField.nextSibling);
+            
+            let typingTimer;
+            const doneTypingInterval = 500; // Wait for 500ms after user stops typing
+            
+            commentField.addEventListener('input', function() {
+                clearTimeout(typingTimer);
+                
+                const text = this.value.trim();
+                if (text.length < 5) {
+                    document.getElementById('sentiment-badge').innerHTML = 
+                        '<span class="badge bg-secondary">Type more text...</span>';
+                    return;
+                }
+                
+                document.getElementById('sentiment-badge').innerHTML = 
+                    '<span class="badge bg-secondary"><i class="fas fa-spinner fa-spin"></i> Analyzing...</span>';
+                
+                typingTimer = setTimeout(function() {
+                    analyzeSentiment(text);
+                }, doneTypingInterval);
+            });
+            
+            function analyzeSentiment(text) {
+                fetch('{{ path('app_feedback_analyze_sentiment') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: 'text=' + encodeURIComponent(text)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Simply use the pre-formatted badge HTML from the server
+                    document.getElementById('sentiment-badge').innerHTML = data.badge;
+                })
+                .catch(error => {
+                    console.error('Error analyzing sentiment:', error);
+                    document.getElementById('sentiment-badge').innerHTML = 
+                        '<span class="badge bg-danger">Analysis failed</span>';
+                });
+            }
+            
+            // Function to update sentiment display - equivalent to Java function
+            function updateSentimentDisplay(sentiment) {
+                const sentimentBadge = document.getElementById('sentiment-badge');
+                const sentimentText = sentiment.toUpperCase();
+                
+                // Remove all existing sentiment classes
+                sentimentBadge.querySelectorAll('.badge').forEach(badge => {
+                    badge.classList.remove('bg-success', 'bg-danger', 'bg-secondary');
+                });
+                
+                // Add appropriate class based on sentiment
+                let badgeClass = '';
+                switch(sentiment.toLowerCase()) {
+                    case 'positive':
+                        badgeClass = 'bg-success';
+                        break;
+                    case 'negative':
+                        badgeClass = 'bg-danger';
+                        break;
+                    default:
+                        badgeClass = 'bg-secondary';
+                }
+                
+                // Update the badge with new sentiment
+                sentimentBadge.innerHTML = `<span class="badge ${badgeClass}" style="font-size: 1rem; padding: 6px 10px;">
+                    Sentiment: ${sentimentText}
+                </span>`;
+                
+                // Add animation effect for better user experience
+                sentimentBadge.querySelector('.badge').classList.add('animate__animated', 'animate__fadeIn');
+            }
         });
     </script>
 {% endblock %}

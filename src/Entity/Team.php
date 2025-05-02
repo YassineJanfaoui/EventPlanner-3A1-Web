@@ -105,12 +105,44 @@ class Team
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: EventTeam::class, cascade: ['persist', 'remove'])]
     private Collection $eventTeams;
 
+    // Add this property to your Team entity if it doesn't exist
+    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'team')]
+    private Collection $feedbacks;
+    
+    // Make sure you have a constructor that initializes the collection
     public function __construct()
     {
-        // ... other initializations ...
-        $this->eventTeams = new ArrayCollection();
+        // ... other initializations
+        $this->feedbacks = new ArrayCollection();
     }
-
+    
+    // Add getter and setter methods
+    public function getFeedbacks(): Collection
+    {
+        return $this->feedbacks;
+    }
+    
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedbacks->contains($feedback)) {
+            $this->feedbacks->add($feedback);
+            $feedback->setTeam($this);
+        }
+        
+        return $this;
+    }
+    
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedbacks->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getTeam() === $this) {
+                $feedback->setTeam(null);
+            }
+        }
+        
+        return $this;
+    }
     /**
      * @return Collection<int, EventTeam>
      */

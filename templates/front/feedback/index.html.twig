@@ -23,14 +23,49 @@
                     <div class="card-body p-4">
                         {% if feedback|length > 0 %}
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover align-middle">
-                                    <thead class="table-dark">
+                                {# Add this search form at the top of your table #}
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <form method="get" class="row g-3">
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input type="text" name="search" class="form-control" placeholder="Search feedback..." value="{{ search }}">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="fas fa-search"></i> Search
+                                                    </button>
+                                                </div>
+                                                {% if search %}
+                                                    <a href="{{ path('app_feedback_index') }}" class="btn btn-outline-secondary mt-2">
+                                                        <i class="fas fa-times"></i> Clear
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class="input-group-text" for="sortSelect">
+                                                        <i class="fas fa-sort"></i> Sort by
+                                                    </label>
+                                                    <select class="form-select" id="sortSelect" name="sort" onchange="this.form.submit()">
+                                                        <option value="" {% if sort == '' %}selected{% endif %}>Latest first</option>
+                                                        <option value="highest_rating" {% if sort == 'highest_rating' %}selected{% endif %}>Highest rating</option>
+                                                        <option value="positive_first" {% if sort == 'positive_first' %}selected{% endif %}>Positive first</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                {# Remove the sorting links and simplify the table headers #}
+                                <table class="table table-striped table-hover">
+                                    <thead>
                                         <tr>
                                             <th>Event</th>
                                             <th>Team</th>
                                             <th>Comment</th>
-                                            <th>Rating</th>
-                                            <th class="text-center">Actions</th>
+                                            <th>Rating <i class="fas fa-star text-warning"></i></th>
+                                            <th>Sentiment</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,17 +98,26 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex gap-2 justify-content-center">
-                                                        <a href="{{ path('app_feedback_show', {'feedbackId': item.feedbackId}) }}" class="btn btn-primary btn-sm" title="View">
+                                                    {% if item.sentiment %}
+                                                        <span class="badge bg-{{ item.sentiment == 'positive' ? 'success' : (item.sentiment == 'negative' ? 'danger' : 'secondary') }}">
+                                                            {{ item.sentiment|capitalize }}
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Unknown</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{ path('app_feedback_show', {'feedbackId': item.feedbackId}) }}" class="btn btn-sm btn-info">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ path('app_feedback_edit', {'feedbackId': item.feedbackId}) }}" class="btn btn-warning btn-sm" title="Edit">
+                                                        <a href="{{ path('app_feedback_edit', {'feedbackId': item.feedbackId}) }}" class="btn btn-sm btn-warning">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <form method="post" action="{{ path('app_feedback_delete', {'feedbackId': item.feedbackId}) }}" onsubmit="return confirm('Are you sure you want to delete this feedback?');" style="display: inline-block;">
                                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.feedbackId) }}">
-                                                            <button class="btn btn-danger btn-sm" title="Delete">
-                                                                <i class="fas fa-trash-alt"></i>
+                                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                                <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
                                                     </div>

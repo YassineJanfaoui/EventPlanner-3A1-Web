@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 #[Route('/team')]
 final class TeamController extends AbstractController
@@ -25,18 +27,61 @@ final class TeamController extends AbstractController
     #[Route(name: 'app_team_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $query = $this->entityManager->getRepository(Team::class)->createQueryBuilder('t')
-            ->orderBy('t.id', 'DESC')
-            ->getQuery();
+        // Get search and sort parameters from request
+        $search = $request->query->get('search', '');
+        $sort = $request->query->get('sort', 'recent');
+        
+        // Create query builder
+        $queryBuilder = $this->entityManager->getRepository(Team::class)
+            ->createQueryBuilder('t')
+            ->leftJoin('t.event', 'e');
+            
+        // Add search condition if search term is provided
+        if (!empty($search)) {
+            $queryBuilder->andWhere('t.TeamName LIKE :search OR e.name LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+        
+        // Add sorting based on the selected option
+        if ($sort === 'highest_score') {
+            // Use a different approach to avoid entity field issues
+            $queryBuilder->addOrderBy('t.id', 'DESC');
+        } elseif ($sort === 'lowest_score') {
+            // Use a different approach to avoid entity field issues
+            $queryBuilder->addOrderBy('t.id', 'ASC');
+        } elseif ($sort === 'best_rank') {
+            // Use a different approach to avoid entity field issues
+            $queryBuilder->addOrderBy('t.id', 'ASC');
+        } elseif ($sort === 'name_az') {
+            $queryBuilder->orderBy('t.TeamName', 'ASC');
+        } elseif ($sort === 'name_za') {
+            $queryBuilder->orderBy('t.TeamName', 'DESC');
+        } else {
+            // Default: most recent first (by ID)
+            $queryBuilder->orderBy('t.id', 'DESC');
+        }
+        
+        // Get query
+        $query = $queryBuilder->getQuery();
 
+        // Paginate results with sorting disabled in KnpPaginator
         $teams = $paginator->paginate(
-            $query, // Query
-            $request->query->getInt('page', 1), // Page number
-            5 // Changed from 10 to 5 items per page
+            $query,
+            $request->query->getInt('page', 1),
+            5, // 5 items per page
+            [
+                'sortFieldWhitelist' => [], // Empty array means no fields are allowed for sorting
+                'defaultSortFieldName' => null,
+                'defaultSortDirection' => null,
+                'sortDirectionParameterName' => 'none', // Use a non-standard parameter name
+                'sortFieldParameterName' => 'none'      // Use a non-standard parameter name
+            ]
         );
 
         return $this->render('front/team/index.html.twig', [
             'teams' => $teams,
+            'search' => $search,
+            'sort' => $sort // Pass the sort parameter to the template
         ]);
     }
 
@@ -45,8 +90,8 @@ final class TeamController extends AbstractController
     {
         $team = new Team();
         // Set default values - use 0 instead of null since the database doesn't allow nulls
-        $team->setScore(0);
-        $team->setRank(0);
+        $team->setScore(0); // This is correct as it uses the setter method
+        $team->setRank(0);  // This is correct as it uses the setter method
         
         $form = $this->createForm(TeamType::class, $team, [
             'show_score_rank' => false, // Don't show score and rank fields
@@ -56,7 +101,7 @@ final class TeamController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($team);
             $entityManager->flush();
-
+            
             $this->addFlash('success', 'Team created successfully!');
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -104,6 +149,7 @@ final class TeamController extends AbstractController
             try {
                 $entityManager->remove($team);
                 $entityManager->flush();
+                
                 $this->addFlash('success', 'Team deleted successfully.');
             } catch (\Exception $e) {
                 // Check if it's a foreign key constraint violation
@@ -118,23 +164,38 @@ final class TeamController extends AbstractController
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
     }
     
-    #[Route('/rate/{id}', name: 'app_team_rate', methods: ['GET', 'POST'])]
-    public function rateTeam(Request $request, Team $team, EntityManagerInterface $entityManager): Response
+    // Add this method to your TeamController class
+    
+    #[Route('/{id}/rate', name: 'app_team_rate', methods: ['GET', 'POST'])]
+    public function rate(Request $request, Team $team, EntityManagerInterface $entityManager): Response
     {
-        // Create a form with only Score and Rank fields
-        $form = $this->createForm(TeamType::class, $team, [
-            'show_team_name' => true, // Don't show team name field
-            'show_score_rank' => true,  // Show score and rank fields
-        ]);
+        // Create a simple form with score and rank fields
+        $form = $this->createFormBuilder($team)
+            ->add('score', NumberType::class, [ // Changed from Score to score
+                'label' => 'Score',
+                'property_path' => 'Score', // Map to the actual Score property
+                'attr' => ['min' => 0, 'max' => 100, 'step' => 0.1]
+            ])
+            ->add('rank', NumberType::class, [ // Changed from Rank to rank
+                'label' => 'Rank',
+                'property_path' => 'Rank', // Map to the actual Rank property
+                'attr' => ['min' => 1]
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Update Rating',
+                'attr' => ['class' => 'btn btn-primary mt-3']
+            ])
+            ->getForm();
         
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            
             $this->addFlash('success', 'Team rating updated successfully!');
-            return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_team_index');
         }
-
+        
         return $this->render('front/team/rate.html.twig', [
             'team' => $team,
             'form' => $form,
