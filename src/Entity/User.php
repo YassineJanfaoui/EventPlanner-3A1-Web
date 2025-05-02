@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use App\Repository\UserRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 
@@ -55,11 +54,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function setPassword(string $password): self
-{
-    // Don't hash here - let the controller handle hashing
-    $this->password = $password;
-    return $this;
-}
+    {
+        // Don't hash here - let the controller handle hashing
+        $this->password = $password;
+        return $this;
+    }
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $email = null;
@@ -164,18 +163,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     public function getRoles(): array
-{
-    // Return an array of roles with ROLE_ prefix
-    $roles = [];
-    if ($this->role) {
-        $roles[] = 'ROLE_' . strtoupper($this->role);
+    {
+        // Return an array of roles with ROLE_ prefix
+        $roles = [];
+        if ($this->role) {
+            $roles[] = 'ROLE_' . strtoupper($this->role);
+        }
+
+        // Every user must have at least ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
-    
-    // Every user must have at least ROLE_USER
-    $roles[] = 'ROLE_USER';
-    
-    return array_unique($roles);
-}
 
     public function eraseCredentials(): void
     {
@@ -186,5 +185,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->username;
     }
-
 }

@@ -132,7 +132,7 @@ class ResourcesController extends AbstractController
             'new_state' => $equipment->getState()
         ]);
     }
-    #[Route('/api/statistics/equipment', name: 'app_statistics_resources', methods: ['GET'])]
+    #[Route('/api/statistics/equipment', name: 'app_statistics_resources_api', methods: ['GET'])]
     public function equipmentStatisticsAPI(EquipmentRepository $equipmentRepository, BillRepository $billRepository): JsonResponse
     {
         $categoryStats = $equipmentRepository->createQueryBuilder('e')

@@ -14,6 +14,7 @@ EUR: {{ bill_service.convert(1, 'USD', 'EUR') }},
 CNY: {{ bill_service.convert(1, 'USD', 'CNY') }}
 };
 
+// Currency conversion function (unchanged)
 function convertCurrency(newCurrency) {
 currentCurrency = newCurrency;
 const rows = document.querySelectorAll('tbody tr');
@@ -39,47 +40,33 @@ document.getElementById('currency-toggle').textContent = `Currency: ${currentCur
 
 window.convertCurrency = convertCurrency;
 
-// AJAX functionality
+// Search and filter elements
 const searchInput = document.querySelector('input[name="q"]');
 const archivedSelect = document.querySelector('select[name="archived"]');
 const tableContainer = document.getElementById('billTableContainer');
 
-searchInput.addEventListener('input', debounce(updateResults, 500));
-archivedSelect.addEventListener('change', updateResults);
-
-// Handle pagination clicks
-tableContainer.addEventListener('click', function (e) {
-if (e.target.closest('.page-link')) {
-e.preventDefault();
-const page = e.target.closest('.page-link').getAttribute('data-page');
-updateResults(page);
-}
-});
-
-// Update the debounce function to properly handle the input event:
+// Proper debounce function
 function debounce(func, wait) {
 let timeout;
-return function (event) { // Accept the event parameter
+return function () {
 const context = this;
 const args = arguments;
 clearTimeout(timeout);
-timeout = setTimeout(function () {
-func.apply(context, [1]); // Always pass page 1 for search input changes
+timeout = setTimeout(() => {
+func.apply(context, args);
 }, wait);
 };
 }
 
-// Update the updateResults function to ensure proper parameter handling:
-function updateResults(page = 1) { // Ensure page is a number
-page = parseInt(page) || 1;
-
+// Update results function
+function updateResults(page = 1) {
 const params = new URLSearchParams({
 q: searchInput.value,
 archived: archivedSelect.value,
 ajax: 1,
 page: page,
-sort_by: '{{ sort_by|default('') }}',
-direction: '{{ sort_direction|default('ASC') }}'
+sort_by: document.querySelector('[name="sort_by"]') ?. value || '{{ sort_by|default("") }}',
+direction: document.querySelector('[name="direction"]') ?. value || '{{ sort_direction|default("ASC") }}'
 });
 
 fetch (`{{ path('app_bill_index') }}?${
@@ -89,21 +76,41 @@ headers: {
 'X-Requested-With': 'XMLHttpRequest'
 }
 }).then(response => {
-if (!response.ok) {
+if (!response.ok) 
 throw new Error (`HTTP error! status: ${
 response.status
 }`);
-}
+
 return response.text();
 }).then(html => {
 tableContainer.innerHTML = html;
 convertCurrency(currentCurrency);
-}).catch(error => {
-console.error('Error fetching results:', error);
-// Optional: Show user-friendly error message
-});
+}).catch(error => console.error('Error:', error));
+}
+
+// Event listeners
+searchInput.addEventListener('input', debounce(() => updateResults(1), 300));
+archivedSelect.addEventListener('change', () => updateResults(1));
+
+// Proper pagination handling
+document.addEventListener('click', function (e) {
+if (e.target.closest('.page-link')) {
+e.preventDefault();
+const link = e.target.closest('.page-link');
+const page = link.getAttribute('data-page') || link.textContent.trim();
+updateResults(page);
 }
 });
+});
+
+// Currency cycling function (unchanged)
+function cycleCurrency() {
+const current = document.getElementById('currency-toggle').textContent;
+const currencies = ['USD', 'EUR', 'CNY'];
+const currentIndex = currencies.indexOf(current.replace('Currency: ', ''));
+const nextIndex = (currentIndex + 1) % currencies.length;
+convertCurrency(currencies[nextIndex]);
+}
 	</script>
 
 	<style>
