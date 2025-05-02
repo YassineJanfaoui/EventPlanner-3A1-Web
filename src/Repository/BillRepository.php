@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Bill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
+
 
 /**
  * @extends ServiceEntityRepository<Bill>
@@ -30,7 +32,7 @@ class BillRepository extends ServiceEntityRepository
                 ->setParameter('query', '%' . $searchQuery . '%');
         }
 
-        if ($archivedFilter !== null && $archivedFilter !== '') {
+        if ($archivedFilter !== null && $archivedFilter !== 'all') {
             $qb->andWhere('b.Archived = :archived')
                 ->setParameter('archived', $archivedFilter);
         }
@@ -43,6 +45,28 @@ class BillRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+    public function createQueryBuilderWithFiltersAndSorting(
+        ?string $searchQuery,
+        ?int $archivedFilter,
+        ?string $sortBy,
+        ?string $sortDirection
+    ): QueryBuilder {
+        $qb = $this->createQueryBuilder('b');
+
+        if ($searchQuery) {
+            $qb->andWhere('b.Description LIKE :searchQuery OR b.PaymentStatus LIKE :searchQuery')
+                ->setParameter('searchQuery', '%' . $searchQuery . '%');
+        }
+
+        $qb->andWhere('b.Archived = :archived')
+            ->setParameter('archived', $archivedFilter);
+
+        if ($sortBy && $sortDirection) {
+            $qb->orderBy('b.' . $sortBy, $sortDirection);
+        }
+
+        return $qb;
     }
     public function findBillsDueWithin(int $days): array
     {

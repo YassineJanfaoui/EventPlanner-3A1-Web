@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Equipment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Equipment>
@@ -43,6 +44,30 @@ class EquipmentRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+    public function createQueryBuilderWithFiltersAndSorting(
+        ?string $searchQuery,
+        ?string $categoryFilter,
+        ?string $sortBy,
+        ?string $sortDirection
+    ): QueryBuilder {
+        $qb = $this->createQueryBuilder('e');
+
+        if ($searchQuery) {
+            $qb->andWhere('e.name LIKE :searchQuery')
+                ->setParameter('searchQuery', '%' . $searchQuery . '%');
+        }
+
+        if ($categoryFilter) {
+            $qb->andWhere('e.category = :category')
+                ->setParameter('category', $categoryFilter);
+        }
+
+        if ($sortBy && $sortDirection) {
+            $qb->orderBy('e.' . $sortBy, $sortDirection);
+        }
+
+        return $qb;
     }
 
     //    /**

@@ -4,7 +4,23 @@
 {% endblock %}
 
 {% block body %}
-	<h1>EventEquipment index</h1>
+	<h1>Event Equipment</h1>
+
+	{# Event Filter Dropdown #}
+	<form method="get" action="{{ path('app_event_equipment_index') }}" class="mb-4">
+		<div class="row">
+			<div class="col-md-4">
+				<select name="event_id" class="form-select" onchange="this.form.submit()">
+					<option value="">All Events</option>
+					{% for event in events %}
+						<option value="{{ event.eventId }}" {% if selected_event_id == event.eventId %} selected {% endif %}>
+							{{ event.name }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</form>
 
 	<table class="table">
 		<thead>
@@ -27,22 +43,25 @@
 					<td>{{ event_equipment.endDate ? event_equipment.endDate|date('Y-m-d') : '' }}</td>
 					<td>
 						{{ include('event_equipment/_delete_form.html.twig') }}
-
 					</td>
 				</tr>
 			{% else %}
 				<tr>
-					<td colspan="4">no records found</td>
+					<td colspan="6">no records found</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 	<div style="display:flex; gap:10px; margin-left:32.5%">
-		{% if event_equipments|length > 0 %}
-			<!--<a href="{{ path('app_bill_generate_all') }}" class="btn btn-success" onclick="return confirm('Generate bills for all events? This will sum all equipment costs for each event.')">
-							Generate Bills for All Events
-						</a>-->
+		<a class="btn btn-primary" href="{{ path('app_equipment_index') }}">Back to equipment</a>
+		{% if selected_event_id  and event_equipments %}
+			<div class="text-center">
+				<a href="{{ path('app_bill_generate_for_event', {'eventId': selected_event_id}) }}" class="btn btn-success" onclick="return confirm('Generate bill for this event?')">
+					Generate Bill for This Event
+				</a>
+			</div>
 		{% endif %}
-		<a class="btn btn-primary " href="{{ path('app_equipment_index') }}">Back to equipment</a>
+
+
 	</div>
 {% endblock %}

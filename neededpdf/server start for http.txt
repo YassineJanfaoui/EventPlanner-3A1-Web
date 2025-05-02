@@ -1,0 +1,1 @@
+symfony server:start --allow-http --no-tls --port=8000

@@ -12,14 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\BillService;
 use App\Repository\EventEquipmentRepository;
+use Knp\Snappy\Pdf;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Mercure\HubInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 #[Route('/bill')]
 final class BillController extends AbstractController
 {
     #[Route('/', name: 'app_bill_index', methods: ['GET'])]
-    public function index(Request $request, BillRepository $billRepository, BillService $billService): Response
-    {
+    public function index(
+        Request $request,
+        BillRepository $billRepository,
+        BillService $billService,
+        PaginatorInterface $paginator,
+        HubInterface $hub,
+        NotifierInterface $notifier
+    ): Response {
         $searchQuery = $request->query->get('q');
         $archivedFilter = $request->query->get('archived');
         $sortBy = $request->query->get('sort_by');
@@ -27,13 +38,38 @@ final class BillController extends AbstractController
 
         $archivedFilter = $archivedFilter == '' ? 0 : (int)$archivedFilter;
 
-        $bills = $billRepository->findAllWithFiltersAndSorting(
+        $query = $billRepository->createQueryBuilderWithFiltersAndSorting(
             $searchQuery,
             $archivedFilter,
             $sortBy,
             $sortDirection
         );
+
+        $bills = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            2
+        );
+
         $upcomingBills = $billService->checkUpcomingBills();
+
+        if (count($upcomingBills) > 0 && !$request->isXmlHttpRequest() && !$request->query->get('ajax')) {
+            $this->addFlash('upcoming_bills', [
+                'message' => 'You have ' . count($upcomingBills) . ' bill(s) due within a week',
+                'count' => count($upcomingBills),
+            ]);
+        }
+
+        if ($request->isXmlHttpRequest() || $request->query->get('ajax')) {
+            return $this->render('bill/_table.html.twig', [
+                'bills' => $bills,
+                'search_query' => $searchQuery,
+                'archived_filter' => $archivedFilter,
+                'sort_by' => $sortBy,
+                'sort_direction' => $sortDirection,
+                'bill_service' => $billService
+            ]);
+        }
 
         return $this->render('bill/indexFront.html.twig', [
             'bills' => $bills,
@@ -45,7 +81,6 @@ final class BillController extends AbstractController
             'bill_service' => $billService
         ]);
     }
-
     #[Route('/new', name: 'app_bill_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -139,7 +174,6 @@ final class BillController extends AbstractController
             }
         }
 
-        // Only create bill if there's equipment with price > 0
         if ($totalAmount > 0) {
             $bill = new Bill();
             $bill->setEvent($event);
@@ -158,5 +192,27 @@ final class BillController extends AbstractController
         }
 
         return $this->redirectToRoute('app_bill_index');
+    }
+    #[Route('/{billid}/pdf', name: 'app_bill_pdf', methods: ['GET'])]
+    public function generatePdf(Bill $bill, Pdf $knpSnappyPdf)
+    {
+        $filename = sprintf('bill-%d-%s.pdf', $bill->getBillid(), date('Y-m-d'));
+        $path = $this->getParameter('kernel.project_dir') . '/public/pdf/' . $filename;
+
+        $imagePath = realpath($this->getParameter('kernel.project_dir') . '/public/pdf/1.png');
+        $imagePath = 'file:///' . str_replace('\\', '/', $imagePath); // Windows path fix
+
+        $html = $this->renderView('bill/pdf_template.html.twig', [
+            'bill' => $bill,
+            'stampPath' => $imagePath,
+        ]);
+
+        $knpSnappyPdf->generateFromHtml($html, $path, [
+            'encoding' => 'utf-8',
+            'images' => true,
+            'enable-local-file-access' => true,
+        ], true);
+
+        return $this->file($path);
     }
 }

@@ -15,7 +15,6 @@
 
 		.equipment-id-link:hover {
 			color: blue;
-
 		}
 		.title {
 			text-align: center;
@@ -25,7 +24,6 @@
 		.filter {
 			margin-left: 25%;
 			margin-top: 20px;
-
 		}
 		th,
 		td {
@@ -34,15 +32,15 @@
 		}
 	</style>
 	<h1 class="title">Equipment List</h1>
-	<form method="get" action="{{ path('app_equipment_index') }}" class="mb-4 filter">
+	<form id="filterForm" method="get" action="{{ path('app_equipment_index') }}" class="mb-4 filter">
 		<div class="row g-3">
 			<div class="col-md-4">
-				<input type="text" name="q" class="form-control" placeholder="Search equipment..." value="{{ search_query|default('') }}">
+				<input type="text" name="q" id="searchInput" class="form-control" placeholder="Search equipment..." value="{{ search_query|default('') }}">
 			</div>
 
 			<div class="col-md-3">
-				<select name="category" class="form-select">
-					<option value="" {% if Category_filter is null or Category_filter == '' %} selected {% endif %}>
+				<select name="category" id="categorySelect" class="form-select" onchange="this.form.submit()">
+					<option value="all" {% if Category_filter is null or Category_filter == '' %} selected {% endif %}>
 						All Categories
 					</option>
 					<option value="tools" {% if Category_filter == 'tools' %} selected {% endif %}>
@@ -64,73 +62,60 @@
 			</div>
 
 			<div class="col-md-2">
-				<button type="submit" class="btn btn-primary">Filter</button>
 				<a href="{{ path('app_equipment_index') }}" class="btn btn-primary">Reset</a>
 			</div>
 		</div>
 	</form>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>EquipmentId</th>
-				<th>QR Code</th>
-				<th>Name</th>
-				<th>
-					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'state', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
-						State
-						{% if sort_by == 'state' %}
-							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
-						{% endif %}
-					</a>
-				</th>
-				<th>Category</th>
-				<th>
-					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'quantity', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
-						Quantity
-						{% if sort_by == 'quantity' %}
-							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
-						{% endif %}
-					</a>
-				</th>
-				<th>
-					<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_equipment_index', { 'q': search_query|default(''), 'category': Category_filter is defined ? Category_filter : '', 'sort_by': 'price', 'direction': (sort_by == 'price' and sort_direction == 'ASC') ? 'DESC' : 'ASC' }) }}">
-						Price
-						{% if sort_by == 'price' %}
-							{{ sort_direction == 'ASC' ? '↑' : '↓' }}
-						{% endif %}
-					</a>
-				</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for item in equipmentWithQrCodes %}
-				<tr style="{%if item.equipment.state == 'maintenance' %}background-color: lightyellow;{% endif %} {%if item.equipment.state == 'unavailable' %}background-color: lightgrey;{% endif %}">
-					<td>
-						<a class="equipment-id-link" href="{{ path('app_equipment_show', {'EquipmentId': item.equipment.EquipmentId}) }}">{{ item.equipment.EquipmentId }}</a>
-					</td>
-					<td><img src="{{ item.qrCode }}" alt="QR Code" width="75"></td>
-					<td>{{ item.equipment.name }}</td>
-					<td>{{ item.equipment.state }}</td>
-					<td>{{ item.equipment.category }}</td>
-					<td>{{ item.equipment.quantity }}</td>
-					<td>{{ item.equipment.price }}</td>
-					<td>
-						<button class="btn btn-primary">
-							<a style="text-decoration:none; color:white;" href="{{ path('app_equipment_edit', {'EquipmentId': item.equipment.EquipmentId}) }}">edit</a>
-						</button>
-						{% if item.equipment.state == 'functional' %}
-							<button class="btn btn-success">
-								<a style="text-decoration:none; color:white;" href="{{ path('app_event_equipment_new', {'equipment_id': item.equipment.EquipmentId}) }}">Assign to Event</a>
-							</button>
-						{% endif %}
-						{{ include('equipment/_delete_form.html.twig', { redirect_route: 'app_equipment_index' }) }}</td>
-				</tr>
-			</td>
-		</tbody>
-	</tr>
-{% else %}
-	<tr>
-		<td colspan="6">no records found</td>
-	</tr>
-{% endfor %}</tbody></table></div><div style="display:flex; gap:10px; margin-left:32.5%"><a href="{{ path('app_equipment_new') }}" class="btn btn-primary " style="width:25%; display:block;">Create new</a><a href="{{ path('app_event_equipment_index') }}" class="btn btn-primary " style="width:25%; display:block;">See reservations</a></div></div>{% endblock %}
+
+	<div id="equipmentTableContainer">
+		{{ include('equipment/_table.html.twig') }}
+
+	</div>
+
+	<div style="display:flex; gap:10px; margin-left:32.5%">
+		<a href="{{ path('app_equipment_new') }}" class="btn btn-primary " style="width:25%; display:block;">Create new</a>
+		<a href="{{ path('app_event_equipment_index') }}" class="btn btn-primary " style="width:25%; display:block;">See reservations</a>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const searchInput = document.getElementById('searchInput');
+const categorySelect = document.getElementById('categorySelect');
+
+// Both events trigger the same update function
+searchInput.addEventListener('input', debounce(updateResults, 500));
+categorySelect.addEventListener('change', updateResults);
+
+function updateResults() {
+const params = new URLSearchParams({
+q: searchInput.value, category: categorySelect.value, ajax: 1 // Add this to identify AJAX requests in your controller
+});
+
+fetch (`{{ path('app_equipment_index') }}?${
+params.toString()
+}`, {
+headers: {
+'X-Requested-With': 'XMLHttpRequest'
+}
+}).then(response => response.text()).then(html => {
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+const newTable = doc.querySelector('table');
+document.querySelector('#equipmentTableContainer table').outerHTML = newTable.outerHTML;
+});
+}
+
+function debounce(func, wait) {
+let timeout;
+return function () {
+const context = this;
+const args = arguments;
+clearTimeout(timeout);
+timeout = setTimeout(function () {
+func.apply(context, args);
+}, wait);
+};
+}
+});
+	</script>
+{% endblock %}

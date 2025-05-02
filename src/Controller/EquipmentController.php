@@ -15,11 +15,9 @@ use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Writer\ValidationException;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 
@@ -27,20 +25,29 @@ use Endroid\QrCode\Writer\ValidationException;
 final class EquipmentController extends AbstractController
 {
     #[Route(name: 'app_equipment_index', methods: ['GET'])]
-    public function index(Request $request, EquipmentRepository $equipmentRepository): Response
-    {
+    public function index(
+        Request $request,
+        EquipmentRepository $equipmentRepository,
+        PaginatorInterface $paginator
+    ): Response {
         $searchQuery = $request->query->get('q');
         $CategoryFilter = $request->query->get('category');
         $sortBy = $request->query->get('sort_by');
         $sortDirection = $request->query->get('direction', 'ASC');
 
-        $CategoryFilter = $CategoryFilter == '' ? null : $CategoryFilter;
+        $CategoryFilter = ($CategoryFilter == '' || $CategoryFilter == 'all') ? null : $CategoryFilter;
 
-        $equipments = $equipmentRepository->findAllWithFiltersAndSorting(
+        $query = $equipmentRepository->createQueryBuilderWithFiltersAndSorting(
             $searchQuery,
             $CategoryFilter,
             $sortBy,
             $sortDirection
+        );
+
+        $equipments = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            2 // Items per page
         );
 
         $writer = new PngWriter();
@@ -57,7 +64,6 @@ final class EquipmentController extends AbstractController
                 backgroundColor: new Color(255, 255, 255)
             );
 
-
             $result = $writer->write($qrCode);
 
             $equipmentWithQrCodes[] = [
@@ -66,8 +72,20 @@ final class EquipmentController extends AbstractController
             ];
         }
 
+        if ($request->isXmlHttpRequest() || $request->query->get('ajax')) {
+            return $this->render('equipment/_table.html.twig', [
+                'equipmentWithQrCodes' => $equipmentWithQrCodes,
+                'equipments' => $equipments,
+                'search_query' => $searchQuery,
+                'Category_filter' => $CategoryFilter,
+                'sort_by' => $sortBy,
+                'sort_direction' => $sortDirection
+            ]);
+        }
+
         return $this->render('equipment/indexFront.html.twig', [
             'equipmentWithQrCodes' => $equipmentWithQrCodes,
+            'equipments' => $equipments,
             'search_query' => $searchQuery,
             'Category_filter' => $CategoryFilter,
             'sort_by' => $sortBy,

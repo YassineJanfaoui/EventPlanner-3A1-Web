@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+			}
+			.bill-info {
+				margin-bottom: 20px;
+			}
+			.bill-table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			.bill-table th {
+				background-color: #f2f2f2;
+				text-align: left;
+				padding: 8px;
+			}
+			.bill-table td {
+				padding: 8px;
+				border-bottom: 1px solid #ddd;
+			}
+			.total-row {
+				font-weight: bold;
+			}
+			.footer {
+				text-align: center;
+				margin-top: 20px;
+				border-top: 1px solid #eee;
+				padding-top: 10px;
+				font-size: 10px;
+			}
+			.signature {
+				margin-top: 30px;
+			}
+			.stamp {
+				opacity: 0.5;
+				width: 100px;
+			}
+			.header {
+				text-align: center;
+				margin-bottom: 20px;
+				border-bottom: 1px solid #eee;
+				padding-bottom: 10px;
+			}
+			.project-name {
+				font-size: 24px;
+				font-weight: bold;
+				color: #2c3e50;
+			}
+			.team-info {
+				font-size: 12px;
+				color: #7f8c8d;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="project-name">HackForge</div>
+			<div class="team-info">
+				Team: EventPlanner 3A1 | Contact: team@hackforge.com
+			</div>
+		</div>
+		<div class="bill-info">
+			<h2>Bill #{{ bill.billid }}</h2>
+			<div>Event:
+				{{ bill.event ? bill.event.name : 'N/A' }}</div>
+			<div>Due Date:
+				{{ bill.DueDate|date('Y-m-d') }}</div>
+			<div>Status:
+				{{ bill.PaymentStatus }}</div>
+		</div>
+
+		<table class="bill-table">
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Quantity</th>
+					<th>Unit Price</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for line in bill.Description|split('\n') %}
+					{% if line|trim and 'Equipment for event' not in line %}
+						<tr>
+							<td>
+								{% if 'each)' in line %}
+									{% set parts = line|split('(') %}
+									{{ parts[0]|trim }}
+								{% else %}
+									{{ line }}
+								{% endif %}
+							</td>
+							<td>
+								{% if 'each)' in line %}
+									{% set qtyParts = line|split('Qty:') %}
+									{% set qty = qtyParts[1]|split('@') %}
+									{{ qty[0]|trim }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{% if 'each)' in line %}
+									{% set parts = line|split('@') %}
+									{{ parts[1]|replace({'each)': ''})|trim }}
+								{% else %}
+									-
+								{% endif %}
+							</td>
+							<td>
+								{% if 'each)' in line %}
+									{% set qtyParts = line|split('Qty:') %}
+									{% set qty = qtyParts[1]|split('@') %}
+									{% set price = line|split('@') %}
+									{% set unitPrice = price[1]|replace({'each)': ''})|trim %}
+									{{ qty[0]|trim * unitPrice }}$
+								{% else %}
+									-
+								{% endif %}
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+				<tr class="total-row">
+					<td colspan="3">TOTAL</td>
+					<td>{{ bill.Amount }}$</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="footer">
+			<div>Generated on
+				{{ "now"|date("Y-m-d H:i") }}</div>
+			<div class="signature">
+				<img src="{{ stampPath }}" class="stamp">
+				<div>Authorized Signature</div>
+			</div>
+		</div>
+	</body>
+</html>
