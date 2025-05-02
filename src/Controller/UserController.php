@@ -5,7 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserTypeFront;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Psr\Log\LoggerInterface; // Add this for LoggerInterface
 use Symfony\Component\Security\Core\Exception\AuthenticationException; // Add this for AuthenticationException
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; // Add this import
+use Twilio\Rest\Client;
 
 
 #[Route('/user')]
@@ -92,6 +94,7 @@ public function register(
 
     return $this->render('user/Register.html.twig', [
         'form' => $form->createView(),
+        'recaptcha_site_key' => $_ENV['RECAPTCHA_SITE_KEY']
     ]);
 }
 
@@ -157,7 +160,6 @@ public function editProfil(
     ]);
 }
 
-
     #[Route('/{userid}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -176,9 +178,6 @@ public function editProfil(
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    // In your UserController
-    
 
 #[Route('/{userid}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
 public function edit(
@@ -214,4 +213,74 @@ public function edit(
         'form' => $form->createView(),
     ]);
 }
+
+#[Route('/{userid}/activate', name: 'app_user_activate', methods: ['GET', 'POST'])]
+public function activate(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('active');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been activated. 🎉 Welcome back!"
+    );
+
+    $this->addFlash('success', 'User activated successfully.');
+    return $this->redirectToRoute('app_user_index');
+}
+
+#[Route('/{userid}/deactivate', name: 'app_user_deactivate', methods: ['GET', 'POST'])]
+public function deactivate(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('inactive');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been deactivated temporarily. Please contact support for more information."
+    );
+
+    $this->addFlash('success', 'User deactivated successfully.');
+    return $this->redirectToRoute('app_user_index');
+}
+
+#[Route('/{userid}/ban', name: 'app_user_ban', methods: ['GET', 'POST'])]
+public function ban(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('banned');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been banned. ❌ If you believe this is a mistake, please contact the administration."
+    );
+
+    $this->addFlash('success', 'User banned successfully.');
+    return $this->redirectToRoute('app_user_index');
+    
+}
+
+private function sendWhatsAppNotification(string $phoneNumber, string $message): void
+{
+    $sid = 'AC8d137b62e199ee41b14b96190617251e';
+    $token = 'e58c67bd7bdd3093fe8a8a8c55e71fde';
+    $twilioNumber = 'whatsapp:+14155238886';
+
+    $client = new \Twilio\Rest\Client($sid, $token);
+
+    try {
+        $client->messages->create(
+            'whatsapp:' . $phoneNumber, // No double +
+            [
+                'from' => $twilioNumber,
+                'body' => $message
+            ]
+        );
+    } catch (\Exception $e) {
+        error_log('Twilio WhatsApp Error: ' . $e->getMessage());
+        // Optionally add flash or logger here
+    }
+}
+
+
 }

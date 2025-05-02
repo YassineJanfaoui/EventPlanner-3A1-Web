@@ -34,7 +34,10 @@ security:
 
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/login/faceid, roles: PUBLIC_ACCESS }
+        - { path: ^/faceid, roles: PUBLIC_ACCESS }
         - { path: ^/connect, roles: PUBLIC_ACCESS }
         - { path: ^/user/register, roles: PUBLIC_ACCESS }
         - { path: ^/user/new, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }

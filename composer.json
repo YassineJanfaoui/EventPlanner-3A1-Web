@@ -7,10 +7,13 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "anhskohbo/no-captcha": "*",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.14",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
+        "excelwebzone/recaptcha-bundle": "^1.5",
+        "karser/karser-recaptcha3-bundle": "^0.2.1",
         "knpuniversity/oauth2-client-bundle": "^2.18",
         "league/oauth2-google": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.6",
@@ -46,6 +49,7 @@
         "symfony/yaml": "6.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
+        "twilio/sdk": "^8.5",
         "vich/uploader-bundle": "^2.6"
     },
     "config": {
