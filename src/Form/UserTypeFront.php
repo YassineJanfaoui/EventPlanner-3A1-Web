@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
+
 class UserTypeFront extends AbstractType
 {
 public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -160,11 +161,6 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
                 ])
             ],
             'row_attr' => ['class' => 'mb-3'],
-        ])
-        ->add('recaptcha', EWZRecaptchaType::class, [
-            'label' => false,
-            'mapped' => false,
-            'constraints' => [new RecaptchaTrue()],
         ]);
         
 }

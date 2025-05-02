@@ -97,8 +97,18 @@ public function register(
                 // You might want to return here if the image is required
             }
         }
+        $recaptchaResponse = $request->request->get('g-recaptcha-response');
+        $recaptchaSecret = $_ENV['RECAPTCHA_SECRET_KEY']; // stored in .env
+        $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
+        $verifyResponse = file_get_contents($recaptchaVerifyUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+        $responseData = json_decode($verifyResponse);
+
+        if (!$responseData->success) {
+            $this->addFlash('error', 'reCAPTCHA verification failed. Please try again.');
+            return $this->redirectToRoute('app_user_register');
+        }
         
-        // Rest of your registration logic...
         $user->setStatus('active');
         $user->setImageName($newFilename);
         $plainPassword = $form->get('plainPassword')->getData();
