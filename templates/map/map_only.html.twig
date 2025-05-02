@@ -1,0 +1,465 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Carte Test avec Météo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css">
+    <style>
+/* Replace your current weather-popup style with this */
+.weather-popup {
+    padding: 12px 15px;
+    min-width: 200px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+}
+
+.weather-popup h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+}
+
+.weather-popup .info {
+    display: flex;
+    align-items: center;
+}
+
+.weather-popup .info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-popup p {
+    margin: 2px 0;
+}
+
+.weather-popup p strong {
+    color: #0066cc;
+}
+.ol-popup {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 12px 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #ccc;
+    min-width: 220px;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #333;
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+}
+
+
+
+
+        .context-menu {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .context-menu-option {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .context-menu-option:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Carte Test avec Météo</h1>
+    
+    <div id="map" style="width: 100%; height: 400px; position: relative;"></div>
+    
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-option" id="delete-marker">Supprimer l'événement</div>
+    </div>
+    
+    <div style="display:flex; margin-top: 10px;">
+        <div style="width: 20px; height: 20px; background-color: red; border-radius: 50%; margin-right: 10px;"></div>
+        <p>Événements</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remplacez par votre clé API OpenWeatherMap
+        const apiKey = 'd8ef548a7e3fae997f8e23ba1957d7b1';
+        
+        // Données des marqueurs
+        var markersData = {{ markers|json_encode|raw }};
+        console.log('Markers:', markersData);
+        
+        // Créer un vecteur source pour les markers
+        var vectorSource = new ol.source.Vector();
+        
+        // Popup pour les infos météo
+        var container = document.createElement('div');
+        container.className = 'ol-popup';
+        
+        var content = document.createElement('div');
+        content.className = 'ol-popup-content';
+        container.appendChild(content);
+        
+     var popup = new ol.Overlay({
+    element: container,
+    positioning: 'bottom-center', // <- important !
+    autoPan: true,
+    autoPanAnimation: {
+        duration: 250
+    }
+});
+
+        
+        // Référence pour le menu contextuel
+        var contextMenu = document.getElementById('context-menu');
+        var deleteOption = document.getElementById('delete-marker');
+        var currentFeature = null;
+        
+        // Ajouter les marqueurs
+        markersData.forEach(function(marker) {
+            if (marker && marker.longitude && marker.latitude) {
+                // Utiliser l'ID réel de l'événement
+                var markerId = marker.id;
+                
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Point(
+                        ol.proj.fromLonLat([parseFloat(marker.longitude), parseFloat(marker.latitude)])
+                    ),
+                    id: markerId,
+                    longitude: marker.longitude,
+                    latitude: marker.latitude
+                });
+                
+                console.log("Ajout d'un marqueur avec ID:", markerId);
+                vectorSource.addFeature(feature);
+            } else {
+                console.error('Marqueur avec coordonnées incomplètes:', marker);
+            }
+        });
+        
+        // Style des markers
+        var markerStyle = new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({color: 'red'}),
+                stroke: new ol.style.Stroke({color: 'white', width: 2})
+            })
+        });
+        
+        // Créer le layer vectoriel
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: markerStyle
+        });
+        
+        // Créer la carte
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }),
+                vectorLayer
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([2.213749, 46.227638]), // Centre de la France
+                zoom: 5
+            }),
+            overlays: [popup]
+        });
+        
+        // Gérer les clics gauche sur la carte pour afficher la météo
+        map.on('click', function(evt) {
+            // Fermer le menu contextuel s'il est ouvert
+            contextMenu.style.display = 'none';
+            
+            var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+                return feature;
+            });
+            
+            if (feature) {
+                var coordinates = feature.getGeometry().getCoordinates();
+                var lat = feature.get('latitude');
+                var lon = feature.get('longitude');
+                
+                if (!lat || !lon) {
+                    console.error('Coordonnées invalides pour le marqueur');
+                    return;
+                }
+                
+                // Récupérer les données météo
+                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur réseau: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    // Replace your current weather popup code with this improved version
+.then(data => {
+    // Format weather description with capitalized first letter
+    const description = data.weather[0].description.charAt(0).toUpperCase() + data.weather[0].description.slice(1);
+    
+    // Format temperature with units
+    const temperature = Math.round(data.main.temp);
+    
+    // Format wind speed and convert to km/h
+    const windSpeedKmh = Math.round(data.wind.speed * 3.6); // Convert m/s to km/h
+    
+    // Get city name
+    const cityName = data.name;
+    
+ content.innerHTML = `
+    <div class="weather-popup" style="display: flex; flex-direction: column; align-items: center; padding: 8px;">
+        <div style="display: flex; align-items: center; margin-bottom: 6px;">
+            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
+                 alt="Météo" 
+                 style="width: 40px; height: 40px; margin-right: 8px;">
+            <h4 style="margin: 0; font-size: 16px;">${cityName}</h4>
+        </div>
+        <div style="text-align: center; font-size: 14px;">
+            <p style="margin: 2px 0;"><strong>${description}</strong></p>
+            <p style="margin: 2px 0;">Température : ${temperature}°C</p>
+            <p style="margin: 2px 0;">Humidité : ${data.main.humidity}%</p>
+            <p style="margin: 2px 0;">Vent : ${windSpeedKmh} km/h</p>
+        </div>
+    </div>
+`;
+
+
+
+
+    popup.setPosition(coordinates);
+})
+                    .catch(error => {
+                        console.error('Erreur lors de la récupération des données météo:', error);
+                        content.innerHTML = '<div class="weather-popup"><p>Impossible de charger les données météo.</p></div>';
+                        popup.setPosition(coordinates);
+                    });
+            } else {
+                popup.setPosition(undefined);
+            }
+        });
+        
+        // Gérer les clics droits pour le menu contextuel
+        map.getViewport().addEventListener('contextmenu', function(evt) {
+            evt.preventDefault(); // Empêcher le menu contextuel par défaut
+            
+            var pixel = map.getEventPixel(evt);
+            var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+                return feature;
+            });
+            
+            if (feature) {
+                // Vérifier que le feature a un ID valide
+                var eventId = feature.get('id');
+                if (!eventId) {
+                    console.error('Feature sans ID détecté');
+                    return;
+                }
+                
+                // Stocker la référence au feature pour la suppression
+                currentFeature = feature;
+                
+                // Positionner le menu contextuel
+                contextMenu.style.display = 'block';
+                contextMenu.style.left = evt.clientX + 'px';
+                contextMenu.style.top = evt.clientY + 'px';
+            } else {
+                contextMenu.style.display = 'none';
+            }
+        });
+        
+        // Gérer l'action de suppression
+        deleteOption.addEventListener('click', function() {
+            if (currentFeature) {
+                var eventId = currentFeature.get('id');
+                
+                // Vérifier que l'ID est valide
+                if (!eventId) {
+                    console.error('Impossible de supprimer: ID d\'événement invalide');
+                    alert('Erreur: Impossible de supprimer cet événement (ID invalide)');
+                    contextMenu.style.display = 'none';
+                    return;
+                }
+                
+                // Extraire et convertir l'ID en nombre si nécessaire
+                var numericId;
+                if (typeof eventId === 'string') {
+                    if (eventId.startsWith('marker-')) {
+                        // Si l'ID est au format "marker-X-Y-Z", extraire la dernière partie
+                        var parts = eventId.split('-');
+                        numericId = parseInt(parts[parts.length - 1], 10);
+                    } else {
+                        // Essayer de convertir directement la chaîne en nombre
+                        numericId = parseInt(eventId, 10);
+                    }
+                    
+                    // Vérifier si la conversion a réussi
+                    if (isNaN(numericId)) {
+                        console.error('ID non numérique:', eventId);
+                        alert('Erreur: Format d\'ID invalide');
+                        contextMenu.style.display = 'none';
+                        return;
+                    }
+                } else if (typeof eventId === 'number') {
+                    numericId = eventId;
+                } else {
+                    console.error('Type d\'ID inattendu:', typeof eventId);
+                    alert('Erreur: Type d\'ID inattendu');
+                    contextMenu.style.display = 'none';
+                    return;
+                }
+                
+                console.log('Tentative de suppression de l\'événement avec ID:', numericId);
+                
+                // Appeler l'API pour supprimer l'événement
+                fetch(`/delete-event/${numericId}`, {
+                    method: 'DELETE',
+                    headers: { 
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            try {
+                                return JSON.parse(text);
+                            } catch (e) {
+                                throw new Error('Erreur serveur: ' + response.status + ' ' + text);
+                            }
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.message === 'Event deleted successfully') {
+                        // Supprimer le marqueur de la carte
+                        vectorSource.removeFeature(currentFeature);
+                        
+                        // Masquer le menu contextuel
+                        contextMenu.style.display = 'none';
+                        
+                        // Supprimer l'élément du DOM s'il existe
+                        document.getElementById(`event-row-${eventId}`)?.remove();
+                        
+                        alert('Événement supprimé avec succès');
+                    } else {
+                        alert('Erreur lors de la suppression: ' + (data.error || 'Raison inconnue'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur complète:', error);
+                    alert('Erreur lors de la suppression: ' + error.message);
+                });
+            }
+            
+            // Fermer le menu contextuel
+            contextMenu.style.display = 'none';
+        });
+        
+        // Fermer le menu contextuel en cliquant ailleurs
+        document.addEventListener('click', function() {
+            contextMenu.style.display = 'none';
+        });
+        
+        // Changer le curseur au survol d'un marqueur
+        map.on('pointermove', function(evt) {
+            var hit = map.hasFeatureAtPixel(evt.pixel);
+            map.getViewport().style.cursor = hit ? 'pointer' : '';
+        });
+        
+        console.log('Map initialized successfully');
+    });
+    
+    // Le code des boutons de suppression d'événement existants
+    document.querySelectorAll('.delete-event').forEach(button => {
+        button.addEventListener('click', function() {
+            let eventId = this.dataset.eventId;
+            
+            if (!eventId) {
+                console.error('ID d\'événement manquant sur le bouton de suppression');
+                return;
+            }
+
+            // Extraire l'ID numérique si c'est une chaîne au format "marker-X-Y-Z"
+            var numericId;
+            if (typeof eventId === 'string' && eventId.startsWith('marker-')) {
+                // Prendre la dernière partie après le dernier tiret
+                var parts = eventId.split('-');
+                numericId = parts[parts.length - 1];
+            } else {
+                numericId = eventId;
+            }
+
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+                fetch(`/delete-event/${numericId}`, {
+                    method: 'DELETE',
+                    headers: { 
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            try {
+                                return JSON.parse(text);
+                            } catch (e) {
+                                throw new Error('Erreur serveur: ' + response.status);
+                            }
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.message === 'Event deleted successfully') {
+                        // Supprimer l'élément du DOM s'il existe
+                        document.getElementById(`event-row-${eventId}`)?.remove();
+                        
+                        // Rafraîchir la page pour mettre à jour la carte
+                        window.location.reload();
+                    } else {
+                        alert('Erreur lors de la suppression: ' + (data.error || 'Raison inconnue'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Erreur lors de la suppression: ' + error.message);
+                });
+            }
+        });
+    });
+    //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
+</script>
+{% endblock %}

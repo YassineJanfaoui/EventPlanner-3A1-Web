@@ -1,0 +1,231 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Create New Event{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .event-creation {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 800px;
+        }
+        
+        .event-creation h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-errors {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .date-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .date-col {
+            flex: 1;
+        }
+
+        /* Flash message styles */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+        
+        .alert-error {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="event-creation">
+    <h1>Create a New Event</h1>
+
+    {# Display flash messages #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form, {'attr': {'class': 'event-form'}, 'action': path('app_event_new_front')}) }}
+    
+    <div class="form-group">
+        {{ form_label(form.name, 'Event Name') }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter event name'}}) }}
+        <div class="form-errors">{{ form_errors(form.name) }}</div>
+    </div>
+
+    <div class="form-group date-row">
+        <div class="date-col">
+            {{ form_label(form.startDate, 'Start Date') }}
+            {{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-errors">{{ form_errors(form.startDate) }}</div>
+        </div>
+        <div class="date-col">
+            {{ form_label(form.endDate, 'End Date') }}
+            {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-errors">{{ form_errors(form.endDate) }}</div>
+        </div>
+    </div>
+
+    <div class="form-group date-row">
+        <div class="date-col">
+            {{ form_label(form.maxParticipants, 'Max Participants') }}
+            {{ form_widget(form.maxParticipants, {'attr': {'class': 'form-control', 'placeholder': '50'}}) }}
+            <div class="form-errors">{{ form_errors(form.maxParticipants) }}</div>
+        </div>
+        <div class="date-col">
+            {{ form_label(form.fee, 'Participation Fee') }}
+            <div class="input-group">
+                {{ form_widget(form.fee, {'attr': {'class': 'form-control', 'placeholder': '0.00'}}) }}
+                <span class="input-group-addon">$</span>
+            </div>
+            <div class="form-errors">{{ form_errors(form.fee) }}</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Tell people about your event...'}}) }}
+        <div class="form-errors">{{ form_errors(form.description) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.image, 'Event Image') }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+        <small class="text-muted">Upload a high-quality image that represents your event (JPG, PNG, max 2MB)</small>
+        <div class="form-errors">{{ form_errors(form.image) }}</div>
+    </div>
+
+    <div class="btn-container">
+        <a href="{{ path('app_event_indexx') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+<!-- Notyf CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
+<!-- Notyf JS -->
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<script>
+    // Create Notyf instance
+    const notyf = new Notyf({
+        duration: 3000, // Notification duration
+        position: {
+            x: 'right', // Horizontal position
+            y: 'top'    // Vertical position
+        }
+    });
+
+    // Display success messages using Notyf
+    {% for message in app.flashes('success') %}
+        notyf.success("{{ message|e('js') }}");
+    {% endfor %}
+
+    // Display error messages using Notyf
+    {% for message in app.flashes('error') %}
+        notyf.error("{{ message|e('js') }}");
+    {% endfor %}
+</script>
+
+{% endblock %}

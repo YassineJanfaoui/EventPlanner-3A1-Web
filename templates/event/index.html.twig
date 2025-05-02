@@ -1,0 +1,322 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Event Index{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Event List</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Max Participants</th>
+                        <th>Description</th>
+                        <th>Fee</th>
+                        <th>Location</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.eventId }}</td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.startDate }}</td>  
+                        <td>{{ event.endDate }}</td>
+                        <td>{{ event.maxParticipants }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.fee }}</td>
+                        <td>{{ event.lieu }}</td>
+                        <td>
+                            {% if event.image %}
+                                <img src="{{ asset(event.image) }}" alt="Event Image" class="img-thumbnail" width="100">
+                            {% else %}
+                                <span class="text-muted">No image</span>
+                            {% endif %}
+                        </td>                
+                        <td>
+                            <a href="{{ path('app_event_show', {'eventId': event.eventId}) }}" class="btn btn-sm btn-info mb-1">Show</a>
+                            <a href="{{ path('app_event_edit', {'eventId': event.eventId}) }}" class="btn btn-sm btn-warning">Edit</a>
+<div class="mb-2">
+          <div class="event-poster-generator" style="max-width: 400px; margin: 0 auto; font-family: 'Segoe UI', sans-serif;">
+    <div class="event-poster-generator" style="max-width: 360px; margin: 0 auto; font-family: 'Segoe UI', sans-serif;">
+    <h6 style="color: #4a5568; font-size: 13px; margin-bottom: 10px; font-weight: 600;">Description de l'événement</h6>
+
+    <textarea class="description-textarea form-control mb-3" 
+              id="description-{{ event.eventId }}"
+              placeholder="Décris l'événement pour générer une affiche..."
+              style="border-radius: 10px; padding: 10px; border: 1px solid #e2e8f0; 
+                     min-height: 90px; resize: none; box-shadow: none;
+                     transition: all 0.3s ease; font-size: 13px; line-height: 1.4;">
+        {{ event.lieu }} sports event, with participants, energetic atmosphere
+    </textarea>
+
+    <div class="generate-buttons mb-3">
+        <button type="button"
+                class="generate-image-button"
+                data-event-id="{{ event.eventId }}"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                       border: none; color: white; padding: 8px 18px;
+                       border-radius: 24px; font-size: 12px; font-weight: 500;
+                       cursor: pointer; display: inline-flex; align-items: center;
+                       gap: 6px; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+                       transition: all 0.3s ease; height: 34px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" 
+                 alt="Generate" width="14" height="14" style="filter: brightness(0) invert(1);">
+            Générer l'image
+        </button>
+    </div>
+
+    <div id="preview-{{ event.eventId }}" class="mt-3" style="display:none;">
+        <div style="background: #f8fafc; border-radius: 14px; padding: 12px; margin-bottom: 14px;
+                    border: 1px dashed #cbd5e0;">
+            <img id="preview-img-{{ event.eventId }}" src="" 
+                 width="100%" alt="Preview" 
+                 style="border-radius: 10px; display: block; margin: 0 auto; max-width: 280px;">
+        </div>
+        
+        <button type="button"
+                class="save-image-button"
+                data-event-id="{{ event.eventId }}"
+                style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+                       border: none; color: white; padding: 8px 18px;
+                       border-radius: 24px; font-size: 12px; font-weight: 500;
+                       cursor: pointer; display: inline-flex; align-items: center;
+                       gap: 6px; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+                       transition: all 0.3s ease; height: 34px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" 
+                 alt="Save" width="14" height="14" style="filter: brightness(0) invert(1);">
+            Sauvegarder
+        </button>
+    </div>
+</div>
+
+
+
+</a>
+
+<script>
+document.getElementById('pdf-generator').addEventListener('click', function() {
+    const spinner = document.getElementById('pdf-spinner');
+    const text = document.getElementById('pdf-text');
+    
+    spinner.classList.remove('d-none');
+    text.textContent = 'Generating...';
+    
+    // The download will happen automatically via the Content-Disposition header
+});
+</script>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No events found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Button Section -->
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <!-- Create Event Button -->
+<a href="{{ path('app_event_new') }}" class="btn btn-lg d-flex align-items-center gap-2" 
+   style="background: linear-gradient(135deg, #28a745 0%, #218838 100%); color: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-decoration: none;">
+    <i class="fas fa-calendar-plus fa-lg"></i>
+    <span>Create Event</span>
+</a>
+
+<!-- Reservation List Button -->
+<a href="{{ path('app_reservation_index') }}" class="btn btn-lg d-flex align-items-center gap-2 mt-2"
+   style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-decoration: none;">
+    <i class="fas fa-list fa-lg"></i>
+    <span>Reservation List</span>
+</a>
+
+<!-- View Charts Button -->
+<a href="{{ path('app_stats_events_by_fee') }}" class="btn btn-lg d-flex align-items-center gap-2 mt-2"
+   style="background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); color: black; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-decoration: none;">
+    <i class="fas fa-chart-bar fa-lg"></i>
+    <span>View Charts</span>
+</a>
+
+                <a href="{{ path('app_map_only') }}" class="btn btn-lg btn-gradient d-flex align-items-center gap-2 p-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); text-decoration: none;">
+    <i class="fas fa-map-marked-alt fa-lg"></i>
+    <i class="fas fa-cloud-sun fa-lg"></i>
+    <span style="font-weight: 600;">View Map & Weather</span>
+</a>
+
+</a>
+            </div>
+        </div>
+<a href="{{ path('app_event_list') }}" class="btn btn-outline-dark btn-lg">View Front Office</a>
+<a href="{{ path('app_events_pdf') }}" 
+   style="display: inline-flex; align-items: center; justify-content: center;
+          padding: 6px 12px; border-radius: 18px; font-size: 12px;
+          text-decoration: none; transition: all 0.2s ease;
+          border: none; color: white; font-weight: 500;
+          background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+          box-shadow: 0 2px 4px rgba(229, 62, 62, 0.2);
+          height: 30px; line-height: 1; gap: 6px;
+          position: relative; overflow: hidden;">
+    <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" 
+         alt="PDF" width="14" height="14" style="filter: brightness(0) invert(1);">
+    PDF
+    <span style="position: absolute; inset: 0; background: white; opacity: 0; transition: opacity 0.2s ease;"></span>
+</a>
+
+<style>
+    a:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(229, 62, 62, 0.3);
+    }
+    a:active {
+        transform: translateY(0);
+    }
+    a:hover span {
+        opacity: 0.1;
+    }
+</style>
+    </div>
+</div>
+<script>
+async function generateImage(prompt) {
+    const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
+    const API_KEY = "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"; // Your API key
+    
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            inputs: prompt,
+            options: {
+                wait_for_model: true
+            }
+        })
+    });
+    
+    if (!response.ok) {
+        throw new Error(`Erreur API: ${response.status} - ${await response.text()}`);
+    }
+    
+    // Get the image as a blob
+    return await response.blob();
+}
+
+// Function to generate and display the image
+async function generateAndPreviewImage(eventId) {
+    try {
+        const button = document.querySelector(`.generate-image-button[data-event-id="${eventId}"]`);
+        const description = document.getElementById(`description-${eventId}`).value;
+        
+        // Modify the button to show loading state
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Génération...';
+        
+        // Generate the image
+        const imageBlob = await generateImage(description);
+        
+        // Create a URL for display
+        const imageUrl = URL.createObjectURL(imageBlob);
+        
+        // Display the preview
+        const previewContainer = document.getElementById(`preview-${eventId}`);
+        const previewImg = document.getElementById(`preview-img-${eventId}`);
+        previewImg.src = imageUrl;
+        previewContainer.style.display = 'block';
+        
+        // Store the blob in a data attribute for later use
+        previewImg.setAttribute('data-blob', imageUrl);
+        
+        // Reset the button
+        button.disabled = false;
+        button.innerHTML = 'Générer l\'image';
+    } catch (error) {
+        console.error('Erreur lors de la génération de l\'image:', error);
+        alert(`Erreur: ${error.message}`);
+        
+        // Reset the button on error
+        const button = document.querySelector(`.generate-image-button[data-event-id="${eventId}"]`);
+        button.disabled = false;
+        button.innerHTML = 'Générer l\'image';
+    }
+}
+
+// Function to save the generated image
+async function saveGeneratedImage(eventId) {
+    try {
+        const previewImg = document.getElementById(`preview-img-${eventId}`);
+        const imageUrl = previewImg.getAttribute('data-blob');
+        
+        if (!imageUrl) {
+            throw new Error('Aucune image générée à sauvegarder');
+        }
+        
+        // Get the blob from the URL
+        const response = await fetch(imageUrl);
+        const imageBlob = await response.blob();
+        
+        // Create FormData for sending
+        const formData = new FormData();
+        formData.append('image', imageBlob, `event_${eventId}_image.png`);
+        formData.append('eventId', eventId);
+        
+        // Send the image to the server
+        const saveButton = document.querySelector(`.save-image-button[data-event-id="${eventId}"]`);
+        saveButton.disabled = true;
+        saveButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sauvegarde...';
+        
+        const uploadResponse = await fetch('/event/upload-image', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!uploadResponse.ok) {
+            throw new Error(`Erreur lors de la sauvegarde: ${uploadResponse.status}`);
+        }
+        
+        const result = await uploadResponse.json();
+        
+        if (result.success) {
+            // Refresh the page to show the updated image
+            window.location.reload();
+        } else {
+            throw new Error(result.message || 'Erreur lors de la sauvegarde de l\'image');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la sauvegarde de l\'image:', error);
+        alert(`Erreur: ${error.message}`);
+        
+        // Reset the button on error
+        const saveButton = document.querySelector(`.save-image-button[data-event-id="${eventId}"]`);
+        saveButton.disabled = false;
+        saveButton.innerHTML = 'Sauvegarder l\'image';
+    }
+}
+
+// Ajouter des écouteurs sur les boutons de génération d'image
+document.querySelectorAll('.generate-image-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const eventId = this.dataset.eventId;
+        generateAndPreviewImage(eventId);
+    });
+});
+
+// Ajouter des écouteurs sur les boutons de sauvegarde
+document.querySelectorAll('.save-image-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const eventId = this.dataset.eventId;
+        saveGeneratedImage(eventId);
+    });
+});
+</script>
+{% endblock %}

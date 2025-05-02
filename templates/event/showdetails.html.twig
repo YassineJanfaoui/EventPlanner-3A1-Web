@@ -1,0 +1,245 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="d-flex align-items-center gap-2 flex-nowrap mb-4 px-3 justify-content-start" style="overflow-x: auto;">
+    <!-- Search bar -->
+    <form method="get" class="d-flex align-items-center me-2">
+        <div class="input-group">
+            <span class="input-group-text bg-dark text-white"><i class="fas fa-search"></i></span>
+            <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ app.request.query.get('search') }}">
+        </div>
+    </form>
+    <a href="#" class="btn custom-btn">Book Now</a>
+    <a href="#" class="btn custom-btn">More Info</a>
+    <a href="#" class="btn custom-btn">Contact</a>
+    <a href="#" class="btn custom-btn">Memories</a>
+    <!-- Sound buttons -->
+    <a href="#" class="btn custom-btn" onclick="playSound()"><i class="fas fa-volume-up"></i></a>
+    <a href="#" class="btn custom-btn" onclick="pauseSound()"><i class="fas fa-volume-mute"></i></a>
+
+    <!-- Sorting -->
+    <form method="get" class="ms-2">
+        <select name="sort" class="form-select custom-select" onchange="this.form.submit()">
+            <option value="date" {{ app.request.query.get('sort') == 'date' ? 'selected' }}>📅 Date</option>
+            <option value="price" {{ app.request.query.get('sort') == 'price' ? 'selected' }}>💰 Price</option>
+        </select>
+    </form>
+</div>
+
+<h1 class="fancy-title">
+    {% if event is defined %}
+        📅 Reservations for {{ event.name }}
+    {% else %}
+        📅 My Events & Reservations
+    {% endif %}
+</h1>
+
+<div class="container mt-4">
+    {% if event is defined %}
+        <!-- Back button above the card -->
+        <div class="mb-4">
+            <a href="{{ path('app_event_list') }}" class="btn back-btn">
+                <i class="fas fa-arrow-left me-2"></i> Back to All Events
+            </a>
+        </div>
+
+        <!-- Single Event View -->
+        <div class="card shadow-sm mb-4 custom-card">
+            <div class="custom-card-header">
+                {{ event.name }}
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if event.image %}
+                        <div class="col-md-4">
+                            <img src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid rounded custom-image">
+                        </div>
+                    {% endif %}
+                    <div class="col-md-{% if event.image %}8{% else %}12{% endif %}">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+<strong>📅 Dates:</strong> {{ event.startDate|date('Y-m-d') }} to {{ event.endDate|date('Y-m-d') }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>👥 Max Participants:</strong> {{ event.maxParticipants }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>💰 Fee:</strong> ${{ event.fee }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>📝 Description:</strong> 
+                                <div style="max-height: 150px; overflow-y: auto;">
+                                    {{ event.description }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4 class="mt-4 text-primary">Reservation Venues</h4>
+                {% if reservations is defined and reservations is not empty %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Venue Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reservation in reservations %}
+                                    <tr>
+                                        <td>
+                                            {% if reservation.venue %}
+                                                {{ reservation.venue.VenueName }}
+                                            {% else %}
+                                                No venue specified
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mt-3">
+                        No venue reservations found for this event.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <!-- All Events View -->
+        {% if events is not empty %}
+            {% for event in events %}
+                <div class="card shadow-sm mb-4 custom-card">
+                    <div class="custom-card-header">
+                        {{ event.name }}
+                        <a href="{{ path('event_reservations', {'eventId': event.eventId}) }}" class="btn btn-view float-end">
+                            View Reservations <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% if event.image %}
+                                <div class="col-md-4">
+                                    <img src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid rounded custom-image">
+                                </div>
+                            {% endif %}
+                            <div class="col-md-{% if event.image %}8{% else %}12{% endif %}">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>📅 Dates:</strong> {{ event.startDate }} to {{ event.endDate }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>💰 Fee:</strong> ${{ event.fee }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-warning mt-3">
+                No events found.
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<style>
+    .fancy-title {
+        font-size: 2.8rem;
+        font-weight: bold;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #f1f4f9, #dfe9f3);
+        color: #2c3e50;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .custom-card-header {
+        background-color: #053536;
+        color: #F1F2F6;
+        font-weight: bold;
+        padding: 20px 30px;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+        font-size: 1.5rem;
+    }
+
+    .custom-image {
+        border-radius: 0;
+        max-height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    /* New back button style */
+    .back-btn {
+        background-color: #053536;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .back-btn:hover {
+        background-color: #042426;
+        color: white;
+        transform: translateX(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .back-btn i {
+        transition: transform 0.3s ease;
+    }
+    
+    .back-btn:hover i {
+        transform: translateX(-3px);
+    }
+    
+    /* View button style */
+    .btn-view {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-view:hover {
+        background-color: #218838;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-success {
+        border-color: #28a745;
+        color: #28a745;
+    }
+    
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+    }
+</style>
+{% endblock %}

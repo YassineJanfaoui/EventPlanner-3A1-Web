@@ -1,0 +1,140 @@
+/* Champs de texte et DatePicker */
+.input-field {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 3px 10px rgba(5, 53, 54, 0.5);
+}
+
+.input-field:focus {
+    border-color: #065e50;
+    border-width: 2px;
+    outline: none;
+    box-shadow: none; /* Supprime l'effet bleu */
+}
+
+/* Style des boutons */
+.my-button {
+    background-color: #053536;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+   /* transition: background 0.3s;*/
+    border: none;
+}
+
+.my-button:hover {
+    background-color: black;
+}
+
+/* Style des boutons de sidebar */
+.my-button2 {
+    background-color: transparent;
+    color: white;
+    font-size: 14px;
+    text-align: left;
+    padding: 15px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: none;
+   /* transition: background 0.3s, color 0.3s;*/
+}
+
+.my-button2 i {
+    margin-right: 10px; /* Espace entre l'icône et le texte */
+}
+
+.my-button2:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Style des labels */
+.label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #053536;
+}
+
+.title {
+    font-size: 42px;
+    color: #053536;
+    font-weight: bold;
+    text-shadow: 0px 3px 10px rgba(5, 53, 54, 0.5);
+}
+
+/* Messages d'erreur et d'information */
+.error-message {
+    color: #D32F2F;
+    font-size: 12px;
+}
+
+.info-message {
+    color: #053536;
+    font-size: 12px;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #053536;
+    width: 250px;
+    height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+}
+
+.sidebar .image-logo {
+    display: block;
+    margin: 0 auto;
+    width: 130px;
+    height: 140px;
+}
+
+/* Table View */
+.table-view {
+    background-color: #f4f4f4;
+    border: 1px solid #b0b0b0;
+    border-radius: 5px;
+}
+
+.table-header {
+    background-color: white;
+    color: #053536;
+    font-weight: bold;
+}
+
+.table-row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-row:hover {
+    background-color: #053536;
+    color: white;
+}
+
+/* Style des icônes */
+.font-awesome-icon {
+    color: white;
+    font-size: 1.4em;
+    transition: color 0.3s;
+}
+
+.my-button2:hover .font-awesome-icon {
+    color: black;
+}
+
+.main-content {
+    margin-left: 260px; /* Ajuste pour éviter que le contenu soit recouvert */
+    padding: 20px;
+    width: calc(100% - 260px); /* Ajuste pour remplir l’espace restant */
+}

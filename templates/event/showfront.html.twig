@@ -1,0 +1,153 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Event List{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .event-table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 40px;
+        }
+        .event-table h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .event-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .event-table th, .event-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .event-table th {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+        .event-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .event-table .btn {
+            margin: 5px;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .event-table .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .event-table .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .event-table .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .event-table .btn-info:hover {
+            background-color: #138496;
+        }
+        .event-table .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .event-table .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .event-table .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .event-table .btn-success:hover {
+            background-color: #218838;
+        }
+        .event-table .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .event-table .btn-primary:hover {
+            background-color: #0069d9;
+        }
+        .event-table .img-thumbnail {
+            width: 100px;
+            height: auto;
+        }
+        .d-flex.justify-content-center.gap-3 {
+            gap: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container event-table">
+        <h1>Upcoming Events</h1>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Event ID</th>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Max Participants</th>
+                    <th>Description</th>
+                    <th>Fee</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.eventId }}</td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.startDate|date('Y-m-d H:i') }}</td>
+                        <td>{{ event.endDate|date('Y-m-d H:i') }}</td>
+                        <td>{{ event.maxParticipants }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.fee }}</td>
+                        <td>
+                            {% if event.image %}
+                                <img src="{{ asset(event.image) }}" alt="Event Image" class="img-thumbnail">
+                            {% else %}
+                                <span class="text-muted">No image</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {# Using Option 1 (recommended) #}
+<td>
+    <a href="{{ path('app_event_details_front', {'id': event.eventId}) }}" 
+       class="btn btn-info btn-sm">
+       <i class="fas fa-eye"></i> Show
+    </a>
+    <a href="{{ path('app_event_editt', {'id': event.eventId}) }}" 
+       class="btn btn-warning btn-sm">
+       <i class="fas fa-edit"></i> Edit
+    </a>
+</td>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No events found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{{ path('app_event_new_front') }}" class="btn btn-success">Create Event</a>
+<a href="{{ path('app_reservation_index_front') }}" class="btn btn-primary">
+    View Reservations
+</a>
+    </div>
+{% endblock %}

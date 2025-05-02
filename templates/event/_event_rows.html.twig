@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Événements{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Liste des Événements</h1>
+
+        {# AJAX Search Input #}
+        <div class="ajax-search-container mb-3">
+            <input type="text" id="ajax-search" class="form-control search-input" placeholder="Rechercher un événement...">
+            <div id="search-results" class="search-results-container"></div>
+        </div>
+
+        {# Events Table #}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Date Début</th>
+                    <th>Date Fin</th>
+                    <th>Participants Max</th>
+                    <th>Description</th>
+                    <th>Frais</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td><strong>{{ event.eventId }}</strong></td>
+                        <td>
+                            {% if event.image %}
+                                <img src="{{ asset(event.image starts with '/' ? 'uploads' ~ event.image : 'uploads/images/' ~ event.image) }}" 
+                                     alt="Image de {{ event.name }}" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 100px; height: auto;">
+                            {% else %}
+                                <img src="{{ asset('images/no-image.png') }}" 
+                                     alt="Pas d'image" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 100px; height: auto;">
+                            {% endif %}
+                        </td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.startDate ? event.startDate|date('Y-m-d') : 'Non définie' }}</td>
+                        <td>{{ event.endDate ? event.endDate|date('Y-m-d') : 'Non définie' }}</td>
+                        <td>{{ event.maxParticipants }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.fee }} TND</td>
+                        <td>{{ event.latitude ?? 'Non défini' }}</td>
+                        <td>{{ event.longitude ?? 'Non défini' }}</td>
+                        <td>
+                            {# Actions like edit/delete/details can go here #}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="11" class="text-muted text-center">
+                            Aucun événement trouvé.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Styles #}
+    <style>
+        .ajax-search-container {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-input {
+            padding: 10px 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+        .search-results-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-results-container .result-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-results-container .result-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-results-container .result-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+
+    {# JavaScript #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ajax-search').on('input', function () {
+                let query = $(this).val();
+                if (query.length < 2) {
+                    $('#search-results').hide().empty();
+                    return;
+                }
+
+                
+            });
+        });
+    </script>
+{% endblock %}

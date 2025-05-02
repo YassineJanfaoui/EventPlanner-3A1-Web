@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Événements</title>
+    <style>
+        :root {
+            --primary: #4a6bdf;
+            --primary-light: #e8edff;
+            --dark: #2c3e50;
+            --light: #f9f9f9;
+            --gray: #95a5a6;
+            --accent: #ff7043;
+            --success: #2ecc71;
+        }
+        
+        body {
+            font-family: 'DejaVu Sans', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: white;
+            color: var(--dark);
+            line-height: 1.4;
+            padding: 15px;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .title {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .event-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: white;
+            page-break-inside: avoid;
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .event-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .event-id {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+        }
+        
+        .event-info {
+            margin-top: 8px;
+        }
+        
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 10px;
+        }
+        
+        .details-table th,
+        .details-table td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+            width: 25%;
+        }
+        
+        .fee {
+            color: var(--success);
+            font-weight: 700;
+        }
+        
+        .event-image {
+            max-width: 80px;
+            height: auto;
+            border-radius: 4px;
+            margin-left: 10px;
+            float: right;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            color: var(--gray);
+            font-size: 9px;
+        }
+        
+        .no-events {
+            text-align: center;
+            color: var(--gray);
+            font-style: italic;
+            padding: 15px;
+        }
+        
+        .location-info {
+            margin-top: 5px;
+            font-size: 10px;
+            color: var(--gray);
+        }
+        .event-qr {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .event-qr img {
+        width: 120px;
+        height: 120px;
+        border: 1px solid #053536;
+        padding: 6px;
+        border-radius: 8px;
+        background-color: #F1F2F6;
+    }
+
+    .event-qr p {
+        font-size: 12px;
+        color: #053536;
+        margin-top: 8px;
+    }
+
+    .page-break {
+        page-break-after: always;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">List Of events </h1>
+        </div>
+
+        {% for event in events %}
+            <div class="event-card">
+                <div class="event-header">
+                    <h2 class="event-title">{{ event.name }}</h2>
+                    <span class="event-id">Événement #{{ event.eventId }}</span>
+                </div>
+                
+                {% if event.imageBase64 %}
+                    <img src="{{ event.imageBase64 }}" 
+                         alt="Image de l'événement" 
+                         class="event-image">
+                {% endif %}
+                
+                <div class="event-info">
+                    <table class="details-table">
+                        <tr>
+                            <td class="highlight">Dates</td>
+                            <td>
+                                Du {{ event.startDate }}<br>
+                                Au {{ event.endDate }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="highlight">Participants max</td>
+                            <td>{{ event.maxParticipants }}</td>
+                        </tr>
+                        <tr>
+                            <td class="highlight">Fee</td>
+                            <td class="fee">{{ event.fee }} TND</td>
+                        </tr>
+                        {% if event.latitude and event.longitude %}
+                        <tr>
+                            <td class="highlight">Coordonnées</td>
+                            <td>
+                                Latitude: {{ event.latitude }}<br>
+                                Longitude: {{ event.longitude }}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="highlight">Description</td>
+                            <td>{{ event.description }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+                 <div class="event-qr">
+                {% if event.qrCodeBase64 %}
+                    <img src="{{ event.qrCodeBase64 }}" alt="QR Code">
+                    <p>Scannez ce code pour accéder aux détails de l'événement</p>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+            <p class="no-events">Aucun événement trouvé.</p>
+        {% endfor %}
+        
+        <div class="footer">
+            Généré le {{ "now"|date("d/m/Y H:i") }} | © {{ "now"|date("Y") }} Système de gestion d'événements
+        </div>
+    </div>
+</body>
+</html>

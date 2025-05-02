@@ -1,0 +1,51 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Edit Reservation{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="mb-4 text-center">Edit Reservation</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ path('app_reservation_index') }}" class="btn btn-secondary">Back to List</a>
+        {{ include('reservation/_delete_form.html.twig') }}
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}
