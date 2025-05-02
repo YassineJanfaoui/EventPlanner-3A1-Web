@@ -48,7 +48,7 @@ final class BillController extends AbstractController
         $bills = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            2
+            5
         );
 
         $upcomingBills = $billService->checkUpcomingBills();

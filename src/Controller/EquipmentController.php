@@ -47,7 +47,7 @@ final class EquipmentController extends AbstractController
         $equipments = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            2 // Items per page
+            5 // Items per page
         );
 
         $writer = new PngWriter();

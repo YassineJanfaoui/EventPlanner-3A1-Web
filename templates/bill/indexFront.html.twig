@@ -144,7 +144,7 @@ console.error('Error fetching results:', error);
 			</div>
 
 			<div class="col-md-3">
-				<select name="archived" class="form-select">
+				<select name="archived" class="form-select" onchange="this.form.submit()">
 					<option value="1" {% if archived_filter is not null and archived_filter == 1 %} selected {% endif %}>
 						Archived
 					</option>
