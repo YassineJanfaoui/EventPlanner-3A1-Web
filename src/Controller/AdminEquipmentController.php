@@ -17,7 +17,7 @@ class AdminEquipmentController extends AbstractController
     public function index(EquipmentRepository $equipmentRepository): Response
     {
         return $this->render('equipment/indexBack.html.twig', [
-            'equipment' => $equipmentRepository->findAll(),
+            'equipments' => $equipmentRepository->findAll(),
         ]);
     }
 

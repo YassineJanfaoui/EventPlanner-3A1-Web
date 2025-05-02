@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<div class="card mb-4">
 		<div class="card-header">Equipment</div>
 		<div class="card-body">
@@ -21,7 +20,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for equipment in equipment %}
+					{% for equipment in equipments %}
 						<tr style="background-color:red">
 							<td>
 								<a href="{{ path('app_admin_equipment_show', {'EquipmentId': equipment.EquipmentId}) }}">{{ equipment.EquipmentId }}</a>
@@ -31,15 +30,17 @@
 							<td>{{ equipment.category }}</td>
 							<td>{{ equipment.quantity }}</td>
 							<td>{{ equipment.price }}</td>
-							<td>{{ include('equipment/_delete_form.html.twig', { redirect_route: 'app_admin_equipment' }) }}</td>
+							<td>
+								{{ include('equipment/_delete_form.html.twig', { redirect_route: 'app_admin_equipment' }) }}
+							</td>
 						</tr>
-					</td>
+					{% else %}
+						<tr>
+							<td colspan="7">no records found</td>
+						</tr>
+					{% endfor %}
 				</tbody>
-			</tr>
-		{% else %}
-			<tr>
-				<td colspan="6">no records found</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table></div></div>{% endblock %}
+			</table>
+		</div>
+	</div>
+{% endblock %}
