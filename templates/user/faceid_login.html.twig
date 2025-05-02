@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face ID Login | Event Planner</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 50px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        h1 {
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: var(--danger);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        input::placeholder {
+            color: var(--gray);
+            opacity: 0.6;
+        }
+        
+        button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        button:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .footer-text a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Camera specific styles */
+        #camera-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        #video {
+            width: 100%;
+            max-width: 320px;
+            background: #000;
+            border-radius: 8px;
+        }
+        
+        #capture-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        #preview-container {
+            margin-top: 15px;
+        }
+        
+        #preview {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="logo">
+        HackForge
+    </div>
+
+    <h1>Face ID Login</h1>
+
+    <form id="faceid-login-form">
+        
+        
+        <div id="camera-section">
+            <video id="video" width="320" height="240" autoplay muted playsinline></video>
+            <button type="button" id="capture-btn">Capture Face</button>
+            <canvas id="canvas" style="display:none;"></canvas>
+            <div id="preview-container" style="display:none;">
+                <img id="preview" src="" alt="Captured Face">
+            </div>
+        </div>
+        
+        <button type="submit" id="submit-btn" disabled>Login with Face ID</button>
+    </form>
+
+    <p class="footer-text">
+        Or <a href="{{ path('app_login') }}">login with password</a>
+    </p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('faceid-login-form');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('preview-container');
+    //const usernameInput = document.querySelector('input[name="username"]');
+    let stream = null;
+
+    // Start camera when page loads
+    startCamera();
+
+    // Capture button handler
+    captureBtn.addEventListener('click', () => {
+        captureFace();
+    });
+
+    // Form submission handler
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleFaceLogin();
+    });
+
+    async function startCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    width: 320, 
+                    height: 240,
+                    facingMode: 'user' // Front camera
+                } 
+            });
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Camera error:", err);
+            alert("Could not access camera. Please check permissions.");
+        }
+    }
+
+    function captureFace() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        // Show preview
+        preview.src = canvas.toDataURL('image/jpeg');
+        previewContainer.style.display = 'block';
+        submitBtn.disabled = false;
+        
+        // Stop camera after capture
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            video.style.display = 'none';
+        }
+    }
+
+    async function handleFaceLogin() {
+        if (!canvas.width) {
+            alert('Please enter capture your face first');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+
+        try {
+            // Convert canvas to JPEG with quality 0.8
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Prepare form data
+            const formData = new FormData();
+            //formData.append('username', usernameInput.value);
+            formData.append('face_image', imageData.split(',')[1]); // Send only base64 data
+
+            // Add CSRF token
+            formData.append('_csrf_token', '{{ csrf_token('authenticate') }}');
+
+            // Make POST request to Face ID endpoint
+            const response = await fetch('{{ path('app_login_faceid') }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                window.location.href = data.redirect || '{{ path('app_default_target') }}';
+            } else {
+                throw new Error(data.error || 'Face recognition failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert(error.message);
+            // Reset for retry
+            submitBtn.textContent = 'Login with Face ID';
+            previewContainer.style.display = 'none';
+            video.style.display = 'block';
+            startCamera();
+        } finally {
+            submitBtn.disabled = false;
+        }
+    }
+});
+</script>
+</body>
+</html>

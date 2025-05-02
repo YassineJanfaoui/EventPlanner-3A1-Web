@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    uploaded_faceid_dir: '%kernel.project_dir%/public/uploads/faceid/temp'
+    known_faces_dir: '%kernel.project_dir%/public/uploads/faceid/faces'
 
 services:
   # default configuration for services in *this* file
@@ -20,5 +23,13 @@ services:
       #- '../src/Entity/'
       - "../src/Kernel.php"
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Security\GoogleAuthenticator:
+        arguments:
+            $client: '@knpu.oauth2.client.google'
+            $em: '@doctrine.orm.entity_manager'
+            $router: '@router'
+    
+
+    
