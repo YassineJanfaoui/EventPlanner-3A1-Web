@@ -20,7 +20,7 @@
         {% set currentDir = app.request.get('sortDirection', 'ASC') %}
         {% set nextDir = currentDir == 'ASC' ? 'DESC' : 'ASC' %}
         <tr>
-            <th>WorkshopId</th>
+            <th> WorkshopId</th>
             <th>
                 <a style = "color:black" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'sortBy': 'title', 'sortDirection': (currentSort == 'title') ? nextDir : 'ASC'})) }}">
                     Title
@@ -50,7 +50,7 @@
         <tbody>
             {% for workshop in workshops %}
                 <tr>
-                    <td>{{ workshop.workshopId }}</td>
+                    <td> <a href="{{ path('app_workshop_show', {'workshopId': workshop.workshopId}) }}" class="btn btn-sm btn-info"> {{ workshop.workshopId }} </a></td>
                     <td>{{ workshop.title }}</td>
                     <td>{{ workshop.coach }}</td>
                     <td>{{ workshop.startDate ? workshop.startDate|date('Y-m-d') : '' }}</td>
@@ -73,6 +73,10 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-center mt-5 mb-3">  {# Added mb-4 for bottom margin #}
+        {{ knp_pagination_render(pagination, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+    </div>
 
 	<a href="{{ path('app_workshop_new') }}" style="color: white; width:20%; margin-left:37.5%" class="btn btn-primary">Create new</a>
 

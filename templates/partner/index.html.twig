@@ -28,21 +28,21 @@
 		<tbody>
 			{% for partner in partners %}
 				<tr>
-	<td>{{ partner.partnerId }}</td>
-	<td class="partner-name" data-name="{{ partner.name }}" style="cursor:pointer; color:blue;">
-		{{ partner.name }}
-	</td>
-	<td>{{ partner.category }}</td>
-	<td>{{ partner.email }}</td>
-	<td>{{ partner.number }}</td>
-	<td>{{ partner.officeLocation }}</td>
-	<td style="display:flex; gap:10px;">
-		<button class="btn btn-primary">
-			<a style="text-decoration:none; color:white;" href="{{ path('app_partner_edit', {'partnerId': partner.partnerid}) }}">edit</a>
-		</button>
-		{{ include('partner/_delete_form.html.twig') }}
-	</td>
-</tr>
+					<td><a href="{{ path('app_partner_show', {'partnerId': partner.partnerId}) }}" class="btn btn-sm btn-info"> {{ partner.partnerId }} </td>
+					<td class="partner-name" data-name="{{ partner.name }}" style="cursor:pointer; color:blue;">
+						{{ partner.name }}
+					</td>
+					<td>{{ partner.category }}</td>
+					<td>{{ partner.email }}</td>
+					<td>{{ partner.number }}</td>
+					<td>{{ partner.officeLocation }}</td>
+					<td style="display:flex; gap:10px;">
+						<button class="btn btn-primary">
+							<a style="text-decoration:none; color:white;" href="{{ path('app_partner_edit', {'partnerId': partner.partnerid}) }}">edit</a>
+						</button>
+						{{ include('partner/_delete_form.html.twig') }}
+					</td>
+				</tr>
 
 			{% else %}
 				<tr>
@@ -52,13 +52,20 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_partner_new') }}" style="color: white; width:20%; margin-left:37.5%" class="btn btn-primary">Create new</a>
+
+	<div class="d-flex justify-content-center mt-5 mb-3">  {# Added mb-4 for bottom margin #}
+    	{{ knp_pagination_render(partners, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+	</div>
+
+	<a href="{{ path('app_partner_new') }}" style="color: white; width:20%; margin-left:40.5%; margin-top: 20px;" class="btn btn-primary">Create new</a>
+
 	<!-- Modal -->
 <div id="youtubeModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%);
   background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
 	<span onclick="document.getElementById('youtubeModal').style.display='none'" style="cursor:pointer; float:right;">&times;</span>
 	<div id="youtubeVideo"></div>
 </div>
+
 <script>
 document.querySelectorAll('.partner-name').forEach(nameCell => {
 	nameCell.addEventListener('click', async () => {

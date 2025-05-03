@@ -1,10 +1,122 @@
 {% extends 'basePlanner.html.twig' %}
 
-{% block title %}Partner Statistics{% endblock %}
+{% block title %}Partner Statistics | HadForge{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .stats-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stats-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-header h1 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-summary {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+        }
+        
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            color: #3498db;
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .total-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            text-align: center;
+        }
+        
+        .total-card h3, .total-card .stat-value, .total-card .stat-meta {
+            color: white;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1>Partner Statistics by Category</h1>
-    <img src="{{ asset('chart.png') }}" alt="Statistics chart">
-
-    
+    <div class="stats-container">
+        <div class="stats-header">
+            <h1>Partner Statistics by Category</h1>
+            <p class="stats-summary">Visual breakdown of our partner network distribution</p>
+        </div>
+        
+        <div class="chart-container">
+            <img src="{{ asset('chart.png') }}?v={{ random() }}" alt="Partner Category Distribution" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card total-card">
+                <h3>Total Partners</h3>
+                <div class="stat-value">{{ totalPartners }}</div>
+                <div class="stat-meta">Across all categories</div>
+            </div>
+            
+            {% for category in categories %}
+                <div class="stat-card">
+                    <h3>{{ category }}</h3>
+                    <div class="stat-value">{{ percentages[category] }}%</div>
+                    <div class="stat-meta">{{ counts[loop.index0] }} partners</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

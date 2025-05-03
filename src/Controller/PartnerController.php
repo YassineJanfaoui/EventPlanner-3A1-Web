@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -19,66 +20,94 @@ use Symfony\UX\Chartjs\Model\Chart;
 final class PartnerController extends AbstractController
 {
     #[Route(name: 'app_partner_index', methods: ['GET'])]
-    public function index(Request $request, PartnerRepository $workshopRepository): Response
+    public function index(Request $request, PartnerRepository $partnerRepository, PaginatorInterface $paginator): Response
+    {
+        $searchQuery = $request->query->get('search');
+        $coachFilter = $request->query->get('coach');
+        $sortBy = $request->query->get('sortBy');
+        $sortDirection = strtoupper($request->query->get('sortDirection', 'ASC'));
+
+        $partner = $partnerRepository->findAllWithFiltersAndSorting(
+            $searchQuery,
+            $coachFilter,
+            $sortBy,
+            $sortDirection
+        );
+
+        $pagination = $paginator->paginate(
+            $partner, // QueryBuilder
+            $request->query->getInt('page', 1), // Current page
+            2 // Items per page
+        );
+
+        return $this->render('partner/index.html.twig', [
+            'partner' => $pagination,
+            'partners' => $pagination, // update to use pagination in view
+        ]);
+    }
+
+    #[Route('/stats', name: 'partner_stats')]
+public function stat(PartnerRepository $partnerRepository): Response
 {
-    $searchQuery = $request->query->get('search');
-    $coachFilter = $request->query->get('coach');
-    $sortBy = $request->query->get('sortBy');
-    $sortDirection = strtoupper($request->query->get('sortDirection', 'ASC'));
-
-    $workshops = $workshopRepository->findAllWithFiltersAndSorting(
-        $searchQuery,
-        $coachFilter,
-        $sortBy,
-        $sortDirection
-    );
-
-    return $this->render('partner/index.html.twig', [
-        'partners' => $workshops
+    $chartPath = $this->getParameter('kernel.project_dir') . '/public/chart.png';
+    
+    if (file_exists($chartPath)) {
+        unlink($chartPath);
+    }
+    
+    require_once $this->getParameter('kernel.project_dir') . '/lib/jpgraph/src/jpgraph.php';
+    require_once $this->getParameter('kernel.project_dir') . '/lib/jpgraph/src/jpgraph_pie.php';
+    require_once $this->getParameter('kernel.project_dir') . '/lib/jpgraph/src/jpgraph_pie3d.php';
+    
+    $qb = $partnerRepository->createQueryBuilder('p')
+        ->select('p.category, COUNT(p) as count')
+        ->groupBy('p.category')
+        ->getQuery();
+    
+    $results = $qb->getResult();
+    $categories = array_column($results, 'category');
+    $counts = array_map('intval', array_column($results, 'count'));
+    
+    // Enhanced chart settings
+    $graph = new \PieGraph(800, 500, 'auto');
+    $graph->SetShadow(2, 2, '#cccccc', 5);
+    $graph->title->Set('Partner Distribution by Category');
+    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 14);
+    $graph->SetFrame(false);
+    $graph->SetMarginColor('#ffffff');
+    
+    $p1 = new \PiePlot3D($counts);
+    $p1->SetLegends($categories);
+    $p1->SetTheme('pastel');
+    $p1->ExplodeSlice(0); // Explode the largest slice
+    $p1->value->SetFont(FF_ARIAL, FS_NORMAL, 10);
+    $p1->value->SetColor('#333333');
+    $p1->SetLabelType(PIE_VALUE_ABS);
+    $p1->SetLabels($counts, 1);
+    $p1->SetCenter(0.4, 0.5);
+    
+    $graph->Add($p1);
+    $graph->Stroke($chartPath);
+    
+    // Pass additional statistics to the template
+    $totalPartners = array_sum($counts);
+    $categoryPercentages = array_map(function($count) use ($totalPartners) {
+        return round(($count / $totalPartners) * 100, 1);
+    }, $counts);
+    
+    return $this->render('partner/stats.html.twig', [
+        'categories' => $categories,
+        'counts' => $counts,
+        'percentages' => array_combine($categories, $categoryPercentages),
+        'totalPartners' => $totalPartners
     ]);
 }
 
 
 
-    #[Route('/stats', name: 'partner_stats')]
-    public function stat(PartnerRepository $partnerRepository): Response
-    {
-        // Path to overwrite
-        $chartPath = $this->getParameter('kernel.project_dir') . '/public/chart.png';
-    
-        // Check if file exists and delete it if so (optional)
-        if (file_exists($chartPath)) {
-            unlink($chartPath);  // Delete the old chart image
-        }
-    
-        // Include JpGraph files
-        require_once $this->getParameter('kernel.project_dir') . '/lib/jpgraph/src/jpgraph.php';
-        require_once $this->getParameter('kernel.project_dir') . '/lib/jpgraph/src/jpgraph_pie.php';
-    
-        // Get data
-        $qb = $partnerRepository->createQueryBuilder('p')
-            ->select('p.category, COUNT(p) as count')
-            ->groupBy('p.category')
-            ->getQuery();
-    
-        $results = $qb->getResult();
-        $categories = array_column($results, 'category');
-        $counts = array_map('intval', array_column($results, 'count'));
-    
-        // Create the chart
-        $graph = new \PieGraph(600, 400);
-        $graph->SetShadow();
-    
-        $p1 = new \PiePlot($counts);
-        $p1->SetLegends($categories);
-        $graph->Add($p1);
-    
-        // Overwrite the chart image
-        $graph->Stroke($chartPath);
-    
-        // Just render the page with the chart without redirection
-        return $this->render('partner/stats.html.twig');
-    }
+
+
+
     
     
     
