@@ -1,4 +1,54 @@
-<?php
+```php
+#[Route('/statistics/equipment', name: 'app_statistics_resources')]
+public function equipmentStatistics(EquipmentRepository $equipmentRepository, BillRepository $billRepository): Response
+{
+    $categoryStats = $equipmentRepository->getCategoryStats();
+    $stateStats = $equipmentRepository->getStateStats();
+    $paymentStats = $billRepository->getPaymentStats();
+
+    // Generate AI descriptions
+    $aiDescriptions = [
+        'category' => $this->generateAiDescription($categoryStats, 'equipment categories'),
+        'state' => $this->generateAiDescription($stateStats, 'equipment states'),
+        'payment' => $this->generateAiDescription($paymentStats, 'payment statuses')
+    ];
+
+    return $this->render('equipment/statistics.html.twig', [
+        'categoryStats' => $categoryStats,
+        'stateStats' => $stateStats,
+        'paymentStats' => $paymentStats,
+        'aiDescriptions' => $aiDescriptions
+    ]);
+}
+
+// Add these methods to the EquipmentRepository and BillRepository classes
+public function getCategoryStats()
+{
+    return $this->createQueryBuilder('e')
+        ->select('e.category as name, COUNT(e.EquipmentId) as count')
+        ->groupBy('e.category')
+        ->getQuery()
+        ->getResult();
+}
+
+public function getStateStats()
+{
+    return $this->createQueryBuilder('e')
+        ->select('e.state as name, COUNT(e.EquipmentId) as count')
+        ->groupBy('e.state')
+        ->getQuery()
+        ->getResult();
+}
+
+public function getPaymentStats()
+{
+    return $this->createQueryBuilder('b')
+        ->select('b.PaymentStatus as name, COUNT(b.billid) as count')
+        ->groupBy('b.PaymentStatus')
+        ->getQuery()
+        ->getResult();
+}
+```<?php
 
 namespace App\Controller;
 

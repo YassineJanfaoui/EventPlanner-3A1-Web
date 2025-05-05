@@ -20,6 +20,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; // Add 
 use Twilio\Rest\Client;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 #[Route('/user')]
@@ -131,13 +134,48 @@ public function register(
     ]);
 }
 
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+
+
+#[Route(name: 'app_user_index', methods: ['GET'])]
+public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
+{
+    $search = $request->query->get('search');
+    $role = $request->query->get('role');
+    $status = $request->query->get('status');
+    $sortBy = $request->query->get('sort', 'userid'); // HTML input is named 'sort'
+    $direction = strtoupper($request->query->get('direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+    $perPage = $request->query->getInt('perPage', 10);
+
+    // ✅ Optional: Validate allowed sort fields
+    $validSortFields = ['userid', 'username', 'email', 'name', 'status', 'role'];
+    if (!in_array($sortBy, $validSortFields, true)) {
+        $sortBy = 'userid';
     }
+
+    $qb = $userRepository->getFilteredUsersQueryBuilder($search, $role, $status, $sortBy, $direction);
+
+    $pagination = $paginator->paginate(
+        $qb,
+        $request->query->getInt('page', 1),
+        $perPage
+    );
+
+    return $this->render('user/index.html.twig', [
+        'pagination' => $pagination,
+        'filters' => [
+            'search' => $search,
+            'role' => $role,
+            'status' => $status,
+            'sortBy' => $sortBy,
+            'direction' => $direction,
+            'perPage' => $perPage
+        ]
+    ]);
+}
+
+
+
+
 
     #[Route('/profile/edit', name: 'app_user_edit_profil', methods: ['GET', 'POST'])]
 public function editProfil(
@@ -316,8 +354,8 @@ public function ban(User $user, EntityManagerInterface $entityManager): Response
 
 private function sendWhatsAppNotification(string $phoneNumber, string $message): void
 {
-    $sid = 'AC8d137b62e199ee41b14b96190617251e';
-    $token = 'e58c67bd7bdd3093fe8a8a8c55e71fde';
+    $sid = 'ACdd4f0073e718e08747523db53f70fd7f';
+    $token = '8d5f966b617725b560996f6acd167f11';
     $twilioNumber = 'whatsapp:+14155238886';
 
     $client = new \Twilio\Rest\Client($sid, $token);
