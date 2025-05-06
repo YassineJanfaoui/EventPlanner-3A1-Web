@@ -21,11 +21,19 @@ class BillType extends AbstractType
             ->add('DueDate', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
+<<<<<<< HEAD
                 'required' => false,
                 'empty_data' => null,
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'YYYY-MM-DD'
+=======
+                'required' => false, // Allow empty submissions
+                'empty_data' => null, // Set to null when empty
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'YYYY-MM-DD' // Optional placeholder
+>>>>>>> molka-venue-catering
                 ],
                 'invalid_message' => 'Please enter a valid date '
             ])

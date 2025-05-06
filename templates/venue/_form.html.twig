@@ -12,6 +12,16 @@
 						<label for="{{ form.Location.vars.id }}">Location</label>
 						{{ form_widget(form.Location, {'attr': {'class': 'form-control', 'placeholder': 'e.g. Brussels'}}) }}
 						{{ form_errors(form.Location) }}
+						<button type="button" class="btn btn-secondary mb-3" id="geocode-btn">Get Coordinates</button>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								{{ form_row(form.latitude) }}
+							</div>
+							<div class="col-md-6">
+								{{ form_row(form.longitude) }}
+							</div>
+						</div>
+
 					</div>
 
 					<div class="mb-3">

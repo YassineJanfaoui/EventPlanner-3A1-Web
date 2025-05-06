@@ -83,6 +83,11 @@ class Venue
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->getVenueName(); // or use any other string field
+    }
+
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $Availability = null;
 
@@ -173,4 +178,26 @@ class Venue
         $this->reservation = $reservation;
         return $this;
     }
+
+    public function getQualitePrix(): ?float
+    {
+        if ($this->NbrPlaces > 0) {
+            return $this->Cost / $this->NbrPlaces;
+        }
+        return null; // or return INF;
+    }
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $Latitude = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $Longitude = null;
+
+    // Getters et setters :
+    public function getLatitude(): ?float { return $this->Latitude; }
+    public function setLatitude(?float $Latitude): self { $this->Latitude = $Latitude; return $this; }
+
+    public function getLongitude(): ?float { return $this->Longitude; }
+    public function setLongitude(?float $Longitude): self { $this->Longitude = $Longitude; return $this; }
+
 }
