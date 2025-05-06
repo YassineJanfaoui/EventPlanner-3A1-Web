@@ -22,24 +22,43 @@
 			<link rel="stylesheet" href="{{ asset('css/gijgo.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/animate.min.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
-			<link rel="stylesheet" href="{{ asset('assets/css/fontawesome-all.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/slick.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/nice-select.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/owl.carousel.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slicknav.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/flaticon.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/gijgo.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/animate.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/magnific-popup.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/fontawesome-all.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/themify-icons.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slick.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/nice-select.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontoffice/assets/css/style.css') }}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/owl.carousel.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slicknav.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/flaticon.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/gijgo.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/animate.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/magnific-popup.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/fontawesome-all.min.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/themify-icons.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/slick.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/nice-select.css') }}">
+			<link rel="stylesheet" href="{{ asset('frontoffice/assets/css/style.css') }}">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+			<style>
+				.form-error-message {
+					color: #8B0000; /* dark red */
+					font-size: 0.9rem;
+					margin-top: 5px;
+				}
+				.btn-primary,
+				.btn-success {
+					padding: 20px !important;
+					border-radius: 10px;
+					-webkit-border-radius: 10px;
+					-moz-border-radius: 10px;
+					-ms-border-radius: 10px;
+					-o-border-radius: 10px;
+				}
+				li {
+					z-index: 9999 !important;
+				}
+			</style>
 		{% endblock %}
 	</head>
 	<body>
@@ -67,43 +86,64 @@
 													<a href="index.html">Home</a>
 												</li>
 												{% if is_granted('ROLE_TEAM_LEADER') %}
-												<li>
-													<a href="{{ path('event_list') }}">Events</a>
-												</li>
+													<li>
+														<a href="{{ path('event_list') }}">Events</a>
+													</li>
 												{% endif %}
 												{% if is_granted('ROLE_SIMPLE_USER') %}
-												<li>
-													<a href="{{ path('event_list') }}">Events</a>
-												</li>
+													<li>
+														<a href="{{ path('event_list') }}">Events</a>
+													</li>
 												{% endif %}
-                                                {% if is_granted('ROLE_EVENT_PLANNER') %}
+												{% if is_granted('ROLE_EVENT_PLANNER') %}
 													<li>
 														<a href="#">Resources</a>
 														<ul class="submenu">
-															<li><a href="{{ path('app_equipment_index') }}">Equipment</a></li>
-															<li><a href="{{ path('app_bill_index') }}">Bills</a></li>
+															<li>
+																<a href="{{ path('app_equipment_index') }}">Equipment</a>
+															</li>
+															<li>
+																<a href="{{ path('app_bill_index') }}">Bills</a>
+															</li>
+															<li>
+																<a href="{{ path('app_statistics_resources') }}">Stats</a>
+															</li>
 														</ul>
 													</li>
 													<li>
 														<a href="#">Partners</a>
 														<ul class="submenu">
-															<li><a href="{{ path('app_partner_index') }}">Partners</a></li>
-															<li><a href="{{ path('app_workshop_index') }}">Workshops</a></li>
+															<li>
+																<a href="{{ path('app_partner_index') }}">Partners</a>
+															</li>
+															<li>
+																<a href="{{ path('app_workshop_index') }}">Workshops</a>
+															</li>
 														</ul>
 													</li>
 													<li>
 														<a href="#">Accommodation</a>
 														<ul class="submenu">
-															<li><a href="{{ path('app_venue_index') }}">Venues</a></li>
-															<li><a href="{{ path('app_catering_index') }}">Catering</a></li>
+															<li>
+																<a href="{{ path('app_venue_index') }}">Venues</a>
+															</li>
+															<li>
+																<a href="{{ path('app_catering_index') }}">Catering</a>
+															</li>
 														</ul>
 													</li>
 													<li>
 														<a href="#">Teams</a>
 														<ul class="submenu">
-															<li><a href="{{ path('app_team_index') }}">Teams</a></li>
-															<li><a href="{{ path('app_event_team_index') }}">Project Submissions</a></li>
-															<li><a href="{{ path('app_feedback_index') }}">Feedback</a></li>
+															<li>
+																<a href="{{ path('app_team_index') }}">Teams</a>
+															</li>
+															<li>
+																<a href="{{ path('app_event_team_index') }}">Project Submissions</a>
+															</li>
+															<li>
+																<a href="{{ path('app_feedback_index') }}">Feedback</a>
+															</li>
 														</ul>
 													</li>
 													<li>
@@ -114,17 +154,18 @@
 										</nav>
 									</div>
 									<div class="header-right-btn f-right d-none d-lg-block ml-30">
-    {% if app.user %}
-    <a href="{{ path('app_user_edit_profil') }}" style="color: black; text-decoration: none;" class="mr-3">
-    Welcome {{ app.user.username }}
-</a>
+										{% if app.user %}
+											<a href="{{ path('app_user_edit_profil') }}" style="color: black; text-decoration: none;" class="mr-3">
+												Welcome
+												{{ app.user.username }}
+											</a>
 
 
-    <a href="{{ logout_url() }}" class="btn btn-danger">Logout</a>
-{% else %}
-    <a href="{{ path('app_login') }}" class="btn header-btn">Login</a>
-{% endif %}
-</div>
+											<a href="{{ logout_url() }}" class="btn btn-danger">Logout</a>
+										{% else %}
+											<a href="{{ path('app_login') }}" class="btn header-btn">Login</a>
+										{% endif %}
+									</div>
 								</div>
 							</div>
 							<!-- Mobile Menu -->
@@ -138,48 +179,51 @@
 			<!-- Header End -->
 		</header>
 		{% block body%}{% endblock %}
-		
+
 	</body>
 </html><!-- Scroll Up --><div id="back-top">
-<a title="Go to Top" href="#">
-	<i class="fas fa-level-up-alt"></i>
-</a></div>{% block js %}
-<!-- JS here -->
+	<a title="Go to Top" href="#">
+		<i class="fas fa-level-up-alt"></i>
+	</a>
+</div>
+{% block js %}
+	<!-- JS here -->
 
-<script src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
-<!-- Jquery, Popper, Bootstrap -->
-<script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
-<script src="{{ asset('js/popper.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<!-- Jquery Mobile Menu -->
-<script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
+	<script src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
+	<!-- Jquery, Popper, Bootstrap -->
+	<script src="{{ asset('js/vendor/jquery-1.12.4.min.js') }}"></script>
+	<script src="{{ asset('js/popper.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+	<!-- Jquery Mobile Menu -->
+	<script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
 
-<!-- Jquery Slick, Owl-Carousel Plugins -->
-<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('js/slick.min.js') }}"></script>
-<!-- One Page, Animated-Headline -->
-<script src="{{ asset('js/wow.min.js') }}"></script>
-<script src="{{ asset('js/animated.headline.js') }}"></script>
-<script src="{{ asset('js/jquery.magnific-popup.js') }}"></script>
+	<!-- Jquery Slick, Owl-Carousel Plugins -->
+	<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+	<script src="{{ asset('js/slick.min.js') }}"></script>
+	<!-- One Page, Animated-Headline -->
+	<script src="{{ asset('js/wow.min.js') }}"></script>
+	<script src="{{ asset('js/animated.headline.js') }}"></script>
+	<script src="{{ asset('js/jquery.magnific-popup.js') }}"></script>
 
-<!-- Date Picker -->
-<script src="{{ asset('js/gijgo.min.js') }}"></script>
-<!-- Nice-select, sticky -->
-<script src="{{ asset('js/jquery.nice-select.min.js') }}"></script>
-<script src="{{ asset('js/jquery.sticky.js') }}"></script>
+	<!-- Date Picker -->
+	<script src="{{ asset('js/gijgo.min.js') }}"></script>
+	<!-- Nice-select, sticky -->
+	<script src="{{ asset('js/jquery.nice-select.min.js') }}"></script>
+	<script src="{{ asset('js/jquery.sticky.js') }}"></script>
 
-<!-- Counter, Waypoint -->
-<script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
-<script src="{{ asset('js/waypoints.min.js') }}"></script>
-<script src="{{ asset('js/jquery.countdown.min.js') }}"></script>
+	<!-- Counter, Waypoint -->
+	<script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
+	<script src="{{ asset('js/waypoints.min.js') }}"></script>
+	<script src="{{ asset('js/jquery.countdown.min.js') }}"></script>
 
-<!-- Contact JS -->
-<script src="{{ asset('js/contact.js') }}"></script>
-<script src="{{ asset('js/jquery.form.js') }}"></script>
-<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/mail-script.js') }}"></script>
-<script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
+	<!-- Contact JS -->
+	<script src="{{ asset('js/contact.js') }}"></script>
+	<script src="{{ asset('js/jquery.form.js') }}"></script>
+	<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+	<script src="{{ asset('js/mail-script.js') }}"></script>
+	<script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
 
-<!-- Main JS -->
-<script src="{{ asset('js/plugins.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>{% endblock %}</body></html>
+	<!-- Main JS -->
+	<script src="{{ asset('js/plugins.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}</body></html>

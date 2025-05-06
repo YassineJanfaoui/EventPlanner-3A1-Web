@@ -15,6 +15,12 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Symfony\Component\Validator\Constraints as Assert;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+
 
 class UserTypeFront extends AbstractType
 {
@@ -134,7 +140,29 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
                 ])
             ],
             'row_attr' => ['class' => 'mb-3'],
+        ])
+        ->add('imageFile', FileType::class, [
+            'label' => 'Profile Photo',
+            'required' => false,
+            'mapped' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'accept' => 'image/*'
+            ],
+            'constraints' => [
+                new \Symfony\Component\Validator\Constraints\File([
+                    'maxSize' => '2M',
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                    ],
+                    'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, GIF)',
+                ])
+            ],
+            'row_attr' => ['class' => 'mb-3'],
         ]);
+        
 }
 
 

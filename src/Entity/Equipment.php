@@ -62,6 +62,10 @@ class Equipment
     )]
     private Collection $events;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\PositiveOrZero(message: "Price must be zero or a positive number.")]
+    private ?string $price = null;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -147,5 +151,27 @@ class Equipment
     {
         $this->name = $name;
         return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?string $price): self
+    {
+        $this->price = $price;
+        return $this;
+    }
+    public function getQrCodeContent(): string
+    {
+        return json_encode([
+            'id' => $this->getEquipmentId(),
+            'name' => $this->getName(),
+            'category' => $this->getCategory(),
+            'state' => $this->getState(),
+            'quantity' => $this->getQuantity(),
+            'price' => $this->getPrice()
+        ]);
     }
 }

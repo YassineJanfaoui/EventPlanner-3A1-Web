@@ -5,7 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserTypeFront;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Psr\Log\LoggerInterface; // Add this for LoggerInterface
 use Symfony\Component\Security\Core\Exception\AuthenticationException; // Add this for AuthenticationException
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; // Add this import
+use Twilio\Rest\Client;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 #[Route('/user')]
@@ -66,10 +73,47 @@ public function register(
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Set default status to 'active'
-        $user->setStatus('active');
+        // Handle file upload
+        $imageFile = $form->get('imageFile')->getData();
+        if ($imageFile) {
+            $uploadsDir = $this->getParameter('kernel.project_dir').'/public/uploads/faceid/faces';
+            
+            // Ensure directory exists
+            if (!file_exists($uploadsDir)) {
+                mkdir($uploadsDir, 0777, true);
+            }
+
+            // Generate filename from username
+            $newFilename = $user->getUsername().'.'.$imageFile->guessExtension();
+            
+            try {
+                $imageFile->move(
+                    $uploadsDir,
+                    $newFilename
+                );
+                
+                // Create a new File object pointing to the uploaded file
+                $uploadedFile = new File($uploadsDir.'/'.$newFilename);
+                $user->setImageFile($uploadedFile);
+            } catch (FileException $e) {
+                $this->addFlash('error', 'There was an error uploading your profile picture.');
+                // You might want to return here if the image is required
+            }
+        }
+        $recaptchaResponse = $request->request->get('g-recaptcha-response');
+        $recaptchaSecret = $_ENV['RECAPTCHA_SECRET_KEY']; // stored in .env
+        $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
+        $verifyResponse = file_get_contents($recaptchaVerifyUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+        $responseData = json_decode($verifyResponse);
+
+        if (!$responseData->success) {
+            $this->addFlash('error', 'reCAPTCHA verification failed. Please try again.');
+            return $this->redirectToRoute('app_user_register');
+        }
         
-        // Hash the plain password
+        $user->setStatus('active');
+        $user->setImageName($newFilename);
         $plainPassword = $form->get('plainPassword')->getData();
         if ($plainPassword) {
             $user->setPassword(
@@ -86,57 +130,127 @@ public function register(
 
     return $this->render('user/Register.html.twig', [
         'form' => $form->createView(),
+        'recaptcha_site_key' => $_ENV['RECAPTCHA_SITE_KEY']
     ]);
 }
 
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+
+
+#[Route(name: 'app_user_index', methods: ['GET'])]
+public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator)
+{
+    $search = $request->query->get('search');
+    $role = $request->query->get('role');
+    $status = $request->query->get('status');
+    $sortBy = $request->query->get('sort', 'userid'); // HTML input is named 'sort'
+    $direction = strtoupper($request->query->get('direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+    $perPage = $request->query->getInt('perPage', 10);
+
+    // ✅ Optional: Validate allowed sort fields
+    $validSortFields = ['userid', 'username', 'email', 'name', 'status', 'role'];
+    if (!in_array($sortBy, $validSortFields, true)) {
+        $sortBy = 'userid';
     }
 
+    $qb = $userRepository->getFilteredUsersQueryBuilder($search, $role, $status, $sortBy, $direction);
+
+    $pagination = $paginator->paginate(
+        $qb,
+        $request->query->getInt('page', 1),
+        $perPage
+    );
+
+    return $this->render('user/index.html.twig', [
+        'pagination' => $pagination,
+        'filters' => [
+            'search' => $search,
+            'role' => $role,
+            'status' => $status,
+            'sortBy' => $sortBy,
+            'direction' => $direction,
+            'perPage' => $perPage
+        ]
+    ]);
+}
+
+
+
+
+
     #[Route('/profile/edit', name: 'app_user_edit_profil', methods: ['GET', 'POST'])]
-public function EditProfil(
-    Request $request, 
-    EntityManagerInterface $entityManager, 
-    UserPasswordHasherInterface $passwordHasher
-    ): Response 
-    {
+public function editProfil(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    UserPasswordHasherInterface $passwordHasher,
+    LoggerInterface $logger
+): Response {
     /** @var User $user */
     $user = $this->getUser();
+    $originalImage = $user->getImageName(); // Store original image name
 
-    // Create the form using the front-facing form type
     $form = $this->createForm(UserTypeFront::class, $user, [
-        'is_edit' => true // To control optional password and constraints
+        'is_edit' => true
     ]);
-
-    // Remove role field to prevent changes to it
-    $form->remove('role');
+    $form->remove('role'); // Remove role field for profile editing
 
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Only update password if the user typed a new one
-        $newPassword = $form->get('plainPassword')->getData();
-        if ($newPassword) {
-            $user->setPassword(
-                $passwordHasher->hashPassword($user, $newPassword)
-            );
+        try {
+            // Handle file upload
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $uploadsDir = $this->getParameter('kernel.project_dir').'/public/uploads/faceid/faces';
+                
+                // Ensure directory exists
+                if (!file_exists($uploadsDir)) {
+                    mkdir($uploadsDir, 0777, true);
+                }
+
+                // Generate filename from username
+                $newFilename = $user->getUsername().'.'.$imageFile->guessExtension();
+                
+                try {
+                    // Remove old image if it exists
+                    if ($originalImage && file_exists($uploadsDir.'/'.$originalImage)) {
+                        unlink($uploadsDir.'/'.$originalImage);
+                    }
+                    
+                    $imageFile->move($uploadsDir, $newFilename);
+                    
+                    // Update the image name in the entity
+                    $user->setImageName($newFilename);
+                } catch (FileException $e) {
+                    $logger->error('File upload error: '.$e->getMessage());
+                    $this->addFlash('error', 'There was an error uploading your profile picture.');
+                }
+            }
+
+            // Handle password change
+            $plainPassword = $form->get('plainPassword')->getData();
+            if ($plainPassword) {
+                $user->setPassword(
+                    $passwordHasher->hashPassword($user, $plainPassword)
+                );
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Profile updated successfully!');
+            return $this->redirectToRoute('app_participant_index');
+
+        } catch (\Exception $e) {
+            // Revert image if error occurs
+            $user->setImageName($originalImage);
+            $logger->error('Profile update error: '.$e->getMessage());
+            $this->addFlash('error', 'Error updating profile: '.$e->getMessage());
         }
-
-        $entityManager->flush();
-
-        // You can customize redirection as needed
-        return $this->redirectToRoute('app_participant_index'); // or any profile/dashboard route
     }
 
     return $this->render('user/editProfil.html.twig', [
         'form' => $form->createView(),
+        'user' => $user
     ]);
-    }
-
+}
 
     #[Route('/{userid}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
@@ -156,9 +270,6 @@ public function EditProfil(
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    // In your UserController
-    
 
 #[Route('/{userid}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
 public function edit(
@@ -194,4 +305,74 @@ public function edit(
         'form' => $form->createView(),
     ]);
 }
+
+#[Route('/{userid}/activate', name: 'app_user_activate', methods: ['GET', 'POST'])]
+public function activate(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('active');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been activated. 🎉 Welcome back!"
+    );
+
+    $this->addFlash('success', 'User activated successfully.');
+    return $this->redirectToRoute('app_user_index');
+}
+
+#[Route('/{userid}/deactivate', name: 'app_user_deactivate', methods: ['GET', 'POST'])]
+public function deactivate(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('inactive');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been deactivated temporarily. Please contact support for more information."
+    );
+
+    $this->addFlash('success', 'User deactivated successfully.');
+    return $this->redirectToRoute('app_user_index');
+}
+
+#[Route('/{userid}/ban', name: 'app_user_ban', methods: ['GET', 'POST'])]
+public function ban(User $user, EntityManagerInterface $entityManager): Response
+{
+    $user->setStatus('banned');
+    $entityManager->flush();
+    
+    $this->sendWhatsAppNotification(
+        $user->getPhonenumber(),
+        "Your account has been banned. ❌ If you believe this is a mistake, please contact the administration."
+    );
+
+    $this->addFlash('success', 'User banned successfully.');
+    return $this->redirectToRoute('app_user_index');
+    
+}
+
+private function sendWhatsAppNotification(string $phoneNumber, string $message): void
+{
+    $sid = 'ACdd4f0073e718e08747523db53f70fd7f';
+    $token = '8d5f966b617725b560996f6acd167f11';
+    $twilioNumber = 'whatsapp:+14155238886';
+
+    $client = new \Twilio\Rest\Client($sid, $token);
+
+    try {
+        $client->messages->create(
+            'whatsapp:' . $phoneNumber, // No double +
+            [
+                'from' => $twilioNumber,
+                'body' => $message
+            ]
+        );
+    } catch (\Exception $e) {
+        error_log('Twilio WhatsApp Error: ' . $e->getMessage());
+        // Optionally add flash or logger here
+    }
+}
+
+
 }

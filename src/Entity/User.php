@@ -5,14 +5,20 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 use App\Repository\UserRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -54,11 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function setPassword(string $password): self
-{
-    // Don't hash here - let the controller handle hashing
-    $this->password = $password;
-    return $this;
-}
+    {
+        // Don't hash here - let the controller handle hashing
+        $this->password = $password;
+        return $this;
+    }
 
     #[ORM\Column(type: 'string', nullable: false)]
     private ?string $email = null;
@@ -163,18 +169,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
     public function getRoles(): array
-{
-    // Return an array of roles with ROLE_ prefix
-    $roles = [];
-    if ($this->role) {
-        $roles[] = 'ROLE_' . strtoupper($this->role);
+    {
+        // Return an array of roles with ROLE_ prefix
+        $roles = [];
+        if ($this->role) {
+            $roles[] = 'ROLE_' . strtoupper($this->role);
+        }
+
+        // Every user must have at least ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
-    
-    // Every user must have at least ROLE_USER
-    $roles[] = 'ROLE_USER';
-    
-    return array_unique($roles);
-}
 
     public function eraseCredentials(): void
     {
@@ -184,6 +190,88 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
+    }
+
+
+    #[Vich\UploadableField(mapping: 'user_profile_image', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $imageName = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    // ... existing methods ...
+
+    
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @internal
+     */
+    public function serialize(): string
+    {
+        return serialize([
+            $this->userid,
+            $this->username,
+            $this->password,
+            $this->imageName,
+            // Add other properties needed for serialization
+        ]);
+    }
+
+    /**
+     * @internal
+     */
+    public function unserialize($serialized): void
+    {
+        [
+            $this->userid,
+            $this->username,
+            $this->password,
+            $this->imageName,
+            // Match the order from serialize()
+        ] = unserialize($serialized);
+    }
+
+    public function __sleep()
+    {
+        return ['userid', 'username', 'password', 'email', 'name', 'phonenumber', 'status', 'role', 'imageName', 'updatedAt'];
+    }
+
+    // VichUploader methods
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 
 }

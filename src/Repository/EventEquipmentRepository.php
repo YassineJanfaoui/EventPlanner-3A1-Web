@@ -16,28 +16,38 @@ class EventEquipmentRepository extends ServiceEntityRepository
         parent::__construct($registry, EventEquipment::class);
     }
 
-//    /**
-//     * @return EventEquipment[] Returns an array of EventEquipment objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByEventId($eventId)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.event = :val')
+            ->setParameter('val', $eventId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-//    public function findOneBySomeField($value): ?EventEquipment
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return EventEquipment[] Returns an array of EventEquipment objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('e.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?EventEquipment
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
