@@ -1,0 +1,8 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Edit Equipment
+{% endblock %}
+
+{% block body %}
+	{{ include('equipment/_form.html.twig', {'button_label': 'Update', "text_label": "Edit Equipment"}) }}
+{% endblock %}

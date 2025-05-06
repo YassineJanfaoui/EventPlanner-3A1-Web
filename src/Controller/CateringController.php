@@ -14,10 +14,45 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/catering')]
 final class CateringController extends AbstractController{
     #[Route(name: 'app_catering_index', methods: ['GET'])]
-    public function index(CateringRepository $cateringRepository): Response
+    public function index(Request $request, CateringRepository $cateringRepository): Response
     {
+        $venueNameFilter = $request->query->get('venueName'); // Get the venue name search query
+        $menuTypeFilter = $request->query->get('MenuType');
+        $mealScheduleFilter = $request->query->get('MealSchedule');
+        $sortPrice = $request->query->get('sortPrice'); // Either 'asc' or 'desc'
+
+        $queryBuilder = $cateringRepository->createQueryBuilder('c')
+                                        ->leftJoin('c.venue', 'v'); // Join the Venue entity
+
+        // Apply Venue Name search
+        if ($venueNameFilter) {
+            $queryBuilder->andWhere('v.VenueName LIKE :venueName')
+                        ->setParameter('venueName', '%' . $venueNameFilter . '%');
+        }
+
+        // Apply filtering for MenuType and MealSchedule
+        if ($menuTypeFilter) {
+            $queryBuilder->andWhere('c.MenuType = :menuType')
+                        ->setParameter('menuType', $menuTypeFilter);
+        }
+        if ($mealScheduleFilter) {
+            $queryBuilder->andWhere('c.MealSchedule = :mealSchedule')
+                        ->setParameter('mealSchedule', $mealScheduleFilter);
+        }
+
+        // Apply sorting
+        if ($sortPrice) {
+            $queryBuilder->orderBy('c.Pricing', $sortPrice); // 'asc' or 'desc'
+        }
+
+        $caterings = $queryBuilder->getQuery()->getResult();
+
         return $this->render('catering/index.html.twig', [
-            'caterings' => $cateringRepository->findAll(),
+            'caterings' => $caterings,
+            'venueNameFilter' => $venueNameFilter,
+            'menuTypeFilter' => $menuTypeFilter,
+            'mealScheduleFilter' => $mealScheduleFilter,
+            'sortPrice' => $sortPrice
         ]);
     }
 

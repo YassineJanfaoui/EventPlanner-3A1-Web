@@ -14,7 +14,7 @@ class Feedback
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'feedbackId')]
     private ?int $feedbackId = null;
 
     public function getFeedbackId(): ?int

@@ -14,7 +14,7 @@ class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'userid')]
     private ?int $userid = null;
 
     public function getUserid(): ?int
@@ -84,7 +84,7 @@ class User
         return $this;
     }
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false, name: 'phonenumber')]
     private ?string $phonenumber = null;
 
     public function getPhonenumber(): ?string
@@ -158,5 +158,4 @@ class User
         $this->getEvents()->removeElement($event);
         return $this;
     }
-
 }

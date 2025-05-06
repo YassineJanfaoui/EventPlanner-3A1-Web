@@ -14,7 +14,7 @@ class Partner
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'partnerId')]
     private ?int $partnerId = null;
 
     public function getPartnerId(): ?int
@@ -126,5 +126,4 @@ class Partner
         $this->getEvents()->removeElement($event);
         return $this;
     }
-
 }

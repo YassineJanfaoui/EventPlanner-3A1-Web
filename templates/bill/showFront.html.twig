@@ -1,0 +1,48 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Bill
+{% endblock %}
+
+{% block body %}
+	<div class="card mb-4">
+		<div class="card-header">Bill</div>
+		<div class="card-body">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>Billid</th>
+						<td>{{ bill.billid }}</td>
+					</tr>
+					<tr>
+						<th>Amount</th>
+						<td>{{ bill.Amount }}</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{{ bill.Description }}</td>
+					</tr>
+					<tr>
+						<th>Archived</th>
+						<td>{{ bill.Archived }}</td>
+					</tr>
+					<tr>
+						<th>Event</th>
+						<td>{{ bill.event.name }}</td>
+					</tr>
+					<tr>
+						<th>DueDate</th>
+						<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
+					</tr>
+					<tr>
+						<th>PaymentStatus</th>
+						<td>{{ bill.PaymentStatus }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<a href="{{ path('app_bill_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+				Back to list
+			</a>
+		</div>
+	</div>
+{% endblock %}

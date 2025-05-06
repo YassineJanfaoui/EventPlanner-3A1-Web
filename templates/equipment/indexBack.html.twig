@@ -1,0 +1,45 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Equipment index
+{% endblock %}
+
+{% block body %}
+
+	<div class="card mb-4">
+		<div class="card-header">Equipment</div>
+		<div class="card-body">
+			<table id="datatablesSimple">
+				<thead>
+					<tr>
+						<th>EquipmentId</th>
+						<th>Name</th>
+						<th>State</th>
+						<th>Category</th>
+						<th>Quantity</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for equipment in equipment %}
+						<tr style="background-color:red">
+							<td>
+								<a href="{{ path('app_admin_equipment_show', {'EquipmentId': equipment.EquipmentId}) }}">{{ equipment.EquipmentId }}</a>
+							</td>
+							<td>{{ equipment.name }}</td>
+							<td>{{ equipment.state }}</td>
+							<td>{{ equipment.category }}</td>
+							<td>{{ equipment.quantity }}</td>
+							<td style="display:flex;">
+
+								{{ include('equipment/_delete_form.html.twig') }}</td>
+						</tr>
+					</td>
+				</tbody>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="6">no records found</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table></div></div>{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}New Bill
+{% endblock %}
+
+{% block body %}
+	{{ include('bill/_form.html.twig', {'button_label': 'Save', "text_label": "Add Bill"}) }}
+{% endblock %}

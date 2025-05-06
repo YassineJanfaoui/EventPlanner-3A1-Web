@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Repository\EquipmentRepository;
 
@@ -14,75 +15,40 @@ class Equipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', name: 'EquipmentId')]
     private ?int $EquipmentId = null;
 
-    public function getEquipmentId(): ?int
-    {
-        return $this->EquipmentId;
-    }
-
-    public function setEquipmentId(int $EquipmentId): self
-    {
-        $this->EquipmentId = $EquipmentId;
-        return $this;
-    }
-
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Name is required.")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Name must be at least {{ limit }} characters long.",
+        maxMessage: "Name cannot be longer than {{ limit }} characters."
+    )]
     private ?string $name = null;
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private ?int $state = null;
-
-    public function getState(): ?int
-    {
-        return $this->state;
-    }
-
-    public function setState(int $state): self
-    {
-        $this->state = $state;
-        return $this;
-    }
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\Choice(
+        choices: ['functional', 'maintenance', 'unavailable'],
+        message: "Invalid state. Must be: functional, maintenance, or unavailable."
+    )]
+    private ?string $state = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Category is required.")]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: "Category must be at least {{ limit }} characters long.",
+        maxMessage: "Category cannot be longer than {{ limit }} characters."
+    )]
     private ?string $category = null;
 
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
-        return $this;
-    }
-
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: "Quantity is required.")]
+    #[Assert\PositiveOrZero(message: "Quantity must be zero or a positive number.")]
     private ?int $quantity = null;
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
-        return $this;
-    }
 
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'equipments')]
     #[ORM\JoinTable(
@@ -126,4 +92,60 @@ class Equipment
         return $this;
     }
 
+    public function getEquipmentId(): ?int
+    {
+        return $this->EquipmentId;
+    }
+
+    public function setEquipmentId(int $EquipmentId): self
+    {
+        $this->EquipmentId = $EquipmentId;
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
 }

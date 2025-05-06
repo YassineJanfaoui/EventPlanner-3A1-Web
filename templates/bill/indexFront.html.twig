@@ -1,0 +1,48 @@
+{% extends 'basePlanner.html.twig' %}
+
+{% block title %}Bill index
+{% endblock %}
+
+{% block body %}
+	<h1>Bill index</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Billid</th>
+				<th>Amount</th>
+				<th>Description</th>
+				<th>Event</th>
+				<th>DueDate</th>
+				<th>PaymentStatus</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for bill in bills %}
+				<tr>
+					<td style="width: 80px;">
+						<a style="color:black; font-weight:bold; padding:none" href="{{ path('app_bill_show', {'billid': bill.billid}) }}">{{ bill.billid }}</a>
+					</td>
+					<td>{{ bill.Amount }}</td>
+					<td>{{ bill.Description }}</td>
+					<td>{{  bill.event ? bill.event.name : ''  }}</td>
+					<td>{{ bill.DueDate ? bill.DueDate|date('Y-m-d') : '' }}</td>
+					<td>{{ bill.PaymentStatus }}</td>
+					<td style="display:flex; gap:10px; ">
+						<button class="btn btn-primary">
+							<a style="text-decoration:none; color:white;" href="{{ path('app_bill_edit', {'billid': bill.billid}) }}">edit</a>
+						</button>
+						{{ include('bill/_delete_form.html.twig') }}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="8">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<a href="{{ path('app_bill_new') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">
+	Create new
+</a></div>{% endblock %}
