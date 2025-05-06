@@ -14,6 +14,8 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(name: 'eventId', type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'eventId', type: 'integer')]
     private ?int $eventId = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
@@ -193,6 +195,7 @@ class Event
         return $this;
     }
 /*
+/*
     public function getBills(): Collection
     {
         return $this->bills;
@@ -203,12 +206,20 @@ class Event
         if (!$this->bills->contains($bill)) {
             $this->bills->add($bill);
             $bill->setEvent($this);
+        if (!$this->bills->contains($bill)) {
+            $this->bills->add($bill);
+            $bill->setEvent($this);
         }
         return $this;
     }
 
     public function removeBill(Bill $bill): self
     {
+        if ($this->bills->removeElement($bill)) {
+            if ($bill->getEvent() === $this) {
+                $bill->setEvent(null);
+            }
+        }
         if ($this->bills->removeElement($bill)) {
             if ($bill->getEvent() === $this) {
                 $bill->setEvent(null);
@@ -227,6 +238,9 @@ class Event
         if (!$this->feedbacks->contains($feedback)) {
             $this->feedbacks->add($feedback);
             $feedback->setEvent($this);
+        if (!$this->feedbacks->contains($feedback)) {
+            $this->feedbacks->add($feedback);
+            $feedback->setEvent($this);
         }
         return $this;
     }
@@ -238,9 +252,33 @@ class Event
                 $feedback->setEvent(null);
             }
         }
+        if ($this->feedbacks->removeElement($feedback)) {
+            if ($feedback->getEvent() === $this) {
+                $feedback->setEvent(null);
+            }
+        }
         return $this;
     }
 
+    public function getVenues(): Collection
+    {
+        return $this->venues;
+    }
+
+    public function addVenue(Venue $venue): self
+    {
+        if (!$this->venues->contains($venue)) {
+            $this->venues->add($venue);
+        }
+        return $this;
+    }
+
+    public function removeVenue(Venue $venue): self
+    {
+        $this->venues->removeElement($venue);
+        return $this;
+    }
+*/
     public function getVenues(): Collection
     {
         return $this->venues;
@@ -275,9 +313,18 @@ class Event
             $reservation->setEvent($this);
         }
 
+        if ($reservation === null && $this->reservation !== null) {
+            $this->reservation->setEvent(null);
+        }
+
+        if ($reservation !== null && $reservation->getEvent() !== $this) {
+            $reservation->setEvent($this);
+        }
+
         $this->reservation = $reservation;
         return $this;
     }
+/*
 /*
     public function getTeams(): Collection
     {
@@ -288,12 +335,15 @@ class Event
     {
         if (!$this->teams->contains($team)) {
             $this->teams->add($team);
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
         }
         return $this;
     }
 
     public function removeTeam(Team $team): self
     {
+        $this->teams->removeElement($team);
         $this->teams->removeElement($team);
         return $this;
     }
@@ -312,7 +362,23 @@ class Event
     }
 
     public function removeEquipment(Equipment $equipment): self
+    public function getEquipments(): Collection
     {
+        return $this->equipments;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipments->contains($equipment)) {
+            $this->equipments->add($equipment);
+        }
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        $this->equipments->removeElement($equipment);
+        return $this;
         $this->equipments->removeElement($equipment);
         return $this;
     }
@@ -326,6 +392,8 @@ class Event
     {
         if (!$this->partners->contains($partner)) {
             $this->partners->add($partner);
+        if (!$this->partners->contains($partner)) {
+            $this->partners->add($partner);
         }
         return $this;
     }
@@ -333,7 +401,9 @@ class Event
     public function removePartner(Partner $partner): self
     {
         $this->partners->removeElement($partner);
+        $this->partners->removeElement($partner);
         return $this;
+    }*/
     }*/
 
 public function getLongitude(): ?float
@@ -345,6 +415,8 @@ public function setLongitude(?float $longitude): static
 {
     $this->longitude = $longitude;
 
+    return $this;
+}
     return $this;
 }
 
@@ -369,6 +441,8 @@ public function setLieu(?string $lieu): static
 {
     $this->lieu = $lieu;
 
+    return $this;
+}
     return $this;
 }
 }

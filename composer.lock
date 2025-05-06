@@ -7,6 +7,96 @@
     "content-hash": "d28191ba81a50d85404df898e8c0b4ec",
     "packages": [
         {
+            "name": "badges/poser",
+            "version": "V3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/badges/poser.git",
+                "reference": "29874c0f4adcd18b561b5c5253a5eb6875f434dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/badges/poser/zipball/29874c0f4adcd18b561b5c5253a5eb6875f434dc",
+                "reference": "29874c0f4adcd18b561b5c5253a5eb6875f434dc",
+                "shasum": ""
+            },
+            "require": {
+                "cybercog/php-svg-font": "^1.0",
+                "ext-gd": "*",
+                "ext-simplexml": "*",
+                "kartsims/easysvg": "^2.5",
+                "php": "^8.1",
+                "symfony/console": "^5.0 || ^6.0 || ^7.0"
+            },
+            "require-dev": {
+                "behat/behat": "^3.13",
+                "friends-of-phpspec/phpspec-code-coverage": "^6.3",
+                "friendsofphp/php-cs-fixer": "^3.41",
+                "moave/phpspec-data-provider-extension": "dev-master",
+                "phpspec/phpspec": "^7.4 || ^8.0",
+                "vimeo/psalm": "^4.30"
+            },
+            "bin": [
+                "bin/poser"
+            ],
+            "type": "lib",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PUGX\\Poser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giulio De Donato",
+                    "email": "liuggio@gmail.com"
+                },
+                {
+                    "name": "PUGX Community",
+                    "homepage": "https://github.com/PUGX/badge-poser/contributors"
+                },
+                {
+                    "name": "Shields Community",
+                    "homepage": "https://github.com/badges/poser/contributors"
+                }
+            ],
+            "description": "Poser, add badges on your readme..",
+            "homepage": "https://github.com/PUGX",
+            "keywords": [
+                "badge",
+                "composer",
+                "packagist",
+                "pin"
+            ],
+            "support": {
+                "issues": "https://github.com/badges/poser/issues",
+                "source": "https://github.com/badges/poser/tree/V3.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ETT4JRJARLTSC",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/AlessandroMinoccheri",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/JellyBellyDev",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-29T07:22:18+00:00"
+        },
+        {
             "name": "composer/semver",
             "version": "3.4.3",
             "source": {

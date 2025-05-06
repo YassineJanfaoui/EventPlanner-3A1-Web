@@ -86,6 +86,7 @@ class Reservation
         $this->reservationPrice = $reservationPrice;
         return $this;
     }
+
 }
 
 <?php
