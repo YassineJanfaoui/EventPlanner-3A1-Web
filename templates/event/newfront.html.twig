@@ -201,4 +201,31 @@
 
     {{ form_end(form) }}
 </div>
+<!-- Notyf CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
+<!-- Notyf JS -->
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<script>
+    // Create Notyf instance
+    const notyf = new Notyf({
+        duration: 3000, // Notification duration
+        position: {
+            x: 'right', // Horizontal position
+            y: 'top'    // Vertical position
+        }
+    });
+
+    // Display success messages using Notyf
+    {% for message in app.flashes('success') %}
+        notyf.success("{{ message|e('js') }}");
+    {% endfor %}
+
+    // Display error messages using Notyf
+    {% for message in app.flashes('error') %}
+        notyf.error("{{ message|e('js') }}");
+    {% endfor %}
+</script>
+
 {% endblock %}
