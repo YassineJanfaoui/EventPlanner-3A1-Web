@@ -9,10 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-<<<<<<< HEAD
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-=======
->>>>>>> molka-venue-catering
 
 
 class EquipmentType extends AbstractType
@@ -33,7 +30,6 @@ class EquipmentType extends AbstractType
                 'empty_data' => 'unavailable',
                 'required' => true,
             ])
-<<<<<<< HEAD
             ->add('price', IntegerType::class, [
                 'empty_data' => 0
             ])
@@ -48,10 +44,6 @@ class EquipmentType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Select a category',
                 'empty_data' => null
-=======
-            ->add('category', TextType::class, [
-                'empty_data' => ''
->>>>>>> molka-venue-catering
             ])
             ->add('quantity', IntegerType::class, [
                 'empty_data' => 0
