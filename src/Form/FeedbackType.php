@@ -6,10 +6,10 @@
  use Symfony\Component\OptionsResolver\OptionsResolver;
  use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  use Symfony\Component\Form\Extension\Core\Type\TextareaType;
- use Symfony\Bridge\Doctrine\Form\Type\EntityType; // Assuming Event and Team are entities
+ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  use App\Entity\Event;
  use App\Entity\Team;
-
 
  class FeedbackType extends AbstractType
  {
@@ -25,24 +25,25 @@
                 ],
                 'label_attr' => ['class' => 'form-label']
             ])
+            ->add('sentiment_pos', HiddenType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'sentiment-pos-field'
+                ]
+            ])
             ->add('rate', ChoiceType::class, [
-                'label' => 'Rating', // Label for the hidden select
+                'label' => 'Rating',
                 'choices' => [
-                    // The keys (1, 2, 3, 4, 5) MUST match the data-value in the HTML
-                    // The values ('1 Star', '2 Stars', etc.) are less critical here as the select is hidden,
-                    // but good for clarity if it were visible.
                     '1 Star' => 1,
                     '2 Stars' => 2,
                     '3 Stars' => 3,
                     '4 Stars' => 4,
                     '5 Stars' => 5,
                 ],
-                'expanded' => false, // Render as a <select> element
-                'multiple' => false, // Only one choice allowed
-                'required' => true, // Or false, depending on your needs
-                // Add constraints if needed
-                // 'constraints' => [ ... ],
-                // Ensure it maps correctly to your entity property
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
                 'mapped' => true,
             ])
             ->add('team', EntityType::class, [
@@ -62,11 +63,10 @@
         ;
     }
 
-    // Uncomment the configureOptions method
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Feedback::class,
         ]);
     }
-} // Corrected closing brace
+}

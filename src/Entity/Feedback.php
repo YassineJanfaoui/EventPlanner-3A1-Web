@@ -101,4 +101,21 @@ class Feedback
         return $this;
     }
 
+    // Add this property to your Feedback entity class
+    
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
+    private ?string $sentiment = null;
+    
+    // Add these getter and setter methods
+    
+    public function getSentiment(): ?string
+    {
+        return $this->sentiment;
+    }
+    
+    public function setSentiment(?string $sentiment): self
+    {
+        $this->sentiment = $sentiment;
+        return $this;
+    }
 }

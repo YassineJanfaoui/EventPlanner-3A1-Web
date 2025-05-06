@@ -2,6 +2,60 @@
 
 {% block title %}New Event Team Submission{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileLinkInput = document.querySelector('#{{ form.fileLink.vars.id }}');
+            const validateButton = document.createElement('button');
+            validateButton.type = 'button';
+            validateButton.className = 'btn btn-info btn-sm mt-2';
+            validateButton.innerHTML = '<i class="fas fa-check-circle me-1"></i> Validate GitHub Repository';
+            validateButton.addEventListener('click', validateGitHubRepo);
+            
+            // Insert the button after the file link input
+            fileLinkInput.parentNode.insertBefore(validateButton, fileLinkInput.nextSibling.nextSibling);
+            
+            // Create a validation result div
+            const validationResult = document.createElement('div');
+            validationResult.id = 'github-validation-result';
+            validationResult.className = 'mt-2';
+            fileLinkInput.parentNode.insertBefore(validationResult, validateButton.nextSibling);
+            
+            function validateGitHubRepo() {
+                const repoUrl = fileLinkInput.value.trim();
+                const resultDiv = document.getElementById('github-validation-result');
+                
+                if (!repoUrl) {
+                    resultDiv.innerHTML = '<div class="alert alert-warning">Please enter a GitHub repository URL</div>';
+                    return;
+                }
+                
+                if (!repoUrl.includes('github.com')) {
+                    resultDiv.innerHTML = '<div class="alert alert-info">Not a GitHub URL. Validation skipped.</div>';
+                    return;
+                }
+                
+                resultDiv.innerHTML = '<div class="alert alert-info">Validating repository...</div>';
+                
+                // Make an AJAX request to the test endpoint
+                fetch('/event/team/test-github-repo?url=' + encodeURIComponent(repoUrl))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            resultDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-1"></i> Repository exists and is accessible!</div>';
+                        } else {
+                            resultDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-1"></i> Repository does not exist or is not accessible.</div>';
+                        }
+                    })
+                    .catch(error => {
+                        resultDiv.innerHTML = '<div class="alert alert-danger">Error validating repository: ' + error.message + '</div>';
+                    });
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="container mt-5 mb-5">
         <div class="row">
@@ -19,6 +73,15 @@
                         <h2 class="mb-0 fs-4">Create New Submission</h2>
                     </div>
                     <div class="card-body p-4">
+                        {# Display flash messages #}
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        
                         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
                             {{ form_errors(form) }}
                             

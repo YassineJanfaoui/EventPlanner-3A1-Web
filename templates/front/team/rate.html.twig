@@ -3,33 +3,37 @@
 {% block title %}Rate Team{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
+                <!-- Page title with breadcrumbs -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_team_index') }}">Teams</a></li>
+                        <li class="breadcrumb-item active">Rate Team</li>
+                    </ol>
+                </nav>
+                
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">Rate Team: {{ team.TeamName }}</h2>
+                        <h2 class="mb-0 fs-4">Rate Team: {{ team.teamName }}</h2>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         {{ form_start(form) }}
-                            {{ form_errors(form) }}
-                            
-                            <div class="mb-3">
-                                {{ form_label(form.Score, 'Score') }}
-                                {{ form_widget(form.Score, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.Score) }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.score, {'attr': {'class': 'form-control'}}) }}
                             </div>
-                            
-                            <div class="mb-3">
-                                {{ form_label(form.Rank, 'Rank') }}
-                                {{ form_widget(form.Rank, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.Rank) }}
+                            <div class="col-md-6">
+                                {{ form_row(form.rank, {'attr': {'class': 'form-control'}}) }}
                             </div>
-                            
-                            <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ path('app_team_index') }}" class="btn btn-secondary">Back to List</a>
-                                <button type="submit" class="btn btn-primary">Save Rating</button>
-                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('app_team_index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Back to List
+                            </a>
+                            {{ form_widget(form.save) }}
+                        </div>
                         {{ form_end(form) }}
                     </div>
                 </div>

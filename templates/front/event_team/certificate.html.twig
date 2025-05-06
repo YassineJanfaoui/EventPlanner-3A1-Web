@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Certificate of Participation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .certificate-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 15px solid #0056b3;
+            position: relative;
+            background-color: #fff;
+        }
+        
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .certificate-subtitle {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .certificate-body {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        .team-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0056b3;
+            margin: 20px 0;
+        }
+        
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        
+        .signature-line {
+            width: 200px;
+            border-top: 1px solid #333;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .certificate-date {
+            text-align: right;
+            margin-top: 20px;
+        }
+        
+        .certificate-seal {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%230056b3" stroke-width="2"/><circle cx="50" cy="50" r="35" fill="none" stroke="%230056b3" stroke-width="2"/><text x="50" y="55" font-family="Arial" font-size="12" text-anchor="middle" fill="%230056b3">OFFICIAL</text></svg>');
+            background-repeat: no-repeat;
+            opacity: 0.7;
+        }
+        
+        .print-button {
+            margin: 20px auto;
+            display: block;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .certificate-container {
+                border: 15px solid #0056b3 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb" class="mb-4 no-print">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_event_team_index') }}">Submissions</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('app_event_team_show', {'submission_id': event_team.submissionId}) }}">Submission Details</a></li>
+                        <li class="breadcrumb-item active">Certificate</li>
+                    </ol>
+                </nav>
+                
+                {# Add this button next to the print button #}
+                {# No changes needed to the top part of the file #}
+                
+                {# Update only the button section #}
+                <div class="d-flex justify-content-center mb-4 no-print">
+                    <button class="btn btn-primary me-2" onclick="window.print()">
+                        <i class="fas fa-print me-1"></i> Print Certificate
+                    </button>
+                    
+                    <a href="{{ path('app_event_team_certificate_pdf', {'submission_id': event_team.submissionId}) }}" class="btn btn-success">
+                        <i class="fas fa-file-pdf me-1"></i> Download as PDF
+                    </a>
+                </div>
+                
+                <div class="certificate-container">
+                    <div class="certificate-header">
+                        <div class="certificate-title">Certificate of Participation</div>
+                        <div class="certificate-subtitle">This certifies that</div>
+                    </div>
+                    
+                    <div class="certificate-body">
+                        <!-- Change this line -->
+                        <div class="team-name">{{ team.TeamName }}</div>
+                        <p>has successfully participated in</p>
+                        <div class="event-name" style="font-size: 24px; font-weight: bold; margin: 15px 0;">
+                            "{{ event.name }}"
+                        </div>
+                        <p>with their project titled</p>
+                        <div style="font-style: italic; font-weight: bold; margin: 15px 0;">
+                            "{{ event_team.title }}"
+                        </div>
+                        <p>We recognize their valuable contribution and commitment to excellence.</p>
+                    </div>
+                    
+                    <div class="certificate-footer">
+                        <div>
+                            <div class="signature-line">Event Organizer</div>
+                        </div>
+                        <div>
+                            <div class="signature-line">Event Director</div>
+                        </div>
+                    </div>
+                    
+                    <div class="certificate-date">
+                        Issued on: {{ date|date('F d, Y') }}
+                    </div>
+                    
+                    <div class="certificate-seal"></div>
+                </div>
+                
+                <a href="{{ path('app_event_team_show', {'submission_id': event_team.submissionId}) }}" class="btn btn-secondary mt-3 no-print">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Submission
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
