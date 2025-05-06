@@ -68,7 +68,7 @@ final class TeamController extends AbstractController
         $teams = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            5, // 5 items per page
+            3, // 5 items per page
             [
                 'sortFieldWhitelist' => [], // Empty array means no fields are allowed for sorting
                 'defaultSortFieldName' => null,

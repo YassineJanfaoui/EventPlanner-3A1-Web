@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/chatbot')]
 class ChatbotController extends AbstractController
 {
-    private const OPENROUTER_API_KEY = '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';
+    private const OPENROUTER_API_KEY = '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';
     private const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
     private const DEFAULT_MODEL = 'deepseek/deepseek-chat-v3-0324:free';
     

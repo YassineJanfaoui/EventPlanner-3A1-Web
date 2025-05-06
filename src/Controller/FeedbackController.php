@@ -61,7 +61,7 @@ class FeedbackController extends AbstractController
         $feedback = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            5, // 5 items per page
+            3, // 5 items per page
             [
                 'sortFieldAllowList' => [], // Empty array means no fields are allowed for sorting
                 'defaultSortFieldName' => null,
