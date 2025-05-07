@@ -3,15 +3,151 @@
 {% block title %}Venue index{% endblock %}
 
 {% block body %}
+<style>
+.navigation {
+		display: flex;
+		justify-content: center;
+	}
+
+	.pagination {
+		display: flex;
+		gap: 5px;
+	}
+
+	.pagination span {
+		display: inline-block;
+	}
+
+	.pagination a {
+		padding: 8px 12px;
+		border: 1px solid #dee2e6;
+		border-radius: 4px;
+		text-decoration: none;
+		color: #007bff;
+		background-color: #fff;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.pagination a:hover,
+	.pagination .current {
+		background-color: #e9ecef;
+		text-decoration: none;
+	}
+
+	.pagination .current {
+		background-color: #007bff;
+		padding: 8px 12px;
+		color: #fff;
+		font-weight: bold;
+		cursor: default;
+	}
+</style>
     <h1>Venue index</h1>
+    <div class="d-flex">
+        <a href="{{ path('app_venue_map') }}" class="btn btn-outline-primary">View Map</a> <!-- New button -->
+    </div>
+    {# Search Box #}
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" action="{{ path('app_venue_index') }}">
+                <label for="venue-search" class="form-label">Search for a venue</label>
+                <div class="input-group">
+                    <input id="venue-search"
+                        name="venue_name"
+                        type="text"
+                        class="form-control form-control-lg"
+                        placeholder="Search venue..."
+                        data-controller="autocomplete"
+                        data-autocomplete-url-value="{{ path('autocomplete_venues') }}"
+                        value="{{ current_filters.venue_name ?? '' }}">
+                    <button class="btn btn-primary btn-lg" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{# Filter Form #}
+    <form method="get" action="{{ path('app_venue_index') }}" class="mb-4">
+        <div class="row g-3">
+            {# Location Filter #}
+            <div class="col-md-4">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="location" id="location" class="form-control" 
+                       value="{{ current_filters.location }}" placeholder="Filter by location">
+            </div>
+            
+            {# Availability Filter (dropdown) #}
+            <div class="col-md-3">
+                <label for="availability" class="form-label">Availability</label>
+                <select name="availability" id="availability" class="form-select">
+                    <option value="">All Availabilities</option>
+                    {% for key, value in constant('App\\Entity\\Venue::AVAILABILITY_CHOICES') %}
+                        <option value="{{ value }}" {{ current_filters.availability == value ? 'selected' }}>
+                            {{ value }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            {# Parking Filter (dropdown) #}
+            <div class="col-md-3">
+                <label for="parking" class="form-label">Parking</label>
+                <select name="parking" id="parking" class="form-select">
+                    <option value="">All Options</option>
+                    {% for key, value in constant('App\\Entity\\Venue::PARKING_CHOICES') %}
+                        <option value="{{ value }}" {{ current_filters.parking == value ? 'selected' }}>
+                            {{ value }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            {# Filter Buttons #}
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                <a href="{{ path('app_venue_index') }}" class="btn btn-primary me-2">Reset</a>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mb-3">
+        <!-- Sort by Number of Places Dropdown -->
+        <div>
+            <label for="sortByNbrPlaces" class="form-label">Sort by Number of Places</label>
+            <select name="sort_by" id="sortByNbrPlaces" class="form-select">
+                <option value="NbrPlaces" {% if sort_by == 'NbrPlaces' %}selected{% endif %}>Number of Places</option>
+                <option value="Cost" {% if sort_by == 'Cost' %}selected{% endif %}>Cost</option>
+            </select>
+        </div>
+
+        <!-- Sort Direction Dropdown -->
+        <div>
+            <label for="sortDirection" class="form-label">Sort Direction</label>
+            <select name="sort_dir" id="sortDirection" class="form-select">
+                <option value="ASC" {% if sort_dir == 'ASC' %}selected{% endif %}>Ascending</option>
+                <option value="DESC" {% if sort_dir == 'DESC' %}selected{% endif %}>Descending</option>
+            </select>
+        </div>
+
+        <!-- Sort Button -->
+        <div>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </div>
+    </div>
+    </form>
+
+
+    {% if best_venue %}
+        <div class="alert alert-success text-center mt-4">
+            <strong>Best Value Venue:</strong> {{ best_venue.getVenueName() }} ({{ best_venue.getQualitePrix()|number_format(2) }} cost/place)
+        </div>
+    {% endif %}
 
     <table class="table">
         <thead>
             <tr>
-                <th>VenueId</th>
+                <th>Venue Id</th>
                 <th>Location</th>
-                <th>NbrPlaces</th>
-                <th>VenueName</th>
+                <th>Number Of Places</th>
+                <th>Venue Name</th>
                 <th>Availability</th>
                 <th>Cost</th>
                 <th>Parking</th>
@@ -29,8 +165,8 @@
                 <td>{{ venue.Cost }}</td>
                 <td>{{ venue.Parking }}</td>
                 <td>
-                    <a href="{{ path('app_venue_show', {'VenueId': venue.VenueId}) }}" class="btn btn-outline-primary btn-sm">show</a>
-                    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }}" class="btn btn-outline-success btn-sm">edit</a>
+                    <a href="{{ path('app_venue_show', {'VenueId': venue.VenueId}) }}" class="btn btn-primary me-2">show</a>
+                    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }}" class="btn btn-primary me-2">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +177,18 @@
         </tbody>
     </table>
 
+    
+    <div class="navigation mt-4 d-flex justify-content-center">
+        {{ knp_pagination_render(venues, null, {}, {
+            'align': 'center',
+            'size': 'medium',
+            'style': 'bottom',
+            'span_class': 'page-link'
+        }) }}
+    </div>
+
     <a href="{{ path('app_venue_new') }}" class="btn btn-primary mt-3">Create new</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

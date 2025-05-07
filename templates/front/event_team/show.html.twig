@@ -122,40 +122,8 @@
                     {% endif %}
                 </div>
                 
-                {% if event_team is defined and event_team is not null %}
-                   <div class="card mt-4 shadow">
-                        <div class="card-header bg-primary text-white">
-                            <h3 class="mb-0 fs-5">Rate This Submission</h3>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ path('app_event_team_rate', {'submission_id': event_team.submissionId}) }}" method="post" id="ratingForm">
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Your Rating:</label>
-                                    <div class="star-rating-container text-center">
-                                        <div class="star-rating">
-                                            <span class="star-icon" data-value="1"><i class="fas fa-star"></i></span>
-                                            <span class="star-icon" data-value="2"><i class="fas fa-star"></i></span>
-                                            <span class="star-icon" data-value="3"><i class="fas fa-star"></i></span>
-                                            <span class="star-icon" data-value="4"><i class="fas fa-star"></i></span>
-                                            <span class="star-icon" data-value="5"><i class="fas fa-star"></i></span>
-                                        </div>
-                                        <input type="hidden" name="rating" id="selected-rating" value="0">
-                                        <div class="mt-2 rating-text">Click to rate</div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="comment" class="form-label fw-bold">Comment (Optional):</label>
-                                    <textarea name="comment" id="comment" class="form-control" rows="3" placeholder="Share your thoughts about this submission..."></textarea>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-paper-plane me-1"></i> Submit Rating
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                {% endif %}
+            
+            
             </div>
         </div>
     </div>

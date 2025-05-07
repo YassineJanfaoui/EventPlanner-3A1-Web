@@ -10,17 +10,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/workshop')]
 final class WorkshopController extends AbstractController
 {
     #[Route(name: 'app_workshop_index', methods: ['GET'])]
-    public function index(WorkshopRepository $workshopRepository): Response
-    {
-        return $this->render('workshop/index.html.twig', [
-            'workshops' => $workshopRepository->findAll(),
-        ]);
-    }
+public function index(Request $request, WorkshopRepository $workshopRepository, PaginatorInterface $paginator): Response
+{
+    $searchQuery = $request->query->get('search');
+    $coachFilter = $request->query->get('coach');
+    $sortBy = $request->query->get('sortBy');
+    $sortDirection = strtoupper($request->query->get('sortDirection', 'ASC'));
+
+    $workshops = $workshopRepository->findAllWithFiltersAndSorting(
+        $searchQuery,
+        $coachFilter,
+        $sortBy,
+        $sortDirection
+    );
+
+    $pagination = $paginator->paginate(
+        $workshops, // QueryBuilder
+        $request->query->getInt('page', 1), // Current page
+        1 // Items per page
+    );
+
+    return $this->render('workshop/index.html.twig', [
+        'workshops' => $pagination,
+        'pagination' => $pagination, // update to use pagination in view
+    ]);
+}
+
+
 
     #[Route('/new', name: 'app_workshop_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

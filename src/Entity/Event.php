@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Repository\EventRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\Table(name: 'event')]
 class Event
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue]
     #[ORM\Column(name: 'eventId', type: 'integer')]
     private ?int $eventId = null;
 
@@ -34,89 +34,30 @@ class Event
     #[ORM\Column(name: 'fee', type: 'integer', nullable: false)]
     private ?int $fee = null;
 
-
     #[ORM\Column(name: 'image', type: 'string', length: 255, nullable: true)]
     private ?string $image = null;
 
-    
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
     #[ORM\JoinColumn(name: 'userid', referencedColumnName: 'userid')]
     private ?User $user = null;
 
-/*    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'event')]
-    private Collection $bills;
-
-    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'event')]
-    private Collection $feedbacks;
-*/
-    #[ORM\ManyToMany(targetEntity: Venue::class, inversedBy: 'events')]
-    #[ORM\JoinTable(name: 'reservation')]
-    private Collection $venues;
 
     #[ORM\OneToOne(targetEntity: Reservation::class, mappedBy: 'event')]
     private ?Reservation $reservation = null;
-    
-    
 
-  /*  #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'event_team',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'TeamId', referencedColumnName: 'TeamId')]
-    )]
-    private Collection $teams;
+    #[ORM\Column(nullable: true)]
+    private ?float $longitude = null;
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'event_equipment',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'equipment_id', referencedColumnName: 'equipment_id')]
-    )]
-    private Collection $equipments;
+    #[ORM\Column(nullable: true)]
+    private ?float $latitude = null;
 
-    #[ORM\ManyToMany(targetEntity: Partner::class, inversedBy: 'events')]
-    #[ORM\JoinTable(
-        name: 'partnership',
-        joinColumns: [new ORM\JoinColumn(name: 'eventId', referencedColumnName: 'eventId')],
-        inverseJoinColumns: [new ORM\JoinColumn(name: 'partner_id', referencedColumnName: 'partner_id')]
-    )]
-    private Collection $partners;
-*/
-#[ORM\OneToMany(targetEntity: EventTeam::class, mappedBy: 'event')]
-    private Collection $eventTeams;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lieu = null;
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventTeam::class)]
+private Collection $eventTeams;
 
-    /**
-     * @return Collection<int, EventTeam>
-     */
-    public function getEventTeams(): Collection
-    {
-        if (!$this->eventTeams instanceof Collection) {
-            $this->eventTeams = new ArrayCollection();
-        }
-        return $this->eventTeams;
-    }
-
-    public function addEventTeam(EventTeam $eventTeam): self
-    {
-        if (!$this->getEventTeams()->contains($eventTeam)) {
-            $this->getEventTeams()->add($eventTeam);
-        }
-        return $this;
-    }
-
-    public function removeEventTeam(EventTeam $eventTeam): self
-    {
-        $this->getEventTeams()->removeElement($eventTeam);
-        return $this;
-    }
     public function __construct()
     {
-        $this->bills = new ArrayCollection();
-        $this->feedbacks = new ArrayCollection();
-        $this->venues = new ArrayCollection();
-        $this->teams = new ArrayCollection();
-        $this->equipments = new ArrayCollection();
-        $this->partners = new ArrayCollection();
         $this->eventTeams = new ArrayCollection();
     }
 
@@ -191,6 +132,17 @@ class Event
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -202,84 +154,7 @@ class Event
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
 
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-        return $this;
-    }
-/*
-    public function getBills(): Collection
-    {
-        return $this->bills;
-    }
-
-    public function addBill(Bill $bill): self
-    {
-        if (!$this->bills->contains($bill)) {
-            $this->bills->add($bill);
-            $bill->setEvent($this);
-        }
-        return $this;
-    }
-
-    public function removeBill(Bill $bill): self
-    {
-        if ($this->bills->removeElement($bill)) {
-            if ($bill->getEvent() === $this) {
-                $bill->setEvent(null);
-            }
-        }
-        return $this;
-    }
-
-    public function getFeedbacks(): Collection
-    {
-        return $this->feedbacks;
-    }
-
-    public function addFeedback(Feedback $feedback): self
-    {
-        if (!$this->feedbacks->contains($feedback)) {
-            $this->feedbacks->add($feedback);
-            $feedback->setEvent($this);
-        }
-        return $this;
-    }
-
-    public function removeFeedback(Feedback $feedback): self
-    {
-        if ($this->feedbacks->removeElement($feedback)) {
-            if ($feedback->getEvent() === $this) {
-                $feedback->setEvent(null);
-            }
-        }
-        return $this;
-    }
-
-    public function getVenues(): Collection
-    {
-        return $this->venues;
-    }
-
-    public function addVenue(Venue $venue): self
-    {
-        if (!$this->venues->contains($venue)) {
-            $this->venues->add($venue);
-        }
-        return $this;
-    }
-
-    public function removeVenue(Venue $venue): self
-    {
-        $this->venues->removeElement($venue);
-        return $this;
-    }
-*/
     public function getReservation(): ?Reservation
     {
         return $this->reservation;
@@ -298,61 +173,63 @@ class Event
         $this->reservation = $reservation;
         return $this;
     }
-/*
-    public function getTeams(): Collection
+
+    public function getLongitude(): ?float
     {
-        return $this->teams;
+        return $this->longitude;
     }
 
-    public function addTeam(Team $team): self
+    public function setLongitude(?float $longitude): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
+        $this->longitude = $longitude;
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?string $lieu): self
+    {
+        $this->lieu = $lieu;
+        return $this;
+    }
+    
+// Add these methods:
+public function getEventTeams(): Collection
+{
+    return $this->eventTeams;
+}
+
+public function addEventTeam(EventTeam $eventTeam): self
+{
+    if (!$this->eventTeams->contains($eventTeam)) {
+        $this->eventTeams->add($eventTeam);
+        $eventTeam->setEvent($this);
+    }
+    return $this;
+}
+
+public function removeEventTeam(EventTeam $eventTeam): self
+{
+    if ($this->eventTeams->removeElement($eventTeam)) {
+        if ($eventTeam->getEvent() === $this) {
+            $eventTeam->setEvent(null);
         }
-        return $this;
     }
+    return $this;
+}
 
-    public function removeTeam(Team $team): self
-    {
-        $this->teams->removeElement($team);
-        return $this;
-    }
-
-    public function getEquipments(): Collection
-    {
-        return $this->equipments;
-    }
-
-    public function addEquipment(Equipment $equipment): self
-    {
-        if (!$this->equipments->contains($equipment)) {
-            $this->equipments->add($equipment);
-        }
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): self
-    {
-        $this->equipments->removeElement($equipment);
-        return $this;
-    }
-
-    public function getPartners(): Collection
-    {
-        return $this->partners;
-    }
-
-    public function addPartner(Partner $partner): self
-    {
-        if (!$this->partners->contains($partner)) {
-            $this->partners->add($partner);
-        }
-        return $this;
-    }
-
-    public function removePartner(Partner $partner): self
-    {
-        $this->partners->removeElement($partner);
-        return $this;
-    }*/
 }

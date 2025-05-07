@@ -1,67 +1,453 @@
 {% extends 'back.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css" type="text/css">
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
+{% endblock %}
 {% block title %}New Event{% endblock %}
 
 {% block body %}
 <div class="container py-5">
-    
-    <h1 class="mb-4 text-center">Create a New Event</h1>
+    <div class="card shadow-lg">
+        <div class="card-body p-5">
 
-    {{ form_start(form) }}
-    
-    {# Event name #}
-    <div class="mb-3">
-        {{ form_label(form.name, 'Event Name') }}
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.name) }}
+            <h1 class="mb-5 text-center">Create a New Event</h1>
+
+            {{ form_start(form) }}
+
+            <div class="mb-4">
+                {{ form_label(form.name, 'Event Name') }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        {{ form_label(form.startDate, 'Start Date') }}
+        {{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.startDate) }}
     </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            {{ form_label(form.startDate, 'Start Date') }}
-            {{ form_widget(form.startDate, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.startDate) }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form_label(form.endDate, 'End Date') }}
-            {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.endDate) }}
-        </div>
+    <div class="col-md-6 mb-3">
+        {{ form_label(form.endDate, 'End Date') }}
+        {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.endDate) }}
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            {{ form_label(form.maxParticipants, 'Max Participants') }}
-            {{ form_widget(form.maxParticipants, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.maxParticipants) }}
-        </div>
-        <div class="col-md-6 mb-3">
-            {{ form_label(form.fee, 'Participation Fee') }}
-            {{ form_widget(form.fee, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.fee) }}
-        </div>
-    </div>
 
-    <div class="mb-3">
-        {{ form_label(form.description, 'Description') }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
-        {{ form_errors(form.description) }}
-    </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    {{ form_label(form.maxParticipants, 'Max Participants') }}
+                    {{ form_widget(form.maxParticipants, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.maxParticipants) }}
+                </div>
 
-    <div class="mb-3">
+                <div class="col-md-6 mb-4">
+                    {{ form_label(form.fee, 'Participation Fee') }}
+                    {{ form_widget(form.fee, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.fee) }}
+                </div>
+            </div>
+ {{ form_label(form.description, 'Description') }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+            {{ form_widget(form.lieu, {'attr': {'type': 'hidden', 'id': 'form-lieu-hidden'}}) }}
+{{ form_widget(form.latitude, {'attr': {'type': 'hidden', 'id': 'latitude-symfony'}}) }}
+  {{ form_widget(form.longitude, {'attr': {'type': 'hidden', 'id': 'longitude-symfony'}}) }}
+            <div class="mb-4">
+                <label class="form-label">Lieu</label>
+                <div class="input-group">
+                    <input type="text" id="location-input" name="lieu" class="form-control" placeholder="Cliquez pour sélectionner sur la carte">
+                    <button type="button" class="btn btn-outline-secondary" id="show-map-btn">
+                        <i class="bi bi-map"></i> Carte
+                    </button>
+                </div>
+                <div class="d-flex mt-2">
+                    <input type="hidden" id="latitude-input" name="latitude" value="">
+                    <input type="hidden" id="longitude-input" name="longitude" value="">
+                    <small class="text-muted ms-2" id="coordinates-display"></small>
+                </div>
+                {{ form_errors(form.lieu) }}
+                <div id="map-container" class="mt-3" style="display: none;">
+                    <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+                    <p class="text-muted small mt-1">Cliquez sur la carte pour sélectionner le lieu</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+               
+
+          <div class="mb-3">
         {{ form_label(form.image, 'Image') }}
         {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.image) }}
     </div>
 
-    <div class="d-flex justify-content-between mt-4">
-        <button type="submit" class="btn btn-success">Save</button>
-        <a href="{{ path('app_event_index') }}" class="btn btn-secondary">Cancel</a>
-        <a href="{{ path('event_list') }}" class="btn btn-outline-primary">Go to Front</a>
-    </div>
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-success">Save</button>
+                <a href="{{ path('app_event_index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ path('app_event_list') }}" class="btn btn-outline-primary">Go to Front</a>
+            </div>
 
-    {{ form_end(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
+<script>
+       document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer les éléments DOM
+    const locationInput = document.getElementById('location-input');const formLieuInput = document.querySelector('[name="event[lieu]"]');
+locationInput.addEventListener('input', function() {
+    formLieuInput.value = this.value;
+});
+
+    const latitudeInput = document.getElementById('latitude-input');
+    const longitudeInput = document.getElementById('longitude-input');
+    const mapContainer = document.getElementById('map-container');
+    const showMapBtn = document.getElementById('show-map-btn');
+    const coordinatesDisplay = document.getElementById('coordinates-display');
+    const mapElement = document.getElementById('map');
+   
+    // Variables globales
+    let map, vectorSource, vectorLayer;
+    let currentFeature = null;
+    let overlay = null;
+   
+    // Fonction pour initialiser la carte
+    function initMap() {
+        try {
+            // Créer un vecteur source pour les markers
+            vectorSource = new ol.source.Vector();
+           
+            // Style des markers
+            const markerStyle = new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 8,
+                    fill: new ol.style.Fill({color: '#053536'}),
+                    stroke: new ol.style.Stroke({color: 'white', width: 2})
+                })
+            });
+           
+            // Créer le layer vectoriel
+            vectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: markerStyle
+            });
+           
+            // Créer un élément pour le popup
+            const popupElement = document.createElement('div');
+            popupElement.className = 'map-popup';
+            popupElement.innerHTML = '<div>Cliquez ici pour sélectionner ce lieu</div>';
+           
+            // Créer un overlay pour le popup
+            overlay = new ol.Overlay({
+                element: popupElement,
+                positioning: 'bottom-center',
+                offset: [0, -10],
+                autoPan: true
+            });
+           
+            // Créer la carte
+            map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    }),
+                    vectorLayer
+                ],
+                overlays: [overlay],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([2.213749, 46.227638]), // Centre de la France
+                    zoom: 6
+                })
+            });
+           
+            // Gérer les clics sur la carte
+           // Gérer les clics sur la carte
+map.on('click', function(evt) {
+    const coordinates = evt.coordinate;
+    const lonLat = ol.proj.toLonLat(coordinates);
+   
+    // Mise à jour des champs cachés
+    longitudeInput.value = lonLat[0];  // Longueur
+    latitudeInput.value = lonLat[1];   // Latitude
+   
+    // Afficher les coordonnées
+    coordinatesDisplay.textContent = `Coords: ${lonLat[1].toFixed(6)}, ${lonLat[0].toFixed(6)}`;
+   
+    // Mettre à jour le marqueur
+    updateMarker(coordinates);
+   
+    // Afficher le popup au-dessus du marqueur
+    overlay.setPosition(coordinates);
+   
+    // Rechercher l'adresse à partir des coordonnées
+    reverseGeocode(lonLat[1], lonLat[0]);
+   
+    // Ajouter un événement de clic au popup pour confirmer la sélection
+    popupElement.onclick = function() {
+        // Fermer la carte comme dans JavaFX
+        mapContainer.style.display = 'none';
+       
+        // Déplacer l'overlay (pour le masquer) après confirmation
+        overlay.setPosition(undefined);
+    };
+});
+
+           
+            // Changer le curseur au survol de la carte
+            map.on('pointermove', function(evt) {
+                const viewport = map.getViewport();
+                viewport.style.cursor = 'crosshair';
+            });
+           
+            return true; // Initialisation réussie
+        } catch (error) {
+            console.error("Erreur lors de l'initialisation de la carte:", error);
+            return false;
+        }
+    }
+   
+    // Fonction pour mettre à jour le marqueur
+    function updateMarker(coordinates) {
+        // Supprimer l'ancien marqueur s'il existe
+        vectorSource.clear();
+       
+        // Créer une nouvelle feature pour le marqueur
+        currentFeature = new ol.Feature({
+            geometry: new ol.geom.Point(coordinates)
+        });
+       
+        // Ajouter la feature à la source
+        vectorSource.addFeature(currentFeature);
+    }
+   
+    // Fonction pour faire une recherche inverse d'adresse
+function reverseGeocode(lat, lon) {
+    // Afficher le message "Recherche en cours..."
+    locationInput.value = "Recherche de l'adresse...";
+
+    // Utiliser le service Nominatim d'OpenStreetMap pour le géocodage inverse
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Problème avec la réponse du serveur');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.address) {
+                let formattedAddress = "";
+
+                // Ajouter le numéro et la rue s'ils existent
+                if (data.address.house_number || data.address.road) {
+                    let roadPart = "";
+                    if (data.address.house_number) {
+                        roadPart += data.address.house_number + " ";
+                    }
+                    if (data.address.road) {
+                        roadPart += data.address.road;
+                    }
+                    formattedAddress += roadPart;
+                }
+
+                // Ajouter la ville/village
+                if (data.address.city || data.address.town || data.address.village) {
+                    let cityPart = data.address.city || data.address.town || data.address.village;
+                    formattedAddress += `, ${cityPart}`;
+                }
+
+                // Ajouter le code postal si disponible
+                if (data.address.postcode) {
+                    formattedAddress += `, ${data.address.postcode}`;
+                }
+
+                // Ajouter la région (si disponible)
+                if (data.address.state) {
+                    formattedAddress += `, ${data.address.state}`;
+                }
+
+                // Ajouter le pays
+                if (data.address.country) {
+                    formattedAddress += `, ${data.address.country}`;
+                }
+
+                // Si aucune information spécifique n'est trouvée, utiliser display_name
+                if (!formattedAddress && data.display_name) {
+                    formattedAddress = data.display_name;
+                }
+
+                // Nettoyer l'adresse pour éviter les virgules redondantes
+                formattedAddress = formattedAddress.replace(/^\s*,\s*/, "").replace(/,\s*$/, "");
+
+                // Mettre à jour le champ de lieu avec l'adresse formatée
+locationInput.value = formattedAddress;
+formLieuInput.value = formattedAddress;
+            } else {
+                // Si aucune adresse n'est trouvée, afficher les coordonnées
+                locationInput.value = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la recherche d\'adresse:', error);
+            // En cas d'erreur, afficher les coordonnées
+            locationInput.value = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+        });
+}
+
+
+   
+   function geocodeAddress(address) {
+    // Utiliser le service Nominatim d'OpenStreetMap pour le géocodage
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+
+                // Mise à jour des champs cachés
+                latitudeInput.value = lat;
+                longitudeInput.value = lon;
+
+                // Afficher les coordonnées
+                coordinatesDisplay.textContent = `Coords: ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+
+                // Centrer la carte sur la position trouvée
+                const position = ol.proj.fromLonLat([lon, lat]);
+                map.getView().setCenter(position);
+                map.getView().setZoom(14);
+
+                // Mettre à jour le marqueur
+                updateMarker(position);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la recherche d\'adresse:', error);
+        });
+}
+
+
+   
+    // Ajouter des écouteurs d'événements
+    if (showMapBtn && mapContainer) {
+        showMapBtn.addEventListener('click', function() {
+            if (mapContainer.style.display === 'none') {
+                mapContainer.style.display = 'block';
+               
+                // Initialiser la carte si ce n'est pas déjà fait
+                if (!map) {
+                    initMap();
+                }
+               
+                // Si un lieu est déjà entré, centrer la carte sur ce lieu
+                if (locationInput.value) {
+                    geocodeAddress(locationInput.value);
+                }
+            } else {
+                mapContainer.style.display = 'none';
+            }
+        });
+    }
+   
+    // Reproduire le comportement JavaFX: ouvrir la carte au clic sur le champ de texte
+    if (locationInput && mapContainer) {
+        locationInput.addEventListener('click', function() {
+            if (mapContainer.style.display === 'none') {
+                mapContainer.style.display = 'block';
+               
+                // Initialiser la carte si ce n'est pas déjà fait
+                if (!map) {
+                    initMap();
+                }
+               
+                // Si un lieu est déjà entré, centrer la carte sur ce lieu
+                if (locationInput.value) {
+                    geocodeAddress(locationInput.value);
+                }
+            }
+        });
+       
+        // Gérer la recherche lorsque l'utilisateur entre une adresse
+        locationInput.addEventListener('input', function() {
+            if (locationInput.value && map) {
+                // Ajouter un délai avant de lancer la recherche pour éviter trop de requêtes
+                clearTimeout(locationInput.timeout);
+                locationInput.timeout = setTimeout(function() {
+                    geocodeAddress(locationInput.value);
+                }, 1000);
+            }
+        });
+    }
+});
+// Au début de votre script existant
+const locationInput = document.getElementById('location-input');
+const formLieuInput = document.querySelector('[name="event[lieu]"]');
+
+// Mise à jour du champ Symfony caché à chaque input
+locationInput.addEventListener('input', function() {
+    formLieuInput.value = this.value;
+});
+
+
+// Et au moment où vous mettez à jour l'adresse après le clic sur la carte:
+function updateLocationFromMap(address, lat, lng) {
+    locationInput.value = address;
+    latitudeInput.value = lat;
+    longitudeInput.value = lng;
+    formLieuInput.value = address; // Synchroniser avec le champ Symfony
+}
+// Injection directe des valeurs dans les champs Symfony
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer tous les éléments nécessaires
+    const latitudeSymfony = document.getElementById('latitude-symfony');
+    const longitudeSymfony = document.getElementById('longitude-symfony');
+    
+    // Modifier la fonction map.on('click')
+    const originalMapClick = map.on;
+    map.on = function(eventName, callback) {
+        if (eventName === 'click') {
+            const wrappedCallback = function(evt) {
+                // Exécuter le callback original
+                callback(evt);
+                
+                // Récupérer les valeurs actuelles
+                const lat = document.getElementById('latitude-input').value;
+                const lon = document.getElementById('longitude-input').value;
+                
+                // Mettre à jour les champs Symfony
+                if (latitudeSymfony) latitudeSymfony.value = lat;
+                if (longitudeSymfony) longitudeSymfony.value = lon;
+                
+                console.log("Symfony fields updated: lat=" + lat + ", lon=" + lon);
+            };
+            
+            return originalMapClick.call(this, eventName, wrappedCallback);
+        } else {
+            return originalMapClick.call(this, eventName, callback);
+        }
+    };
+    
+    // Vérification périodique pour s'assurer que les valeurs sont synchronisées
+    setInterval(function() {
+        const lat = document.getElementById('latitude-input').value;
+        const lon = document.getElementById('longitude-input').value;
+        
+        if (lat && lon) {
+            if (latitudeSymfony) latitudeSymfony.value = lat;
+            if (longitudeSymfony) longitudeSymfony.value = lon;
+        }
+    }, 1000);
+});
+    </script>
+
 
 <style>
     body {

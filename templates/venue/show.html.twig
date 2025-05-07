@@ -1,7 +1,9 @@
 {% extends 'basePlanner.html.twig' %}
 
 {% block title %}Venue{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
     <h1>Venue</h1>
 
@@ -38,9 +40,44 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_venue_index') }}" class="btn btn-secondary">back to list</a>
+    {% if recommendations is not empty %}
+    <h3 class="text-center mt-5 mb-4">You might also like...</h3>
+    <div class="row justify-content-center">
+        {% for rec in recommendations %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ rec.getVenueName() }}</h5>
+                        
+                        {# Recommendation badges #}
+                        {% set capacity_diff = rec.getNbrPlaces() - venue.getNbrPlaces() %}
+                        {% set cost_diff = rec.getCost() - venue.getCost() %}
 
-    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }} " class="btn btn-warning">edit</a>
+                        {% if rec.getLocation() == venue.getLocation() %}
+                            <span class="badge bg-primary mb-2">Same Location</span>
+                        {% elseif capacity_diff >= -0.2 * venue.getNbrPlaces() and capacity_diff <= 0.2 * venue.getNbrPlaces() %}
+                            <span class="badge bg-success mb-2">Similar Capacity</span>
+                        {% elseif cost_diff >= -0.2 * venue.getCost() and cost_diff <= 0.2 * venue.getCost() %}
+                            <span class="badge bg-warning text-dark mb-2">Similar Price</span>
+                        {% endif %}
+
+                        <p class="card-text mt-2">
+                            <strong>Places:</strong> {{ rec.getNbrPlaces() }}<br>
+                            <strong>Cost:</strong> {{ rec.getCost() }} €
+                        </p>
+                        <a href="{{ path('app_venue_show', {'VenueId': rec.getVenueId()}) }}" class="btn btn-primary btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
+    <a href="{{ path('app_venue_index') }}" class="btn btn-primary btn-sm">back to list</a>
+
+    <a href="{{ path('app_venue_edit', {'VenueId': venue.VenueId}) }} " class="btn btn-primary btn-sm">edit</a>
 
     {{ include('venue/_delete_form.html.twig') }}
 {% endblock %}

@@ -20,7 +20,7 @@ class EventTeam
     private ?int $submissionId = null;
 
     #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'eventTeams')] // Corrected inversedBy to 'eventTeams'
-    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'eventId')] 
+    #[ORM\JoinColumn(referencedColumnName: 'eventId')] 
     private ?Event $event = null;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'eventTeams')] // Corrected inversedBy to 'eventTeams'

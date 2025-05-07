@@ -35,54 +35,8 @@ class EventType extends AbstractType
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('startDate', TextType::class, [
-                'label' => 'Start Date (format YYYY-MM-DD)',
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'The start date is required.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^\\d{4}-\\d{2}-\\d{2}$/',
-                        'message' => 'The date format must be YYYY-MM-DD.',
-                    ]),
-                    new Assert\Callback(function ($date, $context) {
-                        if ($date) {
-                            $today = new \DateTime();
-                            $today->setTime(0, 0, 0);
-                            $inputDate = \DateTime::createFromFormat('Y-m-d', $date);
-                            if (!$inputDate || $inputDate < $today) {
-                                $context->buildViolation('The start date must be after today.')
-                                    ->addViolation();
-                            }
-                        }
-                    })
-                ],
-                'attr' => ['class' => 'form-control'],
-            ])
-            ->add('endDate', TextType::class, [
-                'label' => 'End Date (format YYYY-MM-DD)',
-                'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'The end date is required.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^\\d{4}-\\d{2}-\\d{2}$/',
-                        'message' => 'The date format must be YYYY-MM-DD.',
-                    ]),
-                    new Assert\Callback(function ($date, $context) {
-                        $startDate = $context->getRoot()->get('startDate')->getData();
-                        if ($date && $startDate) {
-                            $start = \DateTime::createFromFormat('Y-m-d', $startDate);
-                            $end = \DateTime::createFromFormat('Y-m-d', $date);
-                            if ($end < $start) {
-                                $context->buildViolation('The end date must be after the start date.')
-                                    ->addViolation();
-                            }
-                        }
-                    })
-                ],
-                'attr' => ['class' => 'form-control'],
-            ])
+            ->add('startDate')
+            ->add('endDate')
             ->add('maxParticipants', NumberType::class, [
                 'label' => 'Maximum Participants',
                 'constraints' => [
@@ -113,6 +67,13 @@ class EventType extends AbstractType
                     ])
                 ],
                 'attr' => ['class' => 'form-control'],
+            ])
+            ->add('lieu', TextType::class, [
+                'label' => 'Lieu',
+                'attr' => [
+                    'class' => 'hidden-field',
+                    'style' => 'display: none;'
+                ]
             ])
             ->add('fee', NumberType::class, [
                 'label' => 'Participation Fee',
@@ -154,6 +115,36 @@ class EventType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'userid',
             ])
+            ->add('latitude', NumberType::class, [
+                'attr' => [
+                    'class' => 'hidden-field',
+                    'style' => 'display: none;'
+                ],
+
+                'required' => false,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => -90,
+                        'max' => 90,
+                        'notInRangeMessage' => 'La latitude doit être comprise entre -90 et 90 degrés.',
+                    ]),
+                ],
+            ])
+            ->add('longitude', NumberType::class, [
+                'attr' => [
+                    'class' => 'hidden-field',
+                    'style' => 'display: none;'
+                ],
+                'required' => false,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => -180,
+                        'max' => 180,
+                        'notInRangeMessage' => 'La longitude doit être comprise entre -180 et 180 degrés.',
+                    ]),
+                ],
+            ])
+
             ;
     }
 

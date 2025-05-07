@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 use App\Repository\EquipmentRepository;
 
 #[ORM\Entity(repositoryClass: EquipmentRepository::class)]
@@ -26,6 +27,13 @@ class Equipment
         minMessage: "Name must be at least {{ limit }} characters long.",
         maxMessage: "Name cannot be longer than {{ limit }} characters."
     )]
+    #[Assert\NotBlank(message: "Name is required.")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Name must be at least {{ limit }} characters long.",
+        maxMessage: "Name cannot be longer than {{ limit }} characters."
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
@@ -35,7 +43,15 @@ class Equipment
     )]
     private ?string $state = null;
 
+
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Assert\NotBlank(message: "Category is required.")]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+        minMessage: "Category must be at least {{ limit }} characters long.",
+        maxMessage: "Category cannot be longer than {{ limit }} characters."
+    )]
     #[Assert\NotBlank(message: "Category is required.")]
     #[Assert\Length(
         min: 2,
@@ -46,6 +62,8 @@ class Equipment
     private ?string $category = null;
 
     #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: "Quantity is required.")]
+    #[Assert\PositiveOrZero(message: "Quantity must be zero or a positive number.")]
     #[Assert\NotBlank(message: "Quantity is required.")]
     #[Assert\PositiveOrZero(message: "Quantity must be zero or a positive number.")]
     private ?int $quantity = null;

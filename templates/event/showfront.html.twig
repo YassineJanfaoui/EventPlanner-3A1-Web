@@ -110,8 +110,8 @@
                     <tr>
                         <td>{{ event.eventId }}</td>
                         <td>{{ event.name }}</td>
-                        <td>{{ event.startDate|date('Y-m-d') }}</td>
-                        <td>{{ event.endDate|date('Y-m-d') }}</td>
+                        <td>{{ event.startDate|date('Y-m-d H:i') }}</td>
+                        <td>{{ event.endDate|date('Y-m-d H:i') }}</td>
                         <td>{{ event.maxParticipants }}</td>
                         <td>{{ event.description }}</td>
                         <td>{{ event.fee }}</td>

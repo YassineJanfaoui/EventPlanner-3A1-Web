@@ -1,0 +1,185 @@
+{% extends 'back.html.twig' %}
+{% block title %}Reservation Details{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Répartition des événements par plage de frais</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 1000px;
+            height: 400px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="feeChart"></canvas>
+    </div>
+ {# Sidebar avec statistiques #}
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Statistiques</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Plage de frais</th>
+                                    <th class="text-end">Événements</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0-50 DT</td>
+                                    <td class="text-end">5</td>
+                                </tr>
+                                <tr>
+                                    <td>51-100 DT</td>
+                                    <td class="text-end">1</td>
+                                </tr>
+                                <tr>
+                                    <td>101-200 DT</td>
+                                    <td class="text-end">0</td>
+                                </tr>
+                                <tr>
+                                    <td>201-500 DT</td>
+                                    <td class="text-end">0</td>
+                                </tr>
+                                <tr>
+                                    <td>501+ DT</td>
+                                    <td class="text-end">0</td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-active">
+                                <tr>
+                                    <th>Total</th>
+                                    <th class="text-end">6</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Tableau détaillé #}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Détails par seuil</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>0-50 DT</th>
+                                    <th>51-100 DT</th>
+                                    <th>101-200 DT</th>
+                                    <th>201-500 DT</th>
+                                    <th>501+ DT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {# Exemple de ligne - à remplacer par vos données dynamiques #}
+                                <tr>
+                                    <td>2023-10-15</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-10-16</td>
+                                    <td>3</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('feeChart').getContext('2d');
+            
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-50 DT', '51-100 DT', '101-200 DT', '201-500 DT', '501+ DT'],
+                    datasets: [{
+                        label: "Nombre d'événements",
+                        data: [5, 1, 0, 0, 0],
+                        backgroundColor: '#4285F4',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Répartition des événements par plage de frais",
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Nombre d'événements",
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Plage de frais",
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

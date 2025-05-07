@@ -6,28 +6,44 @@
 {% block body %}
 	<h1>Partners</h1>
 
+	 <form method="get" class="mb-4" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" name="search" placeholder="Search by name" value="{{ app.request.get('search') }}" class="form-control" style="max-width: 200px;" />
+        <input type="text" name="coach" placeholder="Filter by category" value="{{ app.request.get('coach') }}" class="form-control" style="max-width: 200px;" />
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a href="{{ path('app_partner_index') }}" class="btn btn-secondary">Reset</a>
+    </form>
+
 	<table class="table">
 		<thead>
 			<tr>
 				<th>PartnerId</th>
 				<th>Name</th>
 				<th>Category</th>
+				<th>Email</th>
+				<th>Number</th>
+				<th>OfficeLocation</th>
 				<th>actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for partner in partners %}
 				<tr>
-					<td>{{ partner.partnerId }}</td>
-					<td>{{ partner.name }}</td>
+					<td><a href="{{ path('app_partner_show', {'partnerId': partner.partnerId}) }}" class="btn btn-sm btn-info"> {{ partner.partnerId }} </td>
+					<td class="partner-name" data-name="{{ partner.name }}" style="cursor:pointer; color:blue;">
+						{{ partner.name }}
+					</td>
 					<td>{{ partner.category }}</td>
-					<td style="display:flex; gap:10px; ">
+					<td>{{ partner.email }}</td>
+					<td>{{ partner.number }}</td>
+					<td>{{ partner.officeLocation }}</td>
+					<td style="display:flex; gap:10px;">
 						<button class="btn btn-primary">
 							<a style="text-decoration:none; color:white;" href="{{ path('app_partner_edit', {'partnerId': partner.partnerid}) }}">edit</a>
 						</button>
 						{{ include('partner/_delete_form.html.twig') }}
 					</td>
 				</tr>
+
 			{% else %}
 				<tr>
 					<td colspan="4">no records found</td>
@@ -36,5 +52,48 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_partner_new') }}" style="color: white; width:20%; margin-left:37.5%" class="btn btn-primary">Create new</a>
+
+	<div class="d-flex justify-content-center mt-5 mb-3">  {# Added mb-4 for bottom margin #}
+    	{{ knp_pagination_render(partners, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+	</div>
+
+	<a href="{{ path('app_partner_new') }}" style="color: white; width:20%; margin-left:40.5%; margin-top: 20px;" class="btn btn-primary">Create new</a>
+
+	<!-- Modal -->
+<div id="youtubeModal" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%);
+  background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+	<span onclick="document.getElementById('youtubeModal').style.display='none'" style="cursor:pointer; float:right;">&times;</span>
+	<div id="youtubeVideo"></div>
+</div>
+
+<script>
+document.querySelectorAll('.partner-name').forEach(nameCell => {
+	nameCell.addEventListener('click', async () => {
+		const name = nameCell.dataset.name;
+		const apiKey = 'AIzaSyCttn8eZle2j6EBKBCJO_JKDhchwdT4YBA';
+		const query = encodeURIComponent(name);
+		const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${query}&key=${apiKey}`;
+
+		const res = await fetch(url);
+		const data = await res.json();
+
+		if (data.items && data.items.length > 0) {
+			const videoId = data.items[0].id.videoId;
+			const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
+			document.getElementById('youtubeVideo').innerHTML = `
+				<iframe width="560" height="315" src="${embedUrl}" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen>
+				</iframe>
+			`;
+
+			document.getElementById('youtubeModal').style.display = 'block';
+		} else {
+			alert("No video found for " + name);
+		}
+	});
+});
+</script>
+
 {% endblock %}

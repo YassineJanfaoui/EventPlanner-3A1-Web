@@ -5,6 +5,58 @@
 {% block body %}
     <h1>Catering index</h1>
 
+    <!-- Search by Venue Name -->
+    <form method="get" class="mb-4">
+        <div class="d-flex align-items-center mb-3">
+            <!-- Venue Name search input -->
+            <div class="mr-3">
+                <label for="venueName" class="form-label">Search by Venue Name</label>
+                <input type="text" name="venueName" id="venueName" class="form-control" value="{{ venueNameFilter }}" placeholder="Search by venue name...">
+            </div>
+
+            <!-- Sort by Price dropdown -->
+            <div class="mr-3">
+                <label for="sortPrice" class="form-label">Sort by Price</label>
+                <select name="sortPrice" id="sortPrice" class="form-control">
+                    <option value="">Select</option>
+                    <option value="asc" {% if sortPrice == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if sortPrice == 'desc' %}selected{% endif %}>Descending</option>
+                </select>
+            </div>
+
+            <!-- Menu Type dropdown -->
+            <div class="mr-3">
+                <label for="menuType" class="form-label">Menu Type</label>
+                <select name="MenuType" id="menuType" class="form-control">
+                    <option value="">All</option>
+                    <option value="normal" {% if menuTypeFilter == 'normal' %}selected{% endif %}>Normal</option>
+                    <option value="vegan" {% if menuTypeFilter == 'vegan' %}selected{% endif %}>Vegan</option>
+                    <option value="vegetarian" {% if menuTypeFilter == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                    <option value="gluten free" {% if menuTypeFilter == 'gluten free' %}selected{% endif %}>Gluten Free</option>
+                </select>
+            </div>
+
+            <!-- Meal Schedule dropdown -->
+            <div class="mr-3">
+                <label for="mealSchedule" class="form-label">Meal Schedule</label>
+                <select name="MealSchedule" id="mealSchedule" class="form-control">
+                    <option value="">All</option>
+                    <option value="breakfast" {% if mealScheduleFilter == 'breakfast' %}selected{% endif %}>Breakfast</option>
+                    <option value="lunch" {% if mealScheduleFilter == 'lunch' %}selected{% endif %}>Lunch</option>
+                    <option value="dinner" {% if mealScheduleFilter == 'dinner' %}selected{% endif %}>Dinner</option>
+                    <option value="snacks" {% if mealScheduleFilter == 'snacks' %}selected{% endif %}>Snacks</option>
+                </select>
+            </div>
+
+            <!-- Filter and Reset buttons -->
+            <div class="ml-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{{ path(app.request.attributes.get('_route')) }}" class="btn btn-secondary ml-2">Reset</a>
+            </div>
+        </div>
+    </form>
+
+
     <table class="table">
         <thead>
             <tr>

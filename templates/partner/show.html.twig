@@ -20,6 +20,18 @@
 				<th>Category</th>
 				<td>{{ partner.category }}</td>
 			</tr>
+			<tr>
+				<th>Email</th>
+				<td>{{ partner.email }}</td>
+			</tr>
+			<tr>
+				<th>Number</th>
+				<td>{{ partner.number }}</td>
+			</tr>
+			<tr>
+				<th>OfficeLocation</th>
+				<td>{{ partner.officeLocation }}</td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -29,3 +41,58 @@
 
 	{{ include('partner/_delete_form.html.twig') }}
 {% endblock %}
+
+{# {% extends 'basePlanner.html.twig' %}
+
+{% block title %}Partner
+{% endblock %}
+
+{% block body %}
+	<h1>Partner</h1>
+    
+    {# Add badges here - example with partner category #}
+    {# <div class="mb-3">
+        {{ poser_badge(partner.category, {style: 'flat-square'}) }}
+    </div>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>PartnerId</th>
+				<td>{{ partner.partnerId }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ partner.name }}</td>
+			</tr>
+			<tr>
+				<th>Category</th>
+				<td>
+                    {{ partner.category }}
+                    {{ poser_badge(partner.category, {style: 'for-the-badge'}) }}
+                </td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td>{{ partner.email }}</td>
+			</tr>
+			<tr>
+				<th>Number</th>
+				<td>{{ partner.number }}</td>
+			</tr>
+			<tr>
+				<th>OfficeLocation</th>
+				<td>
+                    {{ partner.officeLocation }}
+                    {{ poser_badge(partner.officeLocation, {color: 'blue'}) }}
+                </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_partner_index') }}" class="btn btn-primary " style="width:25%; margin-left:37.5%; display:block;">back to list</a>
+
+	<a href="{{ path('app_partner_edit', {'partnerId': partner.partnerId}) }}">edit</a>
+
+	{{ include('partner/_delete_form.html.twig') }}
+{% endblock %} #} 
