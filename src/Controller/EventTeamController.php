@@ -210,7 +210,7 @@ class EventTeamController extends AbstractController
     }
 
     // And update this method too
-    #[Route('/{submission_id}', name: 'app_event_team_delete', methods: ['GET', 'POST'])]
+    #[Route('/{submission_id}', name: 'app_event_team_delete', methods: ['POST'])]
     public function delete(Request $request, int $submission_id, EventTeamRepository $eventTeamRepository, EntityManagerInterface $entityManager): Response
     {
         $eventTeam = $eventTeamRepository->find($submission_id);
@@ -389,5 +389,38 @@ class EventTeamController extends AbstractController
                 'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             ]
         );
+    }
+    
+    /**
+     * Rate a team's event submission
+     */
+    #[Route('/{submission_id}/rate', name: 'app_event_team_rate', methods: ['POST'])]
+    public function rateSubmission(Request $request, int $submission_id, EventTeamRepository $eventTeamRepository, EntityManagerInterface $entityManager): Response
+    {
+        $eventTeam = $eventTeamRepository->find($submission_id);
+        
+        if (!$eventTeam) {
+            $this->addFlash('error', 'Submission not found');
+            return $this->redirectToRoute('app_event_team_index');
+        }
+        
+        // Get rating data from request
+        $rating = (int) $request->request->get('rating', 0);
+        $comment = $request->request->get('comment', '');
+        
+        // Validate rating
+        if ($rating < 1 || $rating > 5) {
+            $this->addFlash('error', 'Invalid rating value. Please select 1-5 stars.');
+            return $this->redirectToRoute('app_event_team_show', ['submission_id' => $submission_id]);
+        }
+        
+        // Store the rating in the database
+        // Note: You'll need to create a Rating entity or add rating fields to EventTeam
+        // For now, we'll just show a success message
+        
+        $this->addFlash('success', 'Thank you for rating this submission!');
+        
+        // Redirect back to the submission page
+        return $this->redirectToRoute('app_event_team_show', ['submission_id' => $submission_id]);
     }
 }

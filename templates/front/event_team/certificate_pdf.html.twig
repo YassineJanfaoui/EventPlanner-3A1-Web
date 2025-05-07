@@ -2,103 +2,142 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Certificate of Participation</title>
+    <title>Certificate of Achievement</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'DejaVu Serif', 'Times New Roman', Times, serif;
             margin: 0;
             padding: 0;
+            background-color: #fff;
         }
         
         .certificate-container {
             width: 100%;
-            padding: 20px;
-            border: 15px solid #0056b3;
+            padding: 40px;
+            border: 20px solid #1a237e;
+            box-sizing: border-box;
             position: relative;
-            background-color: #fff;
+        }
+        
+        .border-pattern {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid #1a237e;
+        }
+        
+        .border-pattern::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid #1a237e;
         }
         
         .certificate-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
         }
         
         .certificate-title {
             font-size: 36px;
             font-weight: bold;
-            color: #0056b3;
+            color: #1a237e;
             margin-bottom: 10px;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .certificate-subtitle {
-            font-size: 24px;
+            font-size: 22px;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
         
         .certificate-body {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             font-size: 18px;
-            line-height: 1.6;
+            line-height: 1.8;
         }
         
         .team-name {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: bold;
-            color: #0056b3;
+            color: #1a237e;
+            margin: 25px 0;
+        }
+        
+        .event-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
             margin: 20px 0;
+            font-style: italic;
+        }
+        
+        .project-title {
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+            margin: 20px 0;
+            color: #333;
         }
         
         .certificate-footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 60px;
+            margin-top: 80px;
         }
         
         .signature-line {
-            width: 200px;
+            width: 220px;
             border-top: 1px solid #333;
             margin-top: 10px;
             text-align: center;
+            font-size: 16px;
+            color: #333;
+            padding-top: 5px;
         }
         
         .certificate-date {
-            text-align: right;
-            margin-top: 20px;
+            text-align: center;
+            margin-top: 40px;
+            font-style: italic;
+            color: #555;
         }
         
         .certificate-seal {
             position: absolute;
-            bottom: 30px;
-            right: 30px;
-            width: 100px;
-            height: 100px;
-            border: 2px solid #0056b3;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 100px;
-            font-weight: bold;
-            color: #0056b3;
+            bottom: 40px;
+            right: 40px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
     <div class="certificate-container">
+        <div class="border-pattern"></div>
         <div class="certificate-header">
-            <div class="certificate-title">Certificate of Participation</div>
+            <div class="certificate-title">Certificate of Achievement</div>
             <div class="certificate-subtitle">This certifies that</div>
         </div>
         
         <div class="certificate-body">
             <div class="team-name">{{ team.TeamName }}</div>
             <p>has successfully participated in</p>
-            <div class="event-name" style="font-size: 24px; font-weight: bold; margin: 15px 0;">
+            <div class="event-name">
                 "{{ event.name }}"
             </div>
             <p>with their project titled</p>
-            <div style="font-style: italic; font-weight: bold; margin: 15px 0;">
+            <div class="project-title">
                 "{{ event_team.title }}"
             </div>
             <p>We recognize their valuable contribution and commitment to excellence.</p>
@@ -117,7 +156,17 @@
             Issued on: {{ date|date('F d, Y') }}
         </div>
         
-        <div class="certificate-seal">OFFICIAL</div>
+        <!-- For PDF we'll use a simpler seal -->
+        <div class="certificate-seal">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="55" fill="none" stroke="#1a237e" stroke-width="2"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#1a237e" stroke-width="2"/>
+                <circle cx="60" cy="60" r="35" fill="none" stroke="#1a237e" stroke-width="1"/>
+                <text x="60" y="50" font-family="DejaVu Sans" font-size="10" text-anchor="middle" fill="#1a237e">OFFICIAL</text>
+                <text x="60" y="65" font-family="DejaVu Sans" font-size="10" text-anchor="middle" fill="#1a237e">CERTIFICATE</text>
+                <text x="60" y="80" font-family="DejaVu Sans" font-size="10" text-anchor="middle" fill="#1a237e">OF ACHIEVEMENT</text>
+            </svg>
+        </div>
     </div>
 </body>
 </html>
