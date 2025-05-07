@@ -30,3 +30,10 @@ services:
             $sid: '%env(TWILIO_ACCOUNT_SID)%'
             $token: '%env(TWILIO_AUTH_TOKEN)%'
             $from: '%env(TWILIO_PHONE_NUMBER)%'
+    
+    App\Security\GoogleAuthenticator:
+        class: App\Security\GoogleAuthenticator
+        arguments:
+            $client: '@knpu.oauth2.client.google'
+            $em: '@doctrine.orm.entity_manager'
+            $router: '@router'

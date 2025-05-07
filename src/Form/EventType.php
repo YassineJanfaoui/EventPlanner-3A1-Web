@@ -113,7 +113,7 @@ class EventType extends AbstractType
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'id',
+                'choice_label' => 'userid',
             ])
             ->add('latitude', NumberType::class, [
                 'attr' => [

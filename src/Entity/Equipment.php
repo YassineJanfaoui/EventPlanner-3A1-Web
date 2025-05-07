@@ -17,7 +17,6 @@ class Equipment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', name: 'EquipmentId')]
-    #[ORM\Column(type: 'integer', name: 'EquipmentId')]
     private ?int $EquipmentId = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
@@ -43,12 +42,7 @@ class Equipment
         message: "Invalid state. Must be: functional, maintenance, or unavailable."
     )]
     private ?string $state = null;
-    #[ORM\Column(type: 'string', nullable: false)]
-    #[Assert\Choice(
-        choices: ['functional', 'maintenance', 'unavailable'],
-        message: "Invalid state. Must be: functional, maintenance, or unavailable."
-    )]
-    private ?string $state = null;
+
 
     #[ORM\Column(type: 'string', nullable: false)]
     #[Assert\NotBlank(message: "Category is required.")]
