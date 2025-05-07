@@ -166,7 +166,7 @@
                 <nav aria-label="breadcrumb" class="mb-4 no-print">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ path('app_event_team_index') }}">Submissions</a></li>
-                        <li class="breadcrumb-item"><a href="{{ path('app_event_team_show', {'submission_id': event_team.submissionId}) }}">Submission Details</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('app_event_team_show', {'id': event_team.submissionId}) }}">Submission Details</a></li>
                         <li class="breadcrumb-item active">Certificate</li>
                     </ol>
                 </nav>
@@ -188,9 +188,9 @@
                     
                     <div class="certificate-content">
                         <p>This certifies that</p>
-                        <div class="team-name">{{ team.TeamName }}</div>
+                        <div class="team-name">{{ event_team.team.teamName }}</div>
                         <p>has successfully participated in</p>
-                        <div class="event-name">"{{ event.name }}"</div>
+                        <div class="event-name">"{{ event_team.event.name }}"</div>
                         <p>with their project titled</p>
                         <div class="project-title">"{{ event_team.title }}"</div>
                         <p>We recognize their valuable contribution and commitment to excellence.</p>
@@ -223,7 +223,7 @@
                 </div>
                 
                 <div class="text-center mt-4 no-print">
-                    <a href="{{ path('app_event_team_show', {'submission_id': event_team.submissionId}) }}" class="btn btn-secondary">
+                    <a href="{{ path('app_event_team_show', {'id': event_team.submissionId}) }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-1"></i> Back to Submission
                     </a>
                 </div>

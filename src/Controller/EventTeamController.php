@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\EventTeam;
+use App\Entity\Event;
 use App\Form\EventTeamType;
 use App\Repository\EventTeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
-
-#[Route('/event/team')]
+#[Route('/eventteam')]
 class EventTeamController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -25,15 +27,14 @@ class EventTeamController extends AbstractController
     }
 
     #[Route('/', name: 'app_event_team_index', methods: ['GET'])]
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(Request $request, PaginatorInterface $paginator, EventTeamRepository $eventTeamRepository): Response
     {
         // Get search and sort parameters from request
         $search = $request->query->get('search', '');
         $sort = $request->query->get('sort', 'recent');
         
         // Create query builder
-        $queryBuilder = $this->entityManager->getRepository(EventTeam::class)
-            ->createQueryBuilder('et')
+        $queryBuilder = $eventTeamRepository->createQueryBuilder('et')
             ->select('et, e, t')
             ->leftJoin('et.event', 'e')
             ->leftJoin('et.team', 't');
@@ -137,37 +138,20 @@ class EventTeamController extends AbstractController
         ]);
     }
 
-    // Change this method
-    #[Route('/{submission_id}', name: 'app_event_team_show', methods: ['GET'])]
-    public function show(int $submission_id, EventTeamRepository $eventTeamRepository): Response
+    #[Route('/{id}', name: 'app_event_team_show', methods: ['GET'])]
+    public function show(#[MapEntity] EventTeam $eventTeam): Response
     {
-        $eventTeam = $eventTeamRepository->find($submission_id);
-        
-        if (!$eventTeam) {
-            $this->addFlash('error', 'Submission not found');
-            return $this->redirectToRoute('app_event_team_index');
-        }
-        
-        // Update the path to include the 'front' folder
         return $this->render('front/event_team/show.html.twig', [
             'event_team' => $eventTeam,
         ]);
     }
 
-    // Also update this method
-    #[Route('/{submission_id}/edit', name: 'app_event_team_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $submission_id, EventTeamRepository $eventTeamRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/edit', name: 'app_event_team_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, #[MapEntity] EventTeam $eventTeam): Response
     {
-        $eventTeam = $eventTeamRepository->find($submission_id);
-        
-        if (!$eventTeam) {
-            $this->addFlash('error', 'Submission not found');
-            return $this->redirectToRoute('app_event_team_index');
-        }
-        
         $form = $this->createForm(EventTeamType::class, $eventTeam);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Check if fileLink is provided
             $fileLink = $eventTeam->getFileLink();
@@ -198,7 +182,7 @@ class EventTeamController extends AbstractController
             }
             
             $this->addFlash('success', 'GitHub repository validated successfully!');
-            $entityManager->flush();
+            $this->entityManager->flush();
     
             return $this->redirectToRoute('app_event_team_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -209,22 +193,13 @@ class EventTeamController extends AbstractController
         ]);
     }
 
-    // And update this method too
-    #[Route('/{submission_id}', name: 'app_event_team_delete', methods: ['POST'])]
-    public function delete(Request $request, int $submission_id, EventTeamRepository $eventTeamRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}', name: 'app_event_team_delete', methods: ['POST'])]
+    public function delete(#[MapEntity] EventTeam $eventTeam): Response
     {
-        $eventTeam = $eventTeamRepository->find($submission_id);
-        
-        if (!$eventTeam) {
-            $this->addFlash('error', 'Submission not found');
-            return $this->redirectToRoute('app_event_team_index');
-        }
-        
-        // No CSRF token validation
-        $entityManager->remove($eventTeam);
-        $entityManager->flush();
-    
-        return $this->redirectToRoute('app_event_team_index', [], Response::HTTP_SEE_OTHER);
+        $this->entityManager->remove($eventTeam);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_event_team_index');
     }
     
     /**
@@ -298,31 +273,15 @@ class EventTeamController extends AbstractController
     }
     
     
+    
+    
     #[Route('/{submission_id}/certificate', name: 'app_event_team_certificate', methods: ['GET'])]
-    public function generateCertificate(int $submission_id, EventTeamRepository $eventTeamRepository): Response
-    {
-        $eventTeam = $eventTeamRepository->find($submission_id);
-        
-        if (!$eventTeam) {
-            $this->addFlash('error', 'Submission not found');
-            return $this->redirectToRoute('app_event_team_index');
-        }
-        
-        // Get related entities
-        $event = $eventTeam->getEvent();
-        $team = $eventTeam->getTeam();
-        
-        if (!$event || !$team) {
-            $this->addFlash('error', 'Event or Team information is missing');
-            return $this->redirectToRoute('app_event_team_index');
-        }
-        
-        // Render the certificate template
+    public function generateCertificate(
+        #[MapEntity(mapping: ['submission_id' => 'submissionId'])] EventTeam $eventTeam
+    ): Response {
         return $this->render('front/event_team/certificate.html.twig', [
             'event_team' => $eventTeam,
-            'event' => $event,
-            'team' => $team,
-            'date' => new \DateTime(),
+            'date' => new \DateTime()
         ]);
     }
     

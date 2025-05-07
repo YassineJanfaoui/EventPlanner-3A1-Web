@@ -486,4 +486,3 @@ public function searchEvent(Request $request, EventRepository $eventRepository):
 
 
 
-
