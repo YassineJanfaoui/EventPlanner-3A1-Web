@@ -68,12 +68,12 @@
 												</li>
 												{% if is_granted('ROLE_TEAM_LEADER') %}
 												<li>
-													<a href="{{ path('event_list') }}">Events</a>
+													<a href="{{ path('app_event_list') }}">Events</a>
 												</li>
 												{% endif %}
 												{% if is_granted('ROLE_SIMPLE_USER') %}
 												<li>
-													<a href="{{ path('event_list') }}">Events</a>
+													<a href="{{ path('app_event_list') }}">Events</a>
 												</li>
 												{% endif %}
                                                 {% if is_granted('ROLE_EVENT_PLANNER') %}
@@ -104,6 +104,9 @@
 															<li><a href="{{ path('app_team_index') }}">Teams</a></li>
 															<li><a href="{{ path('app_event_team_index') }}">Project Submissions</a></li>
 															<li><a href="{{ path('app_feedback_index') }}">Feedback</a></li>
+															<li>
+																<a href="{{ path('app_participant_index') }}">Participant</a>
+															</li>
 														</ul>
 													</li>
 													<li>

@@ -80,8 +80,12 @@ final class EventController extends AbstractController
         ]);
     }
   #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager): Response
-{
+public function new(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    TwilioService $twilioService
+    ): Response {
+
     $event = new Event();
     $form = $this->createForm(EventType::class, $event);
     $form->handleRequest($request);
@@ -90,7 +94,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         $imageFile = $form->get('image')->getData();
         if ($imageFile) {
             $newFilename = uniqid().'.'.$imageFile->guessExtension();
-            $imageFile->move('D:\telechargement\tt\EventPlanner-3A1-Web-main\public\images', $newFilename);
+            $imageFile->move('C:\Users\ayoub\Desktop\FINT\EventPlanner-3A1-Web\public\images', $newFilename);
             $event->setImage('/images/' . $newFilename);
         }
         
@@ -105,6 +109,28 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
         $entityManager->persist($event);
         $entityManager->flush();
+        
+            // SMS sending logic
+            $sid = 'ACaba77eb7d59bdaa0f2691c38e13bd1a2';
+            $token = 'bd0b061e3a94be97ba7520726806f790';
+            $fromNumber = '+13203732347';
+            $toNumber = '+21653989935'; // Replace with actual recipient
+    
+            $client = new \Twilio\Rest\Client($sid, $token);
+    
+            $smsBody = "🎉 New Event Created:\n"
+                     . "📌 Name: " . $event->getName() . "\n"
+                     . "📝 Description: " . $event->getDescription() . "\n"
+                     . "💰 Fee: " . $event->getFee() . " TND";
+    
+            try {
+                $client->messages->create($toNumber, [
+                    'from' => $fromNumber,
+                    'body' => $smsBody
+                ]);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'SMS failed to send: ' . $e->getMessage());
+            }
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -136,7 +162,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
             if ($imageFile) {
                 // If an image is uploaded, process it and save it
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $imageFile->move('D:\telechargement\tt\EventPlanner-3A1-Web-main\public\images', $newFilename);
+                $imageFile->move('C:\Users\ayoub\Desktop\FINT\EventPlanner-3A1-Web\public\images', $newFilename);
                 // Update the event image path
                 $event->setImage('/images/' . $newFilename);
             }
@@ -188,11 +214,10 @@ public function getReservationsByEvent(
 /**
      * @Route("/events/new", name="app_event_new_front", methods={"GET", "POST"})
      */
-    #[Route('/events/new', name: 'app_event_new_front', methods: ['GET', 'POST'])]
-    public function newFront(
+#[Route('/events/new', name: 'app_event_new_front', methods: ['GET', 'POST'])]
+public function newFront(
         Request $request,
         EntityManagerInterface $entityManager,
-        TwilioService $twilioService
     ): Response {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -203,7 +228,7 @@ public function getReservationsByEvent(
             
             if ($imageFile) {
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $uploadDirectory = 'D:\telechargement\tt\EventPlanner-3A1-Web-main\public\images';
+                $uploadDirectory = 'C:\Users\ayoub\Desktop\FINT\EventPlanner-3A1-Web\public\images';
     
                 try {
                     $imageFile->move($uploadDirectory, $newFilename);
@@ -217,27 +242,7 @@ public function getReservationsByEvent(
             $entityManager->persist($event);
             $entityManager->flush();
     
-            // SMS sending logic
-            $sid = 'ACaba77eb7d59bdaa0f2691c38e13bd1a2';
-            $token = 'bd0b061e3a94be97ba7520726806f790';
-            $fromNumber = '+13203732347';
-            $toNumber = '+21653989935'; // Replace with actual recipient
-    
-            $client = new \Twilio\Rest\Client($sid, $token);
-    
-            $smsBody = "🎉 New Event Created:\n"
-                     . "📌 Name: " . $event->getName() . "\n"
-                     . "📝 Description: " . $event->getDescription() . "\n"
-                     . "💰 Fee: " . $event->getFee() . " TND";
-    
-            try {
-                $client->messages->create($toNumber, [
-                    'from' => $fromNumber,
-                    'body' => $smsBody
-                ]);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'SMS failed to send: ' . $e->getMessage());
-            }
+           
     
             $this->addFlash('success', 'Event created successfully!');
             return $this->redirectToRoute('app_event_indexx', ['id' => $event->getEventId()]);
@@ -296,7 +301,7 @@ public function getReservationsByEvent(
             // Handle new image upload
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $uploadDirectory = 'D:\telechargement\tt\EventPlanner-3A1-Web-main\public\images';
+                $uploadDirectory = 'C:\Users\ayoub\Desktop\FINT\EventPlanner-3A1-Web\public\images';
                 
                 // Remove old image if exists
                 $oldImagePath = $event->getImage();
@@ -333,11 +338,11 @@ public function getReservationsByEvent(
     }
 
     #[Route('/export/pdf', name: 'app_events_pdf')]
-public function generatePdf(EventRepository $eventRepository, BuilderInterface $qrBuilder): Response
+public function generatePdf(EventRepository $eventRepository): Response
 {
     $events = $eventRepository->findAll();
     $eventsWithDataImages = [];
-    
+
     foreach ($events as $event) {
         $eventData = [
             'eventId' => $event->getEventId(),
@@ -349,11 +354,10 @@ public function generatePdf(EventRepository $eventRepository, BuilderInterface $
             'fee' => $event->getFee(),
             'longitude' => $event->getLongitude(),
             'latitude' => $event->getLatitude(),
-            'imageBase64' => null,
-            'qrCodeBase64' => null
+            'imageBase64' => null
         ];
-        
-        // Convertir l'image en Base64 si elle existe
+
+        // Convert image to base64 if exists
         if ($event->getImage()) {
             $imagePath = $this->getParameter('kernel.project_dir') . '/public' . $event->getImage();
             if (file_exists($imagePath)) {
@@ -363,89 +367,52 @@ public function generatePdf(EventRepository $eventRepository, BuilderInterface $
                 $eventData['imageBase64'] = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
             }
         }
-        
-        $qrData = "Événement ID: " . $event->getEventId() . 
-    " | Lieu: " . $event->getLieu() . 
-    " | Date: " . $event->getStartDate(). 
-    " | Prix: " . $event->getFee() . " TND";
 
-$qrData .= "\nActivités :";
-
-
-
-        
-            try {
-                $qrResult = $qrBuilder
-                    ->size(150)
-                    ->margin(10)
-                    ->data($qrData)
-                    ->build();
-            
-                $eventData['qrCodeBase64'] = $qrResult->getDataUri();
-            } catch (\Exception $e) {
-                $eventData['qrCodeBase64'] = null;
-                error_log("Erreur QR: " . $e->getMessage());
-            }
-            
-        // Convertir le QR code en Base64
-        $eventData['qrCodeBase64'] = $qrResult->getDataUri();
-        
         $eventsWithDataImages[] = $eventData;
     }
-    
-    // Configuration de Dompdf
+
+    // Dompdf options
     $pdfOptions = new Options();
     $pdfOptions->set('defaultFont', 'Arial');
     $pdfOptions->set('isHtml5ParserEnabled', true);
     $pdfOptions->set('isRemoteEnabled', true);
-    
+
     $dompdf = new Dompdf($pdfOptions);
-    $logoPath = $this->getParameter('kernel.project_dir') . '/public/images/logo2.png';
 
-$logoBase64 = null;
-if (file_exists($logoPath)) {
-    $logoData = file_get_contents($logoPath);
-    $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
-    $logoMime = 'image/' . ($logoType === 'jpg' ? 'jpeg' : $logoType); // Convert jpg to jpeg
-    $logoBase64 = 'data:' . $logoMime . ';base64,' . base64_encode($logoData);
-}
-
-$html = $this->renderView('event/pdf.html.twig', [
-    'events' => $eventsWithDataImages,
-    'logo' => $logoBase64
-]);
+    // Load HTML view with event data
+    $html = $this->renderView('event/pdf.html.twig', [
+        'events' => $eventsWithDataImages
+    ]);
 
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
-    
+
+    // Return response with PDF content
     return new Response(
         $dompdf->output(),
         200,
         [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="liste_evenements.pdf"',
+            'Content-Disposition' => 'inline; filename="events.pdf"'
         ]
     );
 }
+
 private function getMimeType(string $extension): string
 {
-    $mimeTypes = [
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
+    return match (strtolower($extension)) {
+        'jpg', 'jpeg' => 'image/jpeg',
         'png' => 'image/png',
         'gif' => 'image/gif',
-        'svg' => 'image/svg+xml',
-        'webp' => 'image/webp',
-        // add more types if needed
-    ];
-
-    return $mimeTypes[strtolower($extension)] ?? 'application/octet-stream';
+        default => 'application/octet-stream',
+    };
 }
- 
+
+
     #[Route("/evenement/search", name: "evenement_search")]
-public function searchEvent(Request $request, EventRepository $eventRepository): JsonResponse
-{
+    public function searchEvent(Request $request, EventRepository $eventRepository): JsonResponse
+    {{
     try {
         $searchTerm = $request->query->get('search', '');
         $searchTerm = trim($searchTerm);
@@ -482,7 +449,4 @@ public function searchEvent(Request $request, EventRepository $eventRepository):
     }
 }
 }
-
-
-
-
+}

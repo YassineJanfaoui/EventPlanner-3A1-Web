@@ -168,7 +168,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">List Of events </h1>
+            <h1 class="title">List Of events</h1>
         </div>
 
         {% for event in events %}
@@ -177,13 +177,13 @@
                     <h2 class="event-title">{{ event.name }}</h2>
                     <span class="event-id">Événement #{{ event.eventId }}</span>
                 </div>
-                
+
                 {% if event.imageBase64 %}
-                    <img src="{{ event.imageBase64 }}" 
-                         alt="Image de l'événement" 
+                    <img src="{{ event.imageBase64 }}"
+                         alt="Image de l'événement"
                          class="event-image">
                 {% endif %}
-                
+
                 <div class="event-info">
                     <table class="details-table">
                         <tr>
@@ -217,17 +217,10 @@
                     </table>
                 </div>
             </div>
-                 <div class="event-qr">
-                {% if event.qrCodeBase64 %}
-                    <img src="{{ event.qrCodeBase64 }}" alt="QR Code">
-                    <p>Scannez ce code pour accéder aux détails de l'événement</p>
-                {% endif %}
-            </div>
-        </div>
         {% else %}
             <p class="no-events">Aucun événement trouvé.</p>
         {% endfor %}
-        
+
         <div class="footer">
             Généré le {{ "now"|date("d/m/Y H:i") }} | © {{ "now"|date("Y") }} Système de gestion d'événements
         </div>

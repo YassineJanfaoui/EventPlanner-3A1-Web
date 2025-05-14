@@ -33,6 +33,8 @@ security:
                 target: app_login
 
     access_control:
+        - { path: ^/api/bills_unpaid, roles: PUBLIC_ACCESS }
+        - { path: ^/api/statistics/equipment, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/login/faceid, roles: PUBLIC_ACCESS }
         - { path: ^/faceid, roles: PUBLIC_ACCESS }
@@ -41,3 +43,4 @@ security:
         - { path: ^/user/new, roles: PUBLIC_ACCESS }
         - { path: ^/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
+        

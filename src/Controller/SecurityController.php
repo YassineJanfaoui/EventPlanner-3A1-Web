@@ -157,8 +157,11 @@ public function faceIdLogin(Request $request, EntityManagerInterface $em): Respo
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             return $this->redirectToRoute('app_user_index');
         }
+        if (in_array('ROLE_EVENT_PLANNER', $user->getRoles(), true)) {
+            return $this->redirectToRoute('app_event_indexx');
+        }
         
-        return $this->redirectToRoute('app_participant_index');
+        return $this->redirectToRoute('app_event_list');
     }
 
     #[Route('/connect/google', name: 'connect_google_start')]
